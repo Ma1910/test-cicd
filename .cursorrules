@@ -1,0 +1,15 @@
+# AI Coding Assistant Rules for ci-cd-quicktest
+
+You are working on an enterprise-grade CI/CD and TypeScript backend platform.
+
+## Mandatory Rules for AI Agents:
+1. Always run `npm run sync` before starting a new feature to ensure the branch is up to date with teammates.
+2. Adhere to the "Ponytail" philosophy:
+   - Prefer Node.js built-ins and standard libraries over adding new third-party dependencies.
+   - Keep code minimal, clean, and zero-bloat.
+   - Never hardcode secrets, API keys, or JWT tokens.
+3. Strict Quality Verification before concluding tasks:
+   - Must run `npm run typecheck` (tsc --noEmit) and ensure zero type errors.
+   - Must run `npm run test:coverage` and ensure ALL tests pass with >= 80% coverage threshold.
+   - Must run `npm run build` and ensure successful dist generation.
+4. If modifying endpoints, update tests in `tests/app.test.ts` to maintain high coverage.
