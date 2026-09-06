@@ -175,7 +175,7 @@ To verify how the CI/CD pipeline catches and blocks broken code:
 ## 🔗 Live Artifacts & Quick Links
 
 - **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
-- **AI Agent Guidelines**: [`AGENTS.md`](https://github.com/Ma1910/test-cicd/blob/main/AGENTS.md) *(Mandatory workflow & verification rules)*
+- **AI Agent Guidelines Directory**: [`.ai/`](https://github.com/Ma1910/test-cicd/tree/main/.ai) *(Claude, Cursor, Copilot, Windsurf rules)*
 - **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
 - **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
 - **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)
