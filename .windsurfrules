@@ -1,0 +1,6 @@
+# Windsurf AI Cascade Rules
+- Pre-work check: Execute `npm run sync` to pull upstream commits.
+- Architecture standard: Ponytail minimalism. Zero bloat, no unnecessary dependencies.
+- Security: Trivy Secret Scanner active on CI. Zero credentials in Git history.
+- Quality gates: You must run and pass `npm run typecheck` and `npm run test:coverage` (coverage >= 80%).
+- Verification: `npm run build` must succeed before ending turn.
