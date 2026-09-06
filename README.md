@@ -106,6 +106,20 @@ flowchart LR
 
 ---
 
+## 🏛️ Enterprise Architecture Overview
+
+This project implements a full production-ready microservice backend with **zero bloated third-party runtime dependencies** (pure Node.js & Express):
+
+| Module | Implementation | Security & Standards |
+| :--- | :--- | :--- |
+| **🔐 Authentication & RBAC** | `src/auth.service.ts` | SHA-256 secure tokens with TTL & Role-Based Access Control (`admin` vs `user`). |
+| **📦 Products Catalog CRUD** | `src/products.service.ts` | Search, category filtering, strict input sanitization, and data validation. |
+| **📊 Observability & Metrics** | `src/metrics.service.ts` | Prometheus `/metrics` exporter (requests, memory RSS, HTTP status breakdown). |
+| **🛡️ Application Shield** | `src/app.ts` | In-memory IP Rate Limiting, payload size caps (`100kb`), `x-powered-by` disabled. |
+| **🧪 Comprehensive Testing** | `tests/app.test.ts` | **21 automated unit & integration tests** exceeding mandatory 80% coverage threshold. |
+
+---
+
 ## 💻 Local Quickstart (3 Steps)
 
 This repository contains real, production-ready code. You can verify it locally:
@@ -115,13 +129,16 @@ This repository contains real, production-ready code. You can verify it locally:
 npm run dev
 ```
 - Open `http://localhost:3000/` for service greeting.
-- Open `http://localhost:3000/healthz` for real-time uptime status.
+- Open `http://localhost:3000/api/v1/meta` for API catalog & endpoints.
+- Open `http://localhost:3000/api/v1/products` for live product catalog.
+- Open `http://localhost:3000/metrics` for real-time Prometheus telemetry.
+- Open `http://localhost:3000/healthz` for Kubernetes liveness & memory metrics.
 
 ### 2. Run Test Suite with Coverage
 ```bash
 npm run test:coverage
 ```
-*Vitest executes all unit and integration tests and outputs a 100% statement coverage table in your terminal.*
+*Vitest executes all 21 unit, integration, RBAC, and error boundary tests with automated coverage gates.*
 
 ### 3. Verify TypeScript Build
 ```bash
