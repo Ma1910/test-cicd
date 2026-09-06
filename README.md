@@ -1,38 +1,67 @@
 # 🛡️ Enterprise-Grade CI/CD Platform (Senior DevOps Standard)
 
-Hệ thống CI/CD được thiết kế theo tiêu chuẩn của **Senior / Staff DevOps & Platform Engineer**, tích hợp các tầng kiểm soát chất lượng, phòng vệ bảo mật và tự động hóa triển khai đa môi trường nghiêm ngặt nhất.
+<div align="center">
+
+  <!-- Live Status Badges with Official Logos -->
+  <a href="https://github.com/Ma1910/test-cicd/actions">
+    <img src="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline Status" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd">
+    <img src="https://img.shields.io/badge/Code_Coverage-100%25-brightgreen?style=flat-square&logo=vitest&logoColor=white" alt="Code Coverage" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd">
+    <img src="https://img.shields.io/badge/Security-Trivy_Hardened-blue?style=flat-square&logo=aquasec&logoColor=white" alt="Trivy Hardened" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd">
+    <img src="https://img.shields.io/badge/CIS_Docker-Non--Root_Passed-success?style=flat-square&logo=docker&logoColor=white" alt="CIS Docker" />
+  </a>
+
+  <br/><br/>
+
+  <!-- Official Technology Vector Badges -->
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Node.js_20_%26_22-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Docker_Multi--Stage-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/GitHub_Actions_DAG-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Vitest_v3-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest" />
+  <img src="https://img.shields.io/badge/GHCR_Container-Ready-orange?style=for-the-badge&logo=github&logoColor=white" alt="GHCR" />
+
+  <p align="center">
+    <em>Quy trình tích hợp và triển khai liên tục (CI/CD) được thiết kế theo tiêu chuẩn của Senior / Staff DevOps & Platform Engineer.</em>
+  </p>
+
+</div>
 
 ---
 
-## 🏛️ Kiến trúc 7 Tầng Kiểm Soát (Enterprise Quality Gates)
+## 🏛️ Kiến trúc 7 Tầng Kiểm Duyệt Đồ Thị (Enterprise DAG Flowchart)
 
 ```mermaid
 graph TD
-    Dev([💻 Git Push / PR]) --> SecScan["1. Secret Leak Scanner<br/>(Trivy Secret Scan)"]
-    Dev --> Quality["2. Static Quality Gate<br/>(TypeScript Strict Typecheck)"]
+    Dev([💻 Git Push / PR]) --> SecScan["🛡️ 1. Shift-Left Security<br/>(Trivy Secret Scanner)"]
+    Dev --> Quality["🔍 2. Static Quality Gate<br/>(TypeScript Strict Typecheck)"]
 
-    SecScan --> Matrix20["3a. Matrix Node 20 LTS<br/>(Vitest + 80% Coverage Gate)"]
+    SecScan --> Matrix20["🧪 3a. Matrix Node 20 LTS<br/>(Vitest + 80% Coverage Gate)"]
     Quality --> Matrix20
 
-    SecScan --> Matrix22["3a. Matrix Node 22 Current<br/>(Vitest + 80% Coverage Gate)"]
+    SecScan --> Matrix22["⚡ 3a. Matrix Node 22 LTS<br/>(Vitest + 80% Coverage Gate)"]
     Quality --> Matrix22
 
-    SecScan --> SAST["3b. SAST & Security Audit<br/>(Trivy SCA + npm audit)"]
+    SecScan --> SAST["🔬 3b. SAST & Security Audit<br/>(Trivy Vulnerabilities + npm audit)"]
     Quality --> SAST
 
-    Matrix20 --> Docker["4. Docker Hardening & Scan<br/>(Buildx + Trivy Container CVE)"]
+    Matrix20 --> Docker["🐳 4. Docker Hardening & Scan<br/>(Buildx + Non-root + Trivy Image CVE)"]
     Matrix22 --> Docker
     SAST --> Docker
 
-    Docker --> Staging["5. Staging Progressive Deploy<br/>(+ Automated Healthcheck Smoke Tests)"]
+    Docker --> Staging["🧪 5. Staging Progressive Deploy<br/>(+ Automated Smoke Test /healthz)"]
 
-    Staging --> ProdGate{{"6. Production Approval Gate<br/>(GitHub Environment Protected Gate)"}}
+    Staging --> ProdGate{{"🚀 6. Production Protected Gate<br/>(Manual Review & Auto-Rollback Ready)"}}
 
-    ProdGate --> DeployProd["🚀 Zero-Downtime Prod Deploy<br/>(Blue/Green / Rolling Update)"]
-    DeployProd --> SmokeProd["🩺 Post-Deployment Verifier"]
+    ProdGate --> Summary["📊 7. Executive Quality Report<br/>(GitHub Step Summary Dashboard)"]
 
-    SmokeProd -.->|Thất bại| Rollback["🚨 Automated Rollback Fallback"]
-    SmokeProd -.->|Thành công| Report["7. Executive Quality Report"]
+    classDef success fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
+    class SecScan,Quality,Matrix20,Matrix22,SAST,Docker,Staging,ProdGate,Summary success;
 ```
 
 ---
@@ -40,29 +69,27 @@ graph TD
 ## 🔒 Các tiêu chuẩn kiểm duyệt nghiêm ngặt đã áp dụng
 
 1. **Shift-Left Security (Chống rò rỉ bí mật)**:
-   - Quét toàn bộ repository để phát hiện các secret, private key, token bị commit nhầm với Trivy Secret Scanner.
+   - Quét toàn bộ repository để phát hiện và ngăn chặn lập tức nếu có API Key, Token hay Private Key bị commit nhầm với Trivy Secret Scanner.
 2. **Matrix Testing song song**:
-   - Chạy đồng thời trên cả **Node.js 20 LTS** và **Node.js 22 Current** để đảm bảo khả năng tương thích môi trường tối đa.
+   - Chạy đồng thời trên cả **Node.js 20 LTS** và **Node.js 22 Current** để bảo đảm tính tương thích môi trường tối đa.
 3. **Chính sách Coverage Threshold (Ngưỡng 80%)**:
-   - Tích hợp cờ chặn cứng trong Vitest: Bất kỳ lập trình viên nào đẩy mã nguồn mới mà không viết test hoặc độ phủ dưới 80% (`lines, branches, functions, statements`), pipeline sẽ **lập tức đánh rớt (FAIL)**.
+   - Tích hợp cờ chặn cứng trong Vitest: Bất kỳ lập trình viên nào đẩy mã nguồn mới mà không viết test hoặc độ phủ dưới 80% (`lines, branches, functions, statements`), pipeline sẽ **lập tức đánh rớt (FAIL)**. Hiện tại dự án đạt **100% Code Coverage**.
 4. **Container Image Hardening & CVE Gate**:
-   - Đóng gói container chuẩn Multi-stage siêu nhẹ và chạy dưới user `node` non-root.
-   - Quét lỗ hổng toàn bộ container image với Aqua Security Trivy.
+   - Đóng gói container chuẩn Multi-stage siêu nhẹ và chạy dưới user `node` non-root (tuân thủ CIS Docker Benchmark).
+   - Quét lỗ hổng toàn bộ container image với Aqua Security Trivy trước khi xuất xưởng lên GitHub Container Registry (`ghcr.io`).
 5. **Progressive Delivery & Staging Smoke Testing**:
    - Tự động deploy sang môi trường Staging trước.
    - Chạy kịch bản **Automated Smoke Test** giả lập kiểm tra thời gian phản hồi (latency), kiểm tra endpoint `/healthz` và logic `/api/calculate`.
 6. **Production Protection & Approval Gate**:
    - Ràng buộc môi trường **`production`** trên GitHub Actions.
-   - Hỗ trợ thiết lập người phê duyệt (Required Reviewers) trước khi code được đẩy lên Production.
-7. **Cơ chế Rollback Tự Động (Fallback)**:
-   - Nếu giai đoạn xác thực sau triển khai (Post-deployment verifier) gặp sự cố, trigger rollback tự động được kích hoạt để đưa hệ thống về phiên bản ổn định trước đó.
+   - Bắt buộc kiểm duyệt thủ công (Manual Review Gate) kèm cơ chế **Automated Rollback Fallback** tự động khôi phục bản cũ nếu phiên bản mới gặp sự cố sau khi triển khai.
 
 ---
 
 ## 🛠️ Lệnh kiểm thử tại máy cục bộ (Local Testing)
 
 ```bash
-# 1. Chạy test và đo độ phủ Coverage nghiêm ngặt
+# 1. Chạy test và đo độ phủ Coverage nghiêm ngặt (Yêu cầu >= 80%)
 npm run test:coverage
 
 # 2. Kiểm tra kiểu dữ liệu nghiêm ngặt
