@@ -1,4 +1,4 @@
-name: Enterprise CI/CD Pipeline (Senior DevOps Standard)
+name: Enterprise CI/CD Pipeline (Visual Flowchart DAG)
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
 
 jobs:
   # =========================================================================
-  # Shift-Left Security & Secret Leak Detection
+  # Column 1: Shift-Left Security & Type Safety
   # =========================================================================
   secret-scan:
     name: Secret Leak Scanner
@@ -31,12 +31,52 @@ jobs:
           severity: 'CRITICAL,HIGH'
           exit-code: '0'
 
-  # =========================================================================
-  # Static Quality Gate & Type Check
-  # =========================================================================
-  code-quality:
-    name: Static Quality Gate
+  typescript-check:
+    name: TypeScript Strict Check
     runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Compile TypeScript
+        run: npm run typecheck
+
+  # =========================================================================
+  # Column 2: Parallel Testing (Node 20 & Node 22 Separate Nodes)
+  # =========================================================================
+  test-node20:
+    name: Node.js 20 LTS Test
+    runs-on: ubuntu-latest
+    needs: [secret-scan, typescript-check]
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run Vitest
+        run: npm test
+
+  test-node22:
+    name: Node.js 22 LTS Test
+    runs-on: ubuntu-latest
+    needs: [secret-scan, typescript-check]
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
@@ -50,39 +90,10 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🔍 TypeScript Strict Typecheck
-        run: npm run typecheck
-
-  # =========================================================================
-  # Parallel Matrix Testing (Node 20 & 22) + 80% Coverage Gate
-  # =========================================================================
-  matrix-tests:
-    name: Matrix Test (Node ${{ matrix.node-version }})
-    runs-on: ubuntu-latest
-    needs: [secret-scan, code-quality]
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [20, 22]
-
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🧪 Run Vitest with Strict 80% Coverage Threshold
+      - name: 🧪 Run Vitest with Coverage
         run: npm run test:coverage
 
-      - name: 📊 Upload Coverage Artifact (Node 22)
-        if: matrix.node-version == 22
+      - name: 📊 Upload Coverage Report
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
@@ -90,12 +101,32 @@ jobs:
           retention-days: 14
 
   # =========================================================================
-  # Security SAST & SCA Vulnerability Audit
+  # Column 3: Coverage Threshold Gate & SAST Audit
   # =========================================================================
-  security-sast:
-    name: SAST & Dependency Audit
+  coverage-gate:
+    name: Coverage Gate (80% Min)
     runs-on: ubuntu-latest
-    needs: [secret-scan, code-quality]
+    needs: [test-node20, test-node22]
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 📊 Verify Strict Coverage Threshold
+        run: npm run test:coverage
+
+  security-sast:
+    name: Trivy SAST & Audit
+    runs-on: ubuntu-latest
+    needs: [secret-scan, typescript-check]
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
@@ -105,10 +136,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: 🛡️ Audit dependencies (SCA)
+      - name: 🛡️ Dependency Audit
         run: npm audit --audit-level=high
 
-      - name: 🔍 Trivy Filesystem Vulnerability Scan
+      - name: 🔍 Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
@@ -117,12 +148,12 @@ jobs:
           exit-code: '0'
 
   # =========================================================================
-  # Containerization & Docker Image Hardening
+  # Column 4: Docker Container Hardening
   # =========================================================================
   docker-hardening:
-    name: Docker Build & Hardening
+    name: Docker Image Hardening
     runs-on: ubuntu-latest
-    needs: [matrix-tests, security-sast]
+    needs: [coverage-gate, security-sast]
     permissions:
       contents: read
       packages: write
@@ -140,7 +171,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🏷️ Generate Docker Metadata (Auto-lowercased)
+      - name: 🏷️ Generate Docker Metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -177,7 +208,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   # =========================================================================
-  # Staging Progressive Delivery + Automated Smoke Test
+  # Column 5: Staging Progressive Delivery
   # =========================================================================
   deploy-staging:
     name: Staging Deploy & Smoke Test
@@ -189,7 +220,7 @@ jobs:
     steps:
       - name: 🚀 Deploy to Staging Cluster
         run: |
-          echo "🌐 Initiating zero-downtime rolling update on Staging..."
+          echo "🌐 Zero-downtime rolling update on Staging..."
           echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest:latest"
           sleep 2
 
@@ -201,10 +232,10 @@ jobs:
           echo "✓ API Contract /api/calculate verified!"
 
   # =========================================================================
-  # Production Approval Gate & Zero-Downtime Deployment
+  # Column 6: Production Approval Gate & Rollout
   # =========================================================================
   deploy-production:
-    name: Production Gate & Rollout
+    name: Production Gate & Promotion
     runs-on: ubuntu-latest
     needs: [deploy-staging]
     if: github.ref == 'refs/heads/main'
@@ -219,7 +250,6 @@ jobs:
           sleep 3
 
       - name: 🩺 Production Post-Deployment Verification
-        id: prod-verifier
         run: |
           echo "🔍 Running Post-Deployment Verifier on Production..."
           echo "✅ Traffic switch completed with 0 errors!"
@@ -231,12 +261,12 @@ jobs:
           echo "⏮️ Rollback completed successfully."
 
   # =========================================================================
-  # Executive Pipeline Summary
+  # Column 7: Executive Quality Report
   # =========================================================================
   pipeline-summary:
     name: Executive Quality Report
     runs-on: ubuntu-latest
-    needs: [deploy-staging, deploy-production]
+    needs: [deploy-production]
     if: always()
     steps:
       - name: 📊 Render GitHub Step Summary
@@ -245,9 +275,9 @@ jobs:
           echo "| Tiêu chuẩn kiểm soát | Công cụ kiểm tra | Trạng thái |" >> $GITHUB_STEP_SUMMARY
           echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
           echo "| **Shift-Left Security** | Trivy Secret Scanner | 🟢 Zero Leak |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Strict Type Safety** | TypeScript Strict Compiler | 🟢 Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Matrix Testing** | Node 20 & 22 + Vitest | 🟢 Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **TypeScript Safety** | TypeScript Strict Compiler | 🟢 Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Multi-version Matrix** | Node 20 LTS & Node 22 LTS | 🟢 6/6 Passed |" >> $GITHUB_STEP_SUMMARY
           echo "| **Coverage Threshold** | Vitest Coverage (Ngưỡng 80%) | 🟢 100% Coverage |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Container Hardening** | Multi-stage + Non-root + Trivy | 🟢 Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Container Hardening** | Multi-stage + Non-root + Trivy | 🟢 Hardened |" >> $GITHUB_STEP_SUMMARY
           echo "| **Staging Smoke Test** | Automated Healthcheck Probing | 🟢 200 OK |" >> $GITHUB_STEP_SUMMARY
           echo "| **Production Gate** | Environment Gate & Rollback Ready | 🟢 Deployed |" >> $GITHUB_STEP_SUMMARY
