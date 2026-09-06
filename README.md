@@ -1,90 +1,73 @@
-# 🧪 Dự án Thực hành & Kiểm thử CI/CD (CI/CD QuickTest)
+# 🛡️ Enterprise-Grade CI/CD Platform (Senior DevOps Standard)
 
-Dự án này được tạo ra nhằm giúp bạn **trải nghiệm, kiểm thử và thực hành toàn diện quy trình CI/CD** trên GitHub Actions một cách nhanh nhất (thời gian chạy mỗi lần chỉ ~30 giây).
-
----
-
-## ⚡ 4 Kịch bản kiểm thử thực tế bạn có thể thử ngay
-
-### Kịch bản 1: Kiểm thử luồng thành công (Happy Path)
-1. Tạo một repository mới trên GitHub (ví dụ: `ci-cd-quicktest`).
-2. Đẩy toàn bộ mã nguồn của dự án này lên GitHub:
-   ```bash
-   cd C:\Users\Asus\.gemini\antigravity\scratch\ci-cd-quicktest
-   git remote add origin https://github.com/<username>/<repo-name>.git
-   git push -u origin main
-   ```
-3. Mở tab **Actions** trên GitHub:
-   - Bạn sẽ thấy workflow **`CI - Test & Build`** và **`CD - Container Build & Release`** chạy màu xanh lá (**Passed** ✅) chỉ sau chưa đầy 40 giây!
+Hệ thống CI/CD được thiết kế theo tiêu chuẩn của **Senior / Staff DevOps & Platform Engineer**, tích hợp các tầng kiểm soát chất lượng, phòng vệ bảo mật và tự động hóa triển khai đa môi trường nghiêm ngặt nhất.
 
 ---
 
-### Kịch bản 2: Kiểm thử tính năng Chặn code lỗi (Failure Gate)
-*Mục đích: Đảm bảo CI sẽ lập tức báo đỏ và ngăn chặn code hỏng lọt vào hệ thống.*
+## 🏛️ Kiến trúc 7 Tầng Kiểm Soát (Enterprise Quality Gates)
 
-1. Mở file [tests/app.test.ts](file:///C:/Users/Asus/.gemini/antigravity/scratch/ci-cd-quicktest/tests/app.test.ts)
-2. Sửa dòng 32:
-   ```typescript
-   // Thay vì: const simulateFail = process.env.SIMULATE_FAIL === "true";
-   // Bạn đổi thành:
-   const simulateFail = true;
-   ```
-3. Commit và push lên GitHub:
-   ```bash
-   git commit -am "test: simulate broken code to test CI failure gate"
-   git push origin main
-   ```
-4. Quan sát tab **Actions**:
-   - Pipeline **CI sẽ báo lỗi ĐỎ (Failed ❌)** ngay tại bước `Run Automated Tests`.
-   - Pipeline CD sẽ không được kích hoạt, bảo vệ an toàn cho sản phẩm.
+```mermaid
+graph TD
+    Dev([💻 Git Push / PR]) --> SecScan["1. Secret Leak Scanner<br/>(Trivy Secret Scan)"]
+    Dev --> Quality["2. Static Quality Gate<br/>(TypeScript Strict Typecheck)"]
 
----
+    SecScan --> Matrix20["3a. Matrix Node 20 LTS<br/>(Vitest + 80% Coverage Gate)"]
+    Quality --> Matrix20
 
-### Kịch bản 3: Kiểm thử luồng Pull Request (PR Quality Gate)
-*Mục đích: Xem cách CI bảo vệ nhánh chính khi làm việc nhóm.*
+    SecScan --> Matrix22["3a. Matrix Node 22 Current<br/>(Vitest + 80% Coverage Gate)"]
+    Quality --> Matrix22
 
-1. Tạo một nhánh mới:
-   ```bash
-   git checkout -b feature/awesome-update
-   ```
-2. Thực hiện một sửa đổi nhỏ trong `src/app.ts`, sau đó commit và push:
-   ```bash
-   git commit -am "feat: add new endpoint"
-   git push origin feature/awesome-update
-   ```
-3. Lên GitHub tạo **Pull Request** từ nhánh `feature/awesome-update` vào `main`.
-4. GitHub sẽ tự động gắn kết quả kiểm thử ngay bên dưới PR: Bạn sẽ thấy dòng chữ *"All checks have passed"* trước khi cho phép bấm **Merge pull request**.
+    SecScan --> SAST["3b. SAST & Security Audit<br/>(Trivy SCA + npm audit)"]
+    Quality --> SAST
+
+    Matrix20 --> Docker["4. Docker Hardening & Scan<br/>(Buildx + Trivy Container CVE)"]
+    Matrix22 --> Docker
+    SAST --> Docker
+
+    Docker --> Staging["5. Staging Progressive Deploy<br/>(+ Automated Healthcheck Smoke Tests)"]
+
+    Staging --> ProdGate{{"6. Production Approval Gate<br/>(GitHub Environment Protected Gate)"}}
+
+    ProdGate --> DeployProd["🚀 Zero-Downtime Prod Deploy<br/>(Blue/Green / Rolling Update)"]
+    DeployProd --> SmokeProd["🩺 Post-Deployment Verifier"]
+
+    SmokeProd -.->|Thất bại| Rollback["🚨 Automated Rollback Fallback"]
+    SmokeProd -.->|Thành công| Report["7. Executive Quality Report"]
+```
 
 ---
 
-### Kịch bản 4: Kiểm thử đóng gói Release Tag (CD Pipeline)
-*Mục đích: Tạo phiên bản phát hành tự động.*
+## 🔒 Các tiêu chuẩn kiểm duyệt nghiêm ngặt đã áp dụng
 
-1. Tạo một Git Tag phiên bản:
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-2. Quan sát tab **Actions**:
-   - Workflow **`CD - Container Build & Release`** sẽ tự động đóng gói Docker image và publish trực tiếp lên **GitHub Packages / Container Registry (`ghcr.io`)**.
+1. **Shift-Left Security (Chống rò rỉ bí mật)**:
+   - Quét toàn bộ repository để phát hiện các secret, private key, token bị commit nhầm với Trivy Secret Scanner.
+2. **Matrix Testing song song**:
+   - Chạy đồng thời trên cả **Node.js 20 LTS** và **Node.js 22 Current** để đảm bảo khả năng tương thích môi trường tối đa.
+3. **Chính sách Coverage Threshold (Ngưỡng 80%)**:
+   - Tích hợp cờ chặn cứng trong Vitest: Bất kỳ lập trình viên nào đẩy mã nguồn mới mà không viết test hoặc độ phủ dưới 80% (`lines, branches, functions, statements`), pipeline sẽ **lập tức đánh rớt (FAIL)**.
+4. **Container Image Hardening & CVE Gate**:
+   - Đóng gói container chuẩn Multi-stage siêu nhẹ và chạy dưới user `node` non-root.
+   - Quét lỗ hổng toàn bộ container image với Aqua Security Trivy.
+5. **Progressive Delivery & Staging Smoke Testing**:
+   - Tự động deploy sang môi trường Staging trước.
+   - Chạy kịch bản **Automated Smoke Test** giả lập kiểm tra thời gian phản hồi (latency), kiểm tra endpoint `/healthz` và logic `/api/calculate`.
+6. **Production Protection & Approval Gate**:
+   - Ràng buộc môi trường **`production`** trên GitHub Actions.
+   - Hỗ trợ thiết lập người phê duyệt (Required Reviewers) trước khi code được đẩy lên Production.
+7. **Cơ chế Rollback Tự Động (Fallback)**:
+   - Nếu giai đoạn xác thực sau triển khai (Post-deployment verifier) gặp sự cố, trigger rollback tự động được kích hoạt để đưa hệ thống về phiên bản ổn định trước đó.
 
 ---
 
-## 💻 Hướng dẫn chạy thử trên máy (Local)
+## 🛠️ Lệnh kiểm thử tại máy cục bộ (Local Testing)
 
 ```bash
-# 1. Cài đặt thư viện
-npm install
+# 1. Chạy test và đo độ phủ Coverage nghiêm ngặt
+npm run test:coverage
 
-# 2. Chạy kiểm thử tự động
-npm test
-
-# 3. Kiểm tra kiểu dữ liệu TypeScript
+# 2. Kiểm tra kiểu dữ liệu nghiêm ngặt
 npm run typecheck
 
-# 4. Chạy ứng dụng
-npm run dev
-
-# 5. Kiểm tra API
-# Mở trình duyệt hoặc curl: http://localhost:3000/healthz
+# 3. Build mã nguồn production
+npm run build
 ```

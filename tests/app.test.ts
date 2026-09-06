@@ -7,6 +7,12 @@ describe("CI/CD Test Suite", () => {
     expect(calculateSum(10, 20)).toBe(30);
   });
 
+  it("Integration Test: GET / should return 200 OK and greeting", async () => {
+    const res = await request(app).get("/");
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe("SUCCESS");
+  });
+
   it("Integration Test: GET /healthz should return 200 OK and status UP", async () => {
     const res = await request(app).get("/healthz");
     expect(res.status).toBe(200);
