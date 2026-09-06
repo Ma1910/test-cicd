@@ -50,55 +50,36 @@ Every push flows through these distinct stages, rendered live in GitHub Actions:
 
 ```mermaid
 flowchart LR
-    classDef startNode fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
-    classDef checkNode fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff;
-    classDef testNode fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
-    classDef packNode fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
-    classDef deployNode fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff;
+    %% Modern Palette & Pill/Card Styling
+    classDef trigger fill:#4f46e5,stroke:#6366f1,stroke-width:2px,color:#ffffff;
+    classDef security fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff;
+    classDef test fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff;
+    classDef build fill:#b45309,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+    classDef deploy fill:#6d28d9,stroke:#8b5cf6,stroke-width:2px,color:#ffffff;
+    classDef prod fill:#15803d,stroke:#22c55e,stroke-width:3px,color:#ffffff;
 
-    subgraph Phase1 ["1. Intake & Shift-Left Security"]
-        Push(["💻 Developer Git Push"]):::startNode
-        Sec["🛡️ Secret Leak Scanner<br/>(Trivy Secret Engine)"]:::checkNode
-        Type["🔍 TypeScript Strict Check<br/>(tsc --noEmit)"]:::checkNode
-    end
+    Push(["💻 Git Push"]):::trigger
+    
+    %% Shift-Left Gates
+    Push --> SecretScan["🛡️ Secret Scan"]:::security
+    Push --> TypeCheck["🔍 TypeScript Strict"]:::security
 
-    subgraph Phase2 ["2. Parallel Matrix Testing"]
-        Node20["🧪 Node.js 20 LTS Test<br/>(Vitest Engine)"]:::testNode
-        Node22["⚡ Node.js 22 LTS Test<br/>(Vitest Engine)"]:::testNode
-    end
+    %% Parallel Matrix & SAST
+    SecretScan --> TestMatrix["🧪 Vitest Matrix<br/>(Node 20 & 22)"]:::test
+    TypeCheck --> TestMatrix
+    SecretScan --> TrivyScan["🔬 Trivy Security"]:::security
+    TypeCheck --> TrivyScan
 
-    subgraph Phase3 ["3. Quality & Security Gates"]
-        Gate["📊 Coverage Gate<br/>(Enforce Coverage ≥ 80%)"]:::testNode
-        SAST["🔬 SAST & Dependency Audit<br/>(Trivy Vulnerabilities)"]:::checkNode
-    end
+    %% Quality Verification
+    TestMatrix --> CoverageGate["📊 80% Coverage Gate"]:::test
 
-    subgraph Phase4 ["4. Container Hardening"]
-        Docker["🐳 Docker Multi-stage Build<br/>(Non-Root CIS Benchmark)"]:::packNode
-    end
+    %% Build & Hardening
+    CoverageGate --> DockerBuild["🐳 Docker Non-Root Build"]:::build
+    TrivyScan --> DockerBuild
 
-    subgraph Phase5 ["5. Delivery & Release"]
-        Staging["🧪 Staging Progressive Deploy<br/>(Automated 200 OK Smoke Test)"]:::deployNode
-        Prod["🚀 Production Gate & Rollout<br/>(Automated Rollback Guard)"]:::deployNode
-        Report["📋 Executive Quality Report<br/>(Job Summary Dashboard)"]:::deployNode
-    end
-
-    Push --> Sec
-    Push --> Type
-
-    Sec --> Node20
-    Type --> Node22
-    Sec --> SAST
-    Type --> SAST
-
-    Node20 --> Gate
-    Node22 --> Gate
-
-    Gate --> Docker
-    SAST --> Docker
-
-    Docker --> Staging
-    Staging --> Prod
-    Prod --> Report
+    %% Deployment Workflow
+    DockerBuild --> StagingSmoke["🧪 Staging Smoke Test"]:::deploy
+    StagingSmoke --> ProdDeploy["🚀 Production Rollout"]:::prod
 ```
 
 ---
