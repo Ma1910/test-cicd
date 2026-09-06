@@ -146,6 +146,16 @@ npm run typecheck
 npm run build
 ```
 
+### 4. 🎮 Launch Live CI/CD Simulator Directly From Terminal
+Want to inspect the animated pipeline or live GitHub Actions runs? Simply execute:
+```bash
+# Automatically launches the Interactive Pipeline Simulator in your default browser:
+npm run cicd
+
+# Or open the live GitHub Actions Runs & DAG directly:
+npm run cicd:actions
+```
+
 ---
 
 ## 🧪 Real-World Failure Simulation
