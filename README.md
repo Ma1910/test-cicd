@@ -1,93 +1,102 @@
-# 🚀 Hệ Thống Tự Động Hóa CI/CD Chuẩn Enterprise
+# 🚀 Enterprise-Grade CI/CD Automation Platform
 
 <div align="center">
 
-  <!-- Huy hiệu trạng thái thời gian thực -->
-  <a href="https://github.com/Ma1910/test-cicd/actions">
-    <img src="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml/badge.svg" alt="Trạng thái CI/CD" />
+  <!-- Live Status Badges (Clickable to real GitHub Actions & Packages) -->
+  <a href="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml">
+    <img src="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline Status" />
   </a>
-  <a href="https://github.com/Ma1910/test-cicd">
-    <img src="https://img.shields.io/badge/Độ_phủ_kiểm_thử-100%25-brightgreen?style=for-the-badge&logo=vitest&logoColor=white" alt="Code Coverage" />
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts">
+    <img src="https://img.shields.io/badge/Test_Coverage-100%25-brightgreen?style=for-the-badge&logo=vitest&logoColor=white" alt="Code Coverage 100%" />
   </a>
-  <a href="https://github.com/Ma1910/test-cicd">
-    <img src="https://img.shields.io/badge/Bảo_mật_Trivy-Không_lỗ_hổng-blue?style=for-the-badge&logo=aquasec&logoColor=white" alt="Trivy Security" />
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml">
+    <img src="https://img.shields.io/badge/Trivy_Security-Zero_Vulnerabilities-blue?style=for-the-badge&logo=aquasec&logoColor=white" alt="Trivy Security Scanner" />
   </a>
-  <a href="https://github.com/Ma1910/test-cicd">
-    <img src="https://img.shields.io/badge/Docker-Non--Root_An_Toàn-success?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Non-Root" />
+  <a href="https://github.com/Ma1910?tab=packages&repo_name=test-cicd">
+    <img src="https://img.shields.io/badge/Docker_Container-Non--Root_Hardened-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Container Package" />
   </a>
 
   <br/><br/>
 
-  <!-- Logo các công nghệ chính -->
-  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Node.js_20_%26_22-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white" alt="Vitest" />
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+  <!-- Official Clickable Technology Badges -->
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/tsconfig.json">
+    <img src="https://img.shields.io/badge/TypeScript-Strict_Mode-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript Strict Mode" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/package.json">
+    <img src="https://img.shields.io/badge/Node.js-20_LTS_%26_22_LTS-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js Matrix" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/vitest.config.ts">
+    <img src="https://img.shields.io/badge/Vitest-v3_Test_Suite-6E9F18?style=flat-square&logo=vitest&logoColor=white" alt="Vitest Suite" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/Dockerfile">
+    <img src="https://img.shields.io/badge/Docker-Multi--Stage_Alpine-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Dockerfile" />
+  </a>
+  <a href="https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml">
+    <img src="https://img.shields.io/badge/GitHub_Actions-Visual_DAG_Pipeline-2088FF?style=flat-square&logo=githubactions&logoColor=white" alt="GitHub Actions Workflow" />
+  </a>
 
   <p align="center">
-    <em>Dự án mẫu thực tế giúp bạn hiểu và áp dụng quy trình CI/CD chuyên nghiệp một cách đơn giản, trực quan nhất.</em>
+    <em>A production-grade CI/CD showcase designed with Senior DevOps best practices: Shift-Left Security, Parallel Matrix Testing, 80% Coverage Gate, and Container Hardening.</em>
   </p>
 
 </div>
 
 ---
 
-## 💡 CI/CD là gì? (Giải thích dễ hiểu nhất)
+## 💡 What is CI/CD? (Simplified)
 
-Hãy tưởng tượng bạn đang làm ra một chiếc xe hơi:
+Think of software development like an automated modern car factory:
 
-| Làm thủ công (Trước khi có CI/CD) | Có CI/CD (Hệ thống này) |
+| Traditional Manual Process | Automated CI/CD (This Platform) |
 | :--- | :--- |
-| ❌ Bạn viết code xong phải tự chạy thử từng tính năng. | ✅ **Tự động 100%**: Vừa đẩy code lên là hệ thống tự kiểm tra từ A-Z. |
-| ❌ Dễ quên mật khẩu, API key bí mật trong code dẫn đến bị hacker tấn công. | ✅ **Người gác cổng an ninh**: Tự động phát hiện và chặn đứng nếu vô tình làm lộ token. |
-| ❌ Code chạy được trên máy bạn nhưng đưa lên máy chủ thì bị lỗi do khác môi trường. | ✅ **Kiểm thử đa môi trường**: Tự động chạy thử trên cả Node 20 và Node 22 để đảm bảo không bao giờ lỗi. |
-| ❌ Phải tự cài đặt, gõ lệnh đóng gói container phức tạp. | ✅ **Đóng gói thần tốc**: Tự động build Docker Image và đưa lên kho lưu trữ sẵn sàng dùng. |
+| ❌ Manually running test commands on your local laptop. | ✅ **100% Automated**: Pushing code immediately triggers full end-to-end verification. |
+| ❌ Risk of committing leaked secrets, API keys, or tokens. | ✅ **Shift-Left Security Gate**: Trivy scans every commit to detect and block secret leaks immediately. |
+| ❌ "Works on my machine" bugs when deploying to servers. | ✅ **Multi-Environment Matrix**: Runs tests simultaneously on both **Node.js 20 LTS** and **Node.js 22 LTS**. |
+| ❌ High risk of deploying broken code to production. | ✅ **Strict Quality Gates**: Rejects builds if code coverage falls below 80% or any CVE is detected. |
 
-> **Tóm lại:** Bạn chỉ cần tập trung **viết code** và gõ `git push`. Toàn bộ việc kiểm tra lỗi, bảo mật và đóng gói đã có hệ thống CI/CD này lo!
+> **Bottom Line**: Developers simply write code and push (`git push origin main`). Quality, security, and packaging happen completely automatically.
 
 ---
 
-## 🗺️ Sơ đồ Luồng Hoạt Động Trực Quan (DAG Pipeline Flowchart)
+## 🗺️ Visual Pipeline Flowchart (DAG Architecture)
 
-Dưới đây là hành trình tự động của một đoạn code từ khi bạn viết xong cho đến khi xuất xưởng ra sản phẩm:
+Every push flows through these distinct stages, rendered live in GitHub Actions:
 
 ```mermaid
 flowchart LR
-    %% Thiết lập giao diện màu sắc hiện đại
+    %% Modern styling classes
     classDef startNode fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
     classDef checkNode fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff;
     classDef testNode fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
     classDef packNode fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
     classDef deployNode fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff;
 
-    subgraph Phase1 ["1. Tiếp nhận & Thẩm định sớm"]
-        Push(["💻 Developer Push Code"]):::startNode
-        Sec["🛡️ Quét rò rỉ mật khẩu<br/>(Trivy Secret Scanner)"]:::checkNode
-        Type["🔍 Kiểm tra chuẩn kiểu dữ liệu<br/>(TypeScript Strict)"]:::checkNode
+    subgraph Phase1 ["1. Intake & Shift-Left Security"]
+        Push(["💻 Developer Git Push"]):::startNode
+        Sec["🛡️ Secret Leak Scanner<br/>(Trivy Secret Engine)"]:::checkNode
+        Type["🔍 TypeScript Strict Check<br/>(tsc --noEmit)"]:::checkNode
     end
 
-    subgraph Phase2 ["2. Phòng Kiểm thử Đa Môi trường"]
-        Node20["🧪 Chạy test trên Node.js 20 LTS<br/>(Vitest Engine)"]:::testNode
-        Node22["⚡ Chạy test trên Node.js 22 LTS<br/>(Vitest Engine)"]:::testNode
+    subgraph Phase2 ["2. Parallel Matrix Testing"]
+        Node20["🧪 Node.js 20 LTS Test<br/>(Vitest Engine)"]:::testNode
+        Node22["⚡ Node.js 22 LTS Test<br/>(Vitest Engine)"]:::testNode
     end
 
-    subgraph Phase3 ["3. Chốt chặn Chất lượng"]
-        Gate["📊 Thẩm định độ phủ Code<br/>(Bắt buộc Coverage ≥ 80%)"]:::testNode
-        SAST["🔬 Quét mã độc thư viện<br/>(Trivy SAST & Audit)"]:::checkNode
+    subgraph Phase3 ["3. Quality & Security Gates"]
+        Gate["📊 Coverage Gate<br/>(Enforce Coverage ≥ 80%)"]:::testNode
+        SAST["🔬 SAST & Dependency Audit<br/>(Trivy Vulnerabilities)"]:::checkNode
     end
 
-    subgraph Phase4 ["4. Đóng gói Container"]
-        Docker["🐳 Đóng gói Docker Multi-stage<br/>(Phân quyền Non-Root bảo mật)"]:::packNode
+    subgraph Phase4 ["4. Container Hardening"]
+        Docker["🐳 Docker Multi-stage Build<br/>(Non-Root CIS Benchmark)"]:::packNode
     end
 
-    subgraph Phase5 ["5. Bàn giao & Triển khai"]
-        Staging["🧪 Chạy thử nghiệm Staging<br/>(Bắn Smoke Test kiểm tra 200 OK)"]:::deployNode
-        Prod["🚀 Phát hành Production<br/>(Bảo vệ Rollback nếu có lỗi)"]:::deployNode
-        Report["📋 Báo cáo tổng kết tự động<br/>(Executive Quality Report)"]:::deployNode
+    subgraph Phase5 ["5. Delivery & Release"]
+        Staging["🧪 Staging Progressive Deploy<br/>(Automated 200 OK Smoke Test)"]:::deployNode
+        Prod["🚀 Production Gate & Rollout<br/>(Automated Rollback Guard)"]:::deployNode
+        Report["📋 Executive Quality Report<br/>(Job Summary Dashboard)"]:::deployNode
     end
 
-    %% Các đường kết nối luồng công việc
     Push --> Sec
     Push --> Type
 
@@ -109,57 +118,69 @@ flowchart LR
 
 ---
 
-## 🛡️ 7 Lớp phòng vệ chất lượng của hệ thống
+## 🛡️ 7 Production-Grade Defense Gates
 
-1. **Quét rò rỉ mật khẩu (Secret Leak Scanner)**:
-   - Phát hiện ngay lập tức nếu bạn vô tình commit các token bí mật (như GitHub Token, AWS Key, Database Password). Nếu phát hiện, pipeline sẽ **dừng khẩn cấp** để bảo vệ tài khoản của bạn.
-2. **Kiểm tra kiểu dữ liệu nghiêm ngặt (TypeScript Check)**:
-   - Đảm bảo toàn bộ mã nguồn không có bất kỳ lỗi logic cú pháp nào trước khi đóng gói.
-3. **Kiểm thử song song trên nhiều phiên bản (Parallel Matrix Testing)**:
-   - Ứng dụng được chạy thử nghiệm tự động trên cả **Node 20 (bản ổn định doanh nghiệp)** và **Node 22 (bản mới nhất)** cùng lúc.
-4. **Chốt chặn độ phủ kiểm thử (80% Coverage Gate)**:
-   - Đảm bảo mọi tính năng viết ra đều được viết kiểm thử bảo vệ. Hiện tại dự án đạt **100% Code Coverage**.
-5. **Đóng gói Docker chuẩn bảo mật cao (Container Hardening)**:
-   - Sử dụng kiến trúc Multi-stage giúp dung lượng container siêu nhẹ và chạy dưới quyền tài khoản thường (`non-root user`) để chống hacker leo thang đặc quyền.
-6. **Thử nghiệm tự động (Automated Smoke Test)**:
-   - Sau khi dựng xong ứng dụng trên môi trường Staging, hệ thống tự động bắn tín hiệu HTTP kiểm tra endpoint `/healthz`. Nếu máy chủ phản hồi `200 OK` và độ trễ dưới 20ms mới cho phép đi tiếp.
-7. **Cơ chế khôi phục tự động (Automated Rollback)**:
-   - Trong trường hợp bản cập nhật mới lên Production gặp sự cố bất ngờ, cơ chế rollback tự động khôi phục lại phiên bản chạy ổn định trước đó ngay tức khắc.
+1. **[Secret Leak Scanner](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L18-L32)**:
+   - Scans the entire Git history on every commit for credentials, tokens, and private keys. Fails immediately upon detection to protect accounts.
+2. **[TypeScript Strict Check](https://github.com/Ma1910/test-cicd/blob/main/tsconfig.json)**:
+   - Enforces strict static type verification. Zero tolerance for type mismatches.
+3. **[Parallel Matrix Testing](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L55-L100)**:
+   - Validates test suites simultaneously across **Node.js 20 LTS** and **Node.js 22 LTS** runners in parallel.
+4. **[Coverage Threshold Gate](https://github.com/Ma1910/test-cicd/blob/main/vitest.config.ts)**:
+   - Enforces an automated quality gate in Vitest: any commit with less than **80% code coverage** fails the pipeline. Currently achieving **100% Code Coverage**.
+5. **[Docker Image Hardening](https://github.com/Ma1910/test-cicd/blob/main/Dockerfile)**:
+   - Minimal Alpine base image running under unprivileged user `node:node` (CIS Benchmark compliance). Scans images for CRITICAL/HIGH CVEs before publishing.
+6. **[Staging Smoke Test](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L182-L204)**:
+   - Probes the deployed service `/healthz` endpoint to confirm `200 OK` HTTP status and latency under 20ms before promoting to production.
+7. **[Production Rollback Guard](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L206-L233)**:
+   - Automated post-deployment verifier. If health validation fails, an automated rollback hook reverts to the previous stable release.
 
 ---
 
-## 💻 Hướng dẫn chạy thử trên máy của bạn (Chỉ 3 bước)
+## 💻 Local Quickstart (3 Steps)
 
-Dự án này là **mã nguồn thật 100%**, bạn có thể tự mình chạy và kiểm chứng ngay tại máy tính của mình:
+This repository contains real, production-ready code. You can verify it locally:
 
-### Bước 1: Khởi động máy chủ
-Mở terminal tại thư mục dự án và chạy:
+### 1. Start Development Server
 ```bash
 npm run dev
 ```
+- Open `http://localhost:3000/` for service greeting.
+- Open `http://localhost:3000/healthz` for real-time uptime status.
 
-### Bước 2: Kiểm tra trên trình duyệt
-Sau khi chạy, bạn hãy mở trình duyệt lên:
-- 🌐 **Trang chủ**: Mở `http://localhost:3000/` (Xem thông điệp phản hồi từ API).
-- 🩺 **Kiểm tra sức khỏe hệ thống**: Mở `http://localhost:3000/healthz` (Xem thời gian uptime thực tế của server).
-
-### Bước 3: Xem báo cáo độ phủ Code thật
-Chạy lệnh kiểm thử tự động:
+### 2. Run Test Suite with Coverage
 ```bash
 npm run test:coverage
 ```
-*Vitest sẽ quét toàn bộ mã nguồn và hiển thị bảng đo lường chất lượng 100% trực tiếp trên terminal của bạn.*
+*Vitest executes all unit and integration tests and outputs a 100% statement coverage table in your terminal.*
+
+### 3. Verify TypeScript Build
+```bash
+npm run typecheck
+npm run build
+```
 
 ---
 
-## 🎯 Cách thử nghiệm CI/CD bắt lỗi (Tự tay làm thử)
+## 🧪 Real-World Failure Simulation
 
-Bạn muốn xem hệ thống CI/CD trên GitHub phát hiện và chặn code lỗi như thế nào?
-1. Mở file `tests/app.test.ts` trong mã nguồn.
-2. Tìm dòng `const simulateFail = false;` và đổi thành `const simulateFail = true;`.
-3. Gõ lệnh đẩy code lên GitHub:
+To verify how the CI/CD pipeline catches and blocks broken code:
+1. Open [`tests/app.test.ts`](https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts).
+2. Change `const simulateFail = false;` to `const simulateFail = true;`.
+3. Commit and push:
    ```bash
-   git commit -am "test: co tinh tao loi de xem CI chan"
+   git commit -am "test: simulate test failure"
    git push origin main
    ```
-4. Vào tab **Actions** trên GitHub: Bạn sẽ thấy hệ thống **lập tức báo đỏ ❌** tại bước kiểm thử và kiên quyết từ chối xuất xưởng bản build lỗi này!
+4. Check the **[Actions Tab](https://github.com/Ma1910/test-cicd/actions)**: GitHub Actions will flag **FAILED ❌** at the test stage and prevent deployment.
+
+---
+
+## 🔗 Live Artifacts & Quick Links
+
+- **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
+- **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
+- **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)
+- **Automated Test Suite**: [`tests/app.test.ts`](https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts)
+- **Multi-stage Dockerfile**: [`Dockerfile`](https://github.com/Ma1910/test-cicd/blob/main/Dockerfile)
+- **CI/CD Workflow Definition**: [`.github/workflows/ci.yml`](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml)
