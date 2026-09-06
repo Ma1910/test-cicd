@@ -2,6 +2,13 @@
 
 <div align="center">
 
+  <!-- Interactive Live Simulator Launch Button for Visitors -->
+  <a href="https://ma1910.github.io/test-cicd/" target="_blank">
+    <img src="https://img.shields.io/badge/🎮_LAUNCH_LIVE_INTERACTIVE_SIMULATOR-ONLINE_PLAYGROUND-6366f1?style=for-the-badge&logo=rocket&logoColor=white" alt="Launch Interactive Simulator" />
+  </a>
+
+  <br/><br/>
+
   <!-- Live Status Badges (Clickable to real GitHub Actions & Packages) -->
   <a href="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml">
     <img src="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline Status" />
@@ -43,6 +50,18 @@
 
 ---
 
+## 🎮 Interactive Pipeline Simulator (For Visitors)
+
+> **Try It Yourself Online!** Anyone visiting this repository can interact with the live animated pipeline directly in the browser:
+>
+> 👉 **[Open Full-Screen Live Simulator](https://ma1910.github.io/test-cicd/)**
+>
+> - 🟢 **Trigger Real-Time Pipeline Runs**: Watch laser signals flow through nodes with dynamic status updates.
+> - 🧪 **Simulate Failure Modes**: Toggle between 100% Pass, Coverage Failure (< 80%), or Secret Leak detection.
+> - 🔍 **Click-to-Inspect Nodes**: Tap on any technology card to view technical criteria and command implementation.
+
+---
+
 ## 💡 What is CI/CD? (Simplified)
 
 Think of software development like an automated modern car factory:
@@ -64,7 +83,6 @@ Every push flows through these distinct stages, rendered live in GitHub Actions:
 
 ```mermaid
 flowchart LR
-    %% Modern styling classes
     classDef startNode fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
     classDef checkNode fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff;
     classDef testNode fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
@@ -178,6 +196,7 @@ To verify how the CI/CD pipeline catches and blocks broken code:
 
 ## 🔗 Live Artifacts & Quick Links
 
+- **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
 - **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
 - **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
 - **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)
