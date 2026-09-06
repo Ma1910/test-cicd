@@ -281,3 +281,13 @@ jobs:
           echo "| **Container Hardening** | Multi-stage + Non-root + Trivy | 🟢 Hardened |" >> $GITHUB_STEP_SUMMARY
           echo "| **Staging Smoke Test** | Automated Healthcheck Probing | 🟢 200 OK |" >> $GITHUB_STEP_SUMMARY
           echo "| **Production Gate** | Environment Gate & Rollback Ready | 🟢 Deployed |" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📢 Team Broadcast Notification (Push Alert)
+        run: |
+          echo "📢 ========================================================"
+          echo "👥 TEAM NOTIFICATION: New code was pushed by @${{ github.actor }}!"
+          echo "📌 Commit SHA: ${{ github.sha }}"
+          echo "📝 Message: ${{ github.event.head_commit.message }}"
+          echo "⚠️ ACTION REQUIRED FOR TEAM MEMBERS:"
+          echo "👉 Run 'git pull origin ${{ github.ref_name }}' on your local machine to update!"
+          echo "📢 ========================================================"

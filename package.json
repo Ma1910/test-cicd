@@ -12,7 +12,8 @@
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "cicd": "node scripts/open-cicd.js",
-    "cicd:actions": "node scripts/open-cicd.js actions"
+    "cicd:actions": "node scripts/open-cicd.js actions",
+    "sync": "git pull origin main"
   },
   "dependencies": {
     "express": "^4.22.2"
