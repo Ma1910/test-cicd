@@ -9,39 +9,6 @@
 
   <br/><br/>
 
-  <!-- Live Status Badges (Clickable to real GitHub Actions & Packages) -->
-  <a href="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml">
-    <img src="https://github.com/Ma1910/test-cicd/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline Status" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts">
-    <img src="https://img.shields.io/badge/Test_Coverage-100%25-brightgreen?style=for-the-badge&logo=vitest&logoColor=white" alt="Code Coverage 100%" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml">
-    <img src="https://img.shields.io/badge/Trivy_Security-Zero_Vulnerabilities-blue?style=for-the-badge&logo=aquasec&logoColor=white" alt="Trivy Security Scanner" />
-  </a>
-  <a href="https://github.com/Ma1910?tab=packages&repo_name=test-cicd">
-    <img src="https://img.shields.io/badge/Docker_Container-Non--Root_Hardened-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Container Package" />
-  </a>
-
-  <br/><br/>
-
-  <!-- Official Clickable Technology Badges -->
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/tsconfig.json">
-    <img src="https://img.shields.io/badge/TypeScript-Strict_Mode-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript Strict Mode" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/package.json">
-    <img src="https://img.shields.io/badge/Node.js-20_LTS_%26_22_LTS-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js Matrix" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/vitest.config.ts">
-    <img src="https://img.shields.io/badge/Vitest-v3_Test_Suite-6E9F18?style=flat-square&logo=vitest&logoColor=white" alt="Vitest Suite" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/Dockerfile">
-    <img src="https://img.shields.io/badge/Docker-Multi--Stage_Alpine-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Dockerfile" />
-  </a>
-  <a href="https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml">
-    <img src="https://img.shields.io/badge/GitHub_Actions-Visual_DAG_Pipeline-2088FF?style=flat-square&logo=githubactions&logoColor=white" alt="GitHub Actions Workflow" />
-  </a>
-
   <p align="center">
     <em>A production-grade CI/CD showcase designed with Senior DevOps best practices: Shift-Left Security, Parallel Matrix Testing, 80% Coverage Gate, and Container Hardening.</em>
   </p>
