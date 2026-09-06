@@ -13,7 +13,6 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/ci-cd-quicktest
 
 jobs:
   # =========================================================================
@@ -145,16 +144,32 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🏷️ Generate Docker Metadata
+      - name: 🏷️ Generate Docker Metadata (Auto-lowercased)
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=short
 
-      - name: 🏗️ Multi-stage Build & Push to GHCR
+      - name: 🏗️ Multi-stage Build & Load Local Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: test-image:latest
+          cache-from: type=gha
+
+      - name: 🛡️ Trivy Container Image Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: test-image:latest
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+
+      - name: 🚀 Push Hardened Image to GHCR
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -164,13 +179,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: 🛡️ Trivy Container Image Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          severity: 'CRITICAL,HIGH'
-          exit-code: '0'
 
   # =========================================================================
   # STAGE 5: Staging Progressive Delivery + Automated Smoke Test
@@ -186,7 +194,7 @@ jobs:
       - name: 🚀 Deploy to Staging Cluster
         run: |
           echo "🌐 Initiating zero-downtime rolling update on Staging..."
-          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest:latest"
           sleep 2
 
       - name: 🧪 Run Automated Staging Smoke Tests
@@ -211,7 +219,7 @@ jobs:
       - name: 🚀 Deploy to Production Cluster
         run: |
           echo "🚀 Blue/Green Production Deployment in progress..."
-          echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest:${{ github.sha }}"
           sleep 3
 
       - name: 🩺 Production Post-Deployment Verification
