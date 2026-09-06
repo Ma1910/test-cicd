@@ -34,6 +34,24 @@ describe("CI/CD Test Suite", () => {
     expect(res.status).toBe(400);
   });
 
+  it("Integration Test: POST /api/calculate should reject non-finite numbers (NaN/Infinity)", async () => {
+    const res1 = await request(app)
+      .post("/api/calculate")
+      .send({ a: Infinity, b: 20 });
+    expect(res1.status).toBe(400);
+
+    const res2 = await request(app)
+      .post("/api/calculate")
+      .send({});
+    expect(res2.status).toBe(400);
+  });
+
+  it("Integration Test: Undefined routes should return 404", async () => {
+    const res = await request(app).get("/api/unknown-endpoint");
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe("Endpoint not found");
+  });
+
   // Tình huống mô phỏng kiểm thử CI/CD thất bại:
   // Để test xem CI Pipeline có chặn code lỗi hay không, bạn chỉ cần đổi SIMULATE_FAIL thành true
   it("CI Gate Check: Phải vượt qua kiểm tra chất lượng", () => {
