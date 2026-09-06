@@ -80,13 +80,24 @@
           Run Pipeline
         </button>
 
-        <button id="btn-fail" onclick="toggleScenario()" class="bg-slate-900 border border-slate-700 hover:border-slate-600 text-xs px-4 py-2.5 rounded-xl transition-all cursor-pointer text-slate-300">
-          Simulation Scenario: <span id="fail-badge" class="font-bold text-emerald-400">Pass 100%</span>
-        </button>
+        <!-- Scenario Selector Dropdown -->
+        <div class="relative inline-flex items-center">
+          <label for="scenario-select" class="text-xs text-slate-400 mr-2 font-medium">Scenario:</label>
+          <select id="scenario-select" onchange="onScenarioChange()" class="bg-slate-900 border border-slate-700 text-xs px-3 py-2 rounded-xl text-slate-200 cursor-pointer hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
+            <option value="pass">🟢 Pass 100% (Green Production)</option>
+            <option value="secret">🔴 Fail: Leaked Secret Key (Trivy Block)</option>
+            <option value="typecheck">🔴 Fail: TypeScript Compilation Error</option>
+            <option value="unit_test">🔴 Fail: Vitest Unit Test Failure</option>
+            <option value="coverage">🟡 Fail: Coverage Drop &lt; 80% Gate</option>
+            <option value="sast_cve">🔴 Fail: Critical CVE Dependency (Trivy SAST)</option>
+            <option value="docker_root">🔴 Fail: Docker Root User Violation (CIS)</option>
+            <option value="smoke_fail">🔴 Fail: Staging 500 Smoke Test (Rollback)</option>
+          </select>
+        </div>
 
-        <a href="https://github.com/Ma1910/test-cicd" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 text-slate-300">
+        <a href="https://github.com/Ma1910/test-cicd" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 text-slate-300">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub Repo
+          GitHub
         </a>
       </div>
     </header>
@@ -237,8 +248,8 @@
           </div>
           <span id="execution-timer" class="text-xs font-mono text-slate-400 font-bold">0.0s</span>
         </div>
-        <p id="terminal-text" class="font-mono text-xs text-indigo-300 leading-relaxed min-h-[48px] flex items-center">
-          Console idle. Click "Run Pipeline" above to start live simulation.
+        <p id="terminal-text" class="font-mono text-xs text-indigo-300 leading-relaxed min-h-[56px] flex items-center">
+          Console idle. Select any failure scenario or run Pass 100% to simulate live pipeline execution.
         </p>
       </div>
 
@@ -246,14 +257,14 @@
       <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
         <div>
           <div class="text-xs font-mono text-indigo-400 uppercase tracking-wider font-bold mb-1">Inspector (Click any node)</div>
-          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Quick Guide</h3>
+          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Failure Simulation Suite</h3>
           <p id="inspector-desc" class="text-xs text-slate-400 mt-1 leading-relaxed">
-            Click on any pipeline node above to inspect its real-world implementation, security criteria, and command triggers.
+            Use the Scenario selector above to test 8 distinct production edge cases: Secret Leaks, Type Mismatches, Matrix Test Breaks, Coverage Drops, SAST CVEs, Docker root compliance, and Smoke Test rollbacks.
           </p>
         </div>
         <div class="mt-3 pt-2 border-t border-slate-800/60 flex justify-between items-center text-[10px] text-slate-500">
           <span>Target: ghcr.io</span>
-          <span>Coverage: 100%</span>
+          <span id="inspector-status-badge" class="text-indigo-400 font-semibold">8 Scenarios Ready</span>
         </div>
       </div>
     </div>
@@ -261,23 +272,26 @@
   </div>
 
   <script>
-    let mode = 0; // 0: Pass, 1: Coverage < 80%, 2: Secret Leak
+    let currentScenario = 'pass';
     let busy = false;
 
-    function toggleScenario() {
+    function onScenarioChange() {
       if (busy) return;
-      mode = (mode + 1) % 3;
-      const b = document.getElementById('fail-badge');
-      if (mode === 0) {
-        b.textContent = 'Pass 100%';
-        b.className = 'font-bold text-emerald-400';
-      } else if (mode === 1) {
-        b.textContent = 'Coverage < 80%';
-        b.className = 'font-bold text-amber-400';
-      } else {
-        b.textContent = 'Secret Leak';
-        b.className = 'font-bold text-rose-400';
-      }
+      currentScenario = document.getElementById('scenario-select').value;
+      const terminal = document.getElementById('terminal-text');
+      const hints = {
+        pass: '🟢 Ready to run: All checks, tests, coverage, security, and deployments will pass with 100% green status.',
+        secret: '🔴 Scenario configured: Will simulate an API key leak committed to git, blocking at Secret Scanner.',
+        typecheck: '🔴 Scenario configured: Will simulate a TypeScript strict syntax/type error (`tsc --noEmit`), aborting Stage 1.',
+        unit_test: '🔴 Scenario configured: Will simulate a business logic test assertion failing on Node.js matrix tests.',
+        coverage: '🟡 Scenario configured: Will simulate code coverage dropping to 64% (below mandatory 80% gate threshold).',
+        sast_cve: '🔴 Scenario configured: Will simulate a High/Critical CVE found in dependencies by Trivy SAST audit.',
+        docker_root: '🔴 Scenario configured: Will simulate Docker build failing CIS Benchmark (root user detected).',
+        smoke_fail: '🔴 Scenario configured: Will simulate Staging Smoke Test failing (HTTP 500 error), preventing Prod rollout.'
+      };
+      terminal.innerHTML = `<span class="text-slate-300 font-mono">${hints[currentScenario] || ''}</span>`;
+      resetAll();
+      drawConnectors(0);
     }
 
     function showNodeDetails(title, desc) {
@@ -288,9 +302,11 @@
     function updateNode(id, state, text, color, border) {
       const el = document.getElementById(`node-${id}`);
       const st = document.getElementById(`status-${id}`);
+      if (!el || !st) return;
       st.textContent = text;
       st.className = `mt-1.5 text-[9px] font-extrabold uppercase tracking-wide ${color}`;
       if (border) el.style.borderColor = border;
+      else el.style.borderColor = '';
       if (state === 'running') el.classList.add('node-running');
       else el.classList.remove('node-running');
     }
@@ -302,7 +318,7 @@
       document.getElementById('execution-timer').textContent = '0.0s';
     }
 
-    function drawConnectors(level) {
+    function drawConnectors(level, errorBranch = null) {
       const svg = document.getElementById('connection-layer');
       const getCoord = (id) => {
         const el = document.getElementById(`node-${id}`);
@@ -315,36 +331,40 @@
         };
       };
 
-      const s = getCoord('sec-scan');
-      const t = getCoord('tsc');
-      const n20 = getCoord('node20');
-      const n22 = getCoord('node22');
-      const cov = getCoord('cov');
-      const sec = getCoord('sec');
-      const doc = getCoord('docker');
-      const stg = getCoord('stg');
-      const prd = getCoord('prod');
+      try {
+        const s = getCoord('sec-scan');
+        const t = getCoord('tsc');
+        const n20 = getCoord('node20');
+        const n22 = getCoord('node22');
+        const cov = getCoord('cov');
+        const sec = getCoord('sec');
+        const doc = getCoord('docker');
+        const stg = getCoord('stg');
+        const prd = getCoord('prod');
 
-      const makePath = (x1, y1, x2, y2, active, isErr) => {
-        const mx = (x1 + x2) / 2;
-        const color = isErr ? '#f43f5e' : (active ? '#818cf8' : 'rgba(148, 163, 184, 0.15)');
-        const width = active ? '2.5' : '1.5';
-        const anim = active ? 'laser-line' : '';
-        return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="${width}" class="${anim}" />`;
-      };
+        const makePath = (x1, y1, x2, y2, active, isErr) => {
+          const mx = (x1 + x2) / 2;
+          const color = isErr ? '#f43f5e' : (active ? '#818cf8' : 'rgba(148, 163, 184, 0.15)');
+          const width = active ? '2.5' : '1.5';
+          const anim = active && !isErr ? 'laser-line' : '';
+          return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="${width}" class="${anim}" />`;
+        };
 
-      svg.innerHTML = `
-        ${makePath(s.rX, s.mY, n20.lX, n20.mY, level >= 2)}
-        ${makePath(t.rX, t.mY, n22.lX, n22.mY, level >= 2)}
-        ${makePath(s.rX, s.mY, sec.lX, sec.mY, level >= 2, mode === 2 && level >= 2)}
-        ${makePath(t.rX, t.mY, sec.lX, sec.mY, level >= 2)}
-        ${makePath(n20.rX, n20.mY, cov.lX, cov.mY, level >= 3, mode === 1 && level >= 3)}
-        ${makePath(n22.rX, n22.mY, cov.lX, cov.mY, level >= 3)}
-        ${makePath(cov.rX, cov.mY, doc.lX, doc.mY, level >= 4)}
-        ${makePath(sec.rX, sec.mY, doc.lX, doc.mY, level >= 4)}
-        ${makePath(doc.rX, doc.mY, stg.lX, stg.mY, level >= 5)}
-        ${makePath(stg.rX, stg.mY, prd.lX, prd.mY, level >= 6)}
-      `;
+        svg.innerHTML = `
+          ${makePath(s.rX, s.mY, n20.lX, n20.mY, level >= 2, errorBranch === 'secret')}
+          ${makePath(t.rX, t.mY, n22.lX, n22.mY, level >= 2, errorBranch === 'typecheck')}
+          ${makePath(s.rX, s.mY, sec.lX, sec.mY, level >= 2, errorBranch === 'secret')}
+          ${makePath(t.rX, t.mY, sec.lX, sec.mY, level >= 2, errorBranch === 'typecheck')}
+          ${makePath(n20.rX, n20.mY, cov.lX, cov.mY, level >= 3, errorBranch === 'unit_test' || errorBranch === 'coverage')}
+          ${makePath(n22.rX, n22.mY, cov.lX, cov.mY, level >= 3, errorBranch === 'unit_test')}
+          ${makePath(cov.rX, cov.mY, doc.lX, doc.mY, level >= 4, errorBranch === 'coverage')}
+          ${makePath(sec.rX, sec.mY, doc.lX, doc.mY, level >= 4, errorBranch === 'sast_cve')}
+          ${makePath(doc.rX, doc.mY, stg.lX, stg.mY, level >= 5, errorBranch === 'docker_root')}
+          ${makePath(stg.rX, stg.mY, prd.lX, prd.mY, level >= 6, errorBranch === 'smoke_fail')}
+        `;
+      } catch (e) {
+        // Safe fallback if coords not ready
+      }
     }
 
     async function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -352,8 +372,11 @@
     async function triggerPipeline() {
       if (busy) return;
       busy = true;
+      currentScenario = document.getElementById('scenario-select').value;
       const btn = document.getElementById('btn-run');
+      const select = document.getElementById('scenario-select');
       btn.disabled = true;
+      select.disabled = true;
       btn.classList.add('opacity-50', 'cursor-not-allowed');
       const terminal = document.getElementById('terminal-text');
       const timer = document.getElementById('execution-timer');
@@ -366,82 +389,145 @@
       }, 100);
 
       try {
-        // Stage 1: Shift-Left Security & Type Safety
-        terminal.textContent = '🛡️ Stage 1: Running Trivy Secret Scanner & TypeScript Strict Compilation...';
+        // ==========================================
+        // STAGE 1: Shift-Left Security & Type Safety
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🛡️ [Stage 1] Executing Trivy Secret Scanner & TypeScript Strict Engine (tsc --noEmit)...</span>';
         updateNode('sec-scan', 'running', 'SCANNING', 'text-indigo-400', '#6366f1');
         updateNode('tsc', 'running', 'CHECKING', 'text-indigo-400', '#6366f1');
         drawConnectors(1);
         await wait(900);
 
-        if (mode === 2) {
+        // Failure Case 1: Secret Leak
+        if (currentScenario === 'secret') {
           updateNode('sec-scan', 'done', 'FAILED ✗ (LEAK)', 'text-rose-400', '#f43f5e');
-          updateNode('tsc', 'done', 'PASSED ✓', 'text-emerald-400', '#10b981');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold">🚨 SECURITY ALERT: Trivy detected a leaked API token! Immediate pipeline termination.</span>';
+          updateNode('tsc', 'done', 'CLEAN ✓', 'text-emerald-400', '#10b981');
+          drawConnectors(1, 'secret');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [SECURITY BLOCK] Trivy detected unencrypted API credentials in commit payload! Pipeline immediately aborted before runner execution.</span>';
+          return;
+        }
+
+        // Failure Case 2: TypeScript Error
+        if (currentScenario === 'typecheck') {
+          updateNode('sec-scan', 'done', 'ZERO LEAK ✓', 'text-emerald-400', '#10b981');
+          updateNode('tsc', 'done', 'FAILED ✗ (TS2322)', 'text-rose-400', '#f43f5e');
+          drawConnectors(1, 'typecheck');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [TYPE CHECK FAILURE] TS2322: Type \'string\' is not assignable to type \'number\' in src/controllers/status.controller.ts. Build halted.</span>';
           return;
         }
 
         updateNode('sec-scan', 'done', 'ZERO LEAK ✓', 'text-emerald-400', '#10b981');
-        updateNode('tsc', 'done', 'CLEAN ✓', 'text-emerald-400', '#10b981');
+        updateNode('tsc', 'done', 'STRICT CLEAN ✓', 'text-emerald-400', '#10b981');
 
-        // Stage 2: Parallel Testing
-        terminal.textContent = '⚡ Stage 2: Parallel Matrix Testing on Node.js 20 LTS & Node.js 22 LTS...';
+        // ==========================================
+        // STAGE 2: Parallel Matrix Testing
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">⚡ [Stage 2] Running Vitest Test Suites in parallel on Node.js 20 LTS and Node.js 22 LTS...</span>';
         updateNode('node20', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
         updateNode('node22', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
         drawConnectors(2);
         await wait(900);
-        updateNode('node20', 'done', 'PASSED ✓', 'text-emerald-400', '#10b981');
-        updateNode('node22', 'done', 'PASSED ✓', 'text-emerald-400', '#10b981');
 
-        // Stage 3: Coverage Gate & SAST
-        terminal.textContent = '📊 Stage 3: Enforcing 80% coverage threshold gate & running Trivy SAST audit...';
+        // Failure Case 3: Unit Test Failure
+        if (currentScenario === 'unit_test') {
+          updateNode('node20', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
+          updateNode('node22', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
+          drawConnectors(2, 'unit_test');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [TEST ASSERTION FAILED] AssertionError: expected 500 to equal 200 at tests/health.spec.ts:34. Pipeline blocked.</span>';
+          return;
+        }
+
+        updateNode('node20', 'done', '10/10 PASS ✓', 'text-emerald-400', '#10b981');
+        updateNode('node22', 'done', '10/10 PASS ✓', 'text-emerald-400', '#10b981');
+
+        // ==========================================
+        // STAGE 3: Quality & Security Gates
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">📊 [Stage 3] Calculating code coverage metrics & executing Trivy SAST Dependency Audit...</span>';
         updateNode('cov', 'running', 'AUDITING', 'text-indigo-400', '#6366f1');
         updateNode('sec', 'running', 'AUDITING', 'text-indigo-400', '#6366f1');
         drawConnectors(3);
         await wait(900);
 
-        if (mode === 1) {
-          updateNode('cov', 'done', 'FAILED ✗ (65%)', 'text-amber-400', '#f59e0b');
+        // Failure Case 4: Coverage Below 80% Gate
+        if (currentScenario === 'coverage') {
+          updateNode('cov', 'done', 'FAILED ✗ (64%)', 'text-amber-400', '#f59e0b');
           updateNode('sec', 'done', 'ZERO CVE ✓', 'text-emerald-400', '#10b981');
-          terminal.innerHTML = '<span class="text-amber-400 font-bold">⚠️ QUALITY BLOCKED: Code coverage is 65% (Below mandatory 80% threshold)! Aborting release.</span>';
+          drawConnectors(3, 'coverage');
+          terminal.innerHTML = '<span class="text-amber-400 font-bold font-mono">⚠️ [QUALITY GATE BLOCKED] Code coverage evaluated at 64.2%, which is strictly below the enterprise threshold of 80.0%! Merge rejected.</span>';
+          return;
+        }
+
+        // Failure Case 5: Trivy SAST CVE detected
+        if (currentScenario === 'sast_cve') {
+          updateNode('cov', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
+          updateNode('sec', 'done', 'CRITICAL CVE ✗', 'text-rose-400', '#f43f5e');
+          drawConnectors(3, 'sast_cve');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [VULNERABILITY REJECTED] Trivy SAST detected CVE-2026-2184 (CVSS 9.8 Critical) in dependency package. Packaging prohibited.</span>';
           return;
         }
 
         updateNode('cov', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
         updateNode('sec', 'done', 'ZERO CVE ✓', 'text-emerald-400', '#10b981');
 
-        // Stage 4: Docker Hardening
-        terminal.textContent = '🐳 Stage 4: Building multi-stage Docker image, user non-root & pushing to GHCR...';
+        // ==========================================
+        // STAGE 4: Container Hardening & Build
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🐳 [Stage 4] Compiling Multi-Stage Dockerfile & enforcing Non-Root CIS benchmark...</span>';
         updateNode('docker', 'running', 'BUILDING', 'text-indigo-400', '#6366f1');
         drawConnectors(4);
         await wait(1000);
+
+        // Failure Case 6: Docker Root User Violation
+        if (currentScenario === 'docker_root') {
+          updateNode('docker', 'done', 'ROOT USER FAIL ✗', 'text-rose-400', '#f43f5e');
+          drawConnectors(4, 'docker_root');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [CIS POLICY VIOLATION] Image inspect revealed container runs as UID 0 (root)! Mandatory policy requires non-root user (node:1000). Build discarded.</span>';
+          return;
+        }
+
         updateNode('docker', 'done', 'HARDENED ✓', 'text-emerald-400', '#10b981');
 
-        // Stage 5: Staging Progressive Delivery
-        terminal.textContent = '🧪 Stage 5: Staging progressive rollout: probing automated healthcheck smoke test...';
-        updateNode('stg', 'running', 'DEPLOYING', 'text-indigo-400', '#6366f1');
+        // ==========================================
+        // STAGE 5: Staging Deploy & Smoke Test
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🧪 [Stage 5] Rolling out container to Staging environment and initiating automated smoke test probing /healthz...</span>';
+        updateNode('stg', 'running', 'SMOKE TESTING', 'text-indigo-400', '#6366f1');
         drawConnectors(5);
-        await wait(900);
-        updateNode('stg', 'done', '200 OK ✓', 'text-emerald-400', '#10b981');
+        await wait(1000);
 
-        // Stage 6: Production Gate & Promotion
-        terminal.textContent = '🚀 Stage 6: Production promotion approved: zero-downtime release active with rollback guard...';
+        // Failure Case 7: Smoke Test Fail -> Rollback Guard
+        if (currentScenario === 'smoke_fail') {
+          updateNode('stg', 'done', 'HTTP 500 FAIL ✗', 'text-rose-400', '#f43f5e');
+          drawConnectors(5, 'smoke_fail');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [SMOKE TEST FAILURE] Probing http://staging/healthz returned HTTP 500 Internal Error! Auto-rollback initiated. Production promotion aborted.</span>';
+          return;
+        }
+
+        updateNode('stg', 'done', '200 OK SMOKE ✓', 'text-emerald-400', '#10b981');
+
+        // ==========================================
+        // STAGE 6: Production Promotion
+        // ==========================================
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🚀 [Stage 6] Staging smoke test validated. Executing Zero-Downtime Blue/Green switch to Production...</span>';
         updateNode('prod', 'running', 'PROMOTING', 'text-indigo-400', '#6366f1');
         drawConnectors(6);
         await wait(1000);
-        updateNode('prod', 'done', 'LIVE ✓', 'text-emerald-400', '#10b981');
+        updateNode('prod', 'done', 'LIVE & STABLE ✓', 'text-emerald-400', '#10b981');
 
-        terminal.innerHTML = '<span class="text-emerald-400 font-bold">🏆 SUCCESS: CI/CD Pipeline completed with 100% Green checks across all defense gates!</span>';
+        terminal.innerHTML = '<span class="text-emerald-400 font-bold font-mono">🏆 [SUCCESS 100%] All security gates, test matrices, coverage thresholds, container hardening, and staging smoke tests verified! Production is fully LIVE.</span>';
       } finally {
         clearInterval(clock);
         busy = false;
         btn.disabled = false;
+        select.disabled = false;
         btn.classList.remove('opacity-50', 'cursor-not-allowed');
       }
     }
 
     window.addEventListener('load', () => drawConnectors(0));
     window.addEventListener('resize', () => drawConnectors(0));
-    setTimeout(() => drawConnectors(0), 100);
+    setTimeout(() => drawConnectors(0), 150);
   </script>
 </body>
 </html>

@@ -23,9 +23,17 @@
 >
 > 👉 **[Open Full-Screen Live Simulator](https://ma1910.github.io/test-cicd/)**
 >
-> - 🟢 **Trigger Real-Time Pipeline Runs**: Watch laser signals flow through nodes with dynamic status updates.
-> - 🧪 **Simulate Failure Modes**: Toggle between 100% Pass, Coverage Failure (< 80%), or Secret Leak detection.
-> - 🔍 **Click-to-Inspect Nodes**: Tap on any technology card to view technical criteria and command implementation.
+> - 🟢 **Trigger Real-Time Pipeline Runs**: Watch animated laser signals flow through nodes with dynamic status updates.
+> - 🧪 **Simulate 8 Real-World Enterprise Failure Scenarios**:
+>   - 🟢 `Pass 100%`: Full green run straight into production.
+>   - 🔴 `Leaked Secret Key`: Trivy blocks unencrypted API tokens before runners trigger.
+>   - 🔴 `TypeScript Error`: Type mismatch halts Stage 1 immediately (`tsc --noEmit`).
+>   - 🔴 `Vitest Test Failure`: Assertion error halts Node.js test matrix.
+>   - 🟡 `Coverage < 80% Gate`: Rejects build if test coverage drops below strict threshold.
+>   - 🔴 `Trivy SAST CVE`: High/Critical CVE in dependencies blocks container building.
+>   - 🔴 `Docker Root User Fail`: Fails CIS Benchmark policy if running as root UID 0.
+>   - 🔴 `Staging Smoke Test Fail`: HTTP 500 triggers auto-rollback, guarding Production.
+> - 🔍 **Click-to-Inspect Nodes**: Tap any technology card to view technical criteria and command implementation.
 
 ---
 
