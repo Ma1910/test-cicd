@@ -1,4 +1,4 @@
-# 🛡️ Enterprise-Grade CI/CD Platform (Senior DevOps Standard)
+# 🛡️ Enterprise-Grade CI/CD Platform
 
 <div align="center">
 
@@ -27,38 +27,38 @@
   <img src="https://img.shields.io/badge/GHCR_Container-Ready-orange?style=for-the-badge&logo=github&logoColor=white" alt="GHCR" />
 
   <p align="center">
-    <em>Quy trình tích hợp và triển khai liên tục (CI/CD) được thiết kế theo tiêu chuẩn của Senior / Staff DevOps & Platform Engineer.</em>
+    <em>Quy trình tích hợp và triển khai liên tục (CI/CD) đồ họa phân luồng chuẩn Senior DevOps.</em>
   </p>
 
 </div>
 
 ---
 
-## 🏛️ Kiến trúc 7 Tầng Kiểm Duyệt Đồ Thị (Enterprise DAG Flowchart)
+## 🏛️ Sơ đồ Luồng Đồ Thị Pipeline (DAG Flowchart)
 
 ```mermaid
 graph TD
-    Dev([💻 Git Push / PR]) --> SecScan["🛡️ 1. Shift-Left Security<br/>(Trivy Secret Scanner)"]
-    Dev --> Quality["🔍 2. Static Quality Gate<br/>(TypeScript Strict Typecheck)"]
+    Dev([💻 Git Push / PR]) --> SecScan["🛡️ Shift-Left Security<br/>Trivy Secret Scanner"]
+    Dev --> Quality["🔍 Static Quality Gate<br/>TypeScript Strict Compiler"]
 
-    SecScan --> Matrix20["🧪 3a. Matrix Node 20 LTS<br/>(Vitest + 80% Coverage Gate)"]
+    SecScan --> Matrix20["🧪 Node 20 LTS Matrix<br/>Vitest 80% Coverage Gate"]
     Quality --> Matrix20
 
-    SecScan --> Matrix22["⚡ 3a. Matrix Node 22 LTS<br/>(Vitest + 80% Coverage Gate)"]
+    SecScan --> Matrix22["⚡ Node 22 LTS Matrix<br/>Vitest 80% Coverage Gate"]
     Quality --> Matrix22
 
-    SecScan --> SAST["🔬 3b. SAST & Security Audit<br/>(Trivy Vulnerabilities + npm audit)"]
+    SecScan --> SAST["🔬 SAST & Security Audit<br/>Trivy Vulnerabilities + npm audit"]
     Quality --> SAST
 
-    Matrix20 --> Docker["🐳 4. Docker Hardening & Scan<br/>(Buildx + Non-root + Trivy Image CVE)"]
+    Matrix20 --> Docker["🐳 Docker Image Hardening<br/>Multi-stage + Non-root + Trivy CVE"]
     Matrix22 --> Docker
     SAST --> Docker
 
-    Docker --> Staging["🧪 5. Staging Progressive Deploy<br/>(+ Automated Smoke Test /healthz)"]
+    Docker --> Staging["🧪 Staging Progressive Deploy<br/>Automated Smoke Test 200 OK"]
 
-    Staging --> ProdGate{{"🚀 6. Production Protected Gate<br/>(Manual Review & Auto-Rollback Ready)"}}
+    Staging --> ProdGate{{"🚀 Production Gate & Rollout<br/>Protected Review & Auto-Rollback"}}
 
-    ProdGate --> Summary["📊 7. Executive Quality Report<br/>(GitHub Step Summary Dashboard)"]
+    ProdGate --> Summary["📊 Executive Quality Report<br/>GitHub Step Summary Dashboard"]
 
     classDef success fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
     class SecScan,Quality,Matrix20,Matrix22,SAST,Docker,Staging,ProdGate,Summary success;
@@ -66,27 +66,18 @@ graph TD
 
 ---
 
-## 🔒 Các tiêu chuẩn kiểm duyệt nghiêm ngặt đã áp dụng
+## 🔒 Các tiêu chuẩn kiểm duyệt nghiêm ngặt
 
-1. **Shift-Left Security (Chống rò rỉ bí mật)**:
-   - Quét toàn bộ repository để phát hiện và ngăn chặn lập tức nếu có API Key, Token hay Private Key bị commit nhầm với Trivy Secret Scanner.
-2. **Matrix Testing song song**:
-   - Chạy đồng thời trên cả **Node.js 20 LTS** và **Node.js 22 Current** để bảo đảm tính tương thích môi trường tối đa.
-3. **Chính sách Coverage Threshold (Ngưỡng 80%)**:
-   - Tích hợp cờ chặn cứng trong Vitest: Bất kỳ lập trình viên nào đẩy mã nguồn mới mà không viết test hoặc độ phủ dưới 80% (`lines, branches, functions, statements`), pipeline sẽ **lập tức đánh rớt (FAIL)**. Hiện tại dự án đạt **100% Code Coverage**.
-4. **Container Image Hardening & CVE Gate**:
-   - Đóng gói container chuẩn Multi-stage siêu nhẹ và chạy dưới user `node` non-root (tuân thủ CIS Docker Benchmark).
-   - Quét lỗ hổng toàn bộ container image với Aqua Security Trivy trước khi xuất xưởng lên GitHub Container Registry (`ghcr.io`).
-5. **Progressive Delivery & Staging Smoke Testing**:
-   - Tự động deploy sang môi trường Staging trước.
-   - Chạy kịch bản **Automated Smoke Test** giả lập kiểm tra thời gian phản hồi (latency), kiểm tra endpoint `/healthz` và logic `/api/calculate`.
-6. **Production Protection & Approval Gate**:
-   - Ràng buộc môi trường **`production`** trên GitHub Actions.
-   - Bắt buộc kiểm duyệt thủ công (Manual Review Gate) kèm cơ chế **Automated Rollback Fallback** tự động khôi phục bản cũ nếu phiên bản mới gặp sự cố sau khi triển khai.
+- **Shift-Left Security**: Tự động phát hiện và chặn đứng mọi token, private key rò rỉ.
+- **Parallel Matrix Testing**: Chạy song song trên cả 2 phiên bản Node 20 LTS và Node 22 LTS.
+- **Coverage Gate**: Ngưỡng bắt buộc $\ge 80\%$ test coverage (hiện tại đạt 100%).
+- **Container Hardening**: Multi-stage, user `node` non-root, quét sạch CVE trước khi push.
+- **Staging Progressive Delivery**: Tự động kiểm tra liveness và độ trễ phản hồi qua Smoke Test.
+- **Production Gate & Auto-Rollback**: Bảo vệ an toàn tuyệt đối cho môi trường khách hàng sử dụng.
 
 ---
 
-## 🛠️ Lệnh kiểm thử tại máy cục bộ (Local Testing)
+## 🛠️ Kiểm thử cục bộ
 
 ```bash
 # 1. Chạy test và đo độ phủ Coverage nghiêm ngặt (Yêu cầu >= 80%)

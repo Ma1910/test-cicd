@@ -12,10 +12,10 @@ env:
 
 jobs:
   # =========================================================================
-  # STAGE 1: Shift-Left Security & Secret Leak Detection
+  # Shift-Left Security & Secret Leak Detection
   # =========================================================================
   secret-scan:
-    name: 1. Secret Leak Scanner
+    name: Secret Leak Scanner
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repository
@@ -32,10 +32,10 @@ jobs:
           exit-code: '0'
 
   # =========================================================================
-  # STAGE 2: Static Quality Gate & Type Check
+  # Static Quality Gate & Type Check
   # =========================================================================
   code-quality:
-    name: 2. Static Quality Gate
+    name: Static Quality Gate
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repository
@@ -54,10 +54,10 @@ jobs:
         run: npm run typecheck
 
   # =========================================================================
-  # STAGE 3a: Parallel Matrix Testing (Node 20 & 22) + 80% Coverage Gate
+  # Parallel Matrix Testing (Node 20 & 22) + 80% Coverage Gate
   # =========================================================================
   matrix-tests:
-    name: 3a. Matrix Test (Node ${{ matrix.node-version }}) + Coverage Gate
+    name: Matrix Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     needs: [secret-scan, code-quality]
     strategy:
@@ -90,10 +90,10 @@ jobs:
           retention-days: 14
 
   # =========================================================================
-  # STAGE 3b: Security SAST & SCA Vulnerability Audit
+  # Security SAST & SCA Vulnerability Audit
   # =========================================================================
   security-sast:
-    name: 3b. SAST & Dependency Audit
+    name: SAST & Dependency Audit
     runs-on: ubuntu-latest
     needs: [secret-scan, code-quality]
     steps:
@@ -117,10 +117,10 @@ jobs:
           exit-code: '0'
 
   # =========================================================================
-  # STAGE 4: Containerization & Docker Image Hardening
+  # Containerization & Docker Image Hardening
   # =========================================================================
   docker-hardening:
-    name: 4. Docker Build & Image Hardening
+    name: Docker Build & Hardening
     runs-on: ubuntu-latest
     needs: [matrix-tests, security-sast]
     permissions:
@@ -177,10 +177,10 @@ jobs:
           cache-to: type=gha,mode=max
 
   # =========================================================================
-  # STAGE 5: Staging Progressive Delivery + Automated Smoke Test
+  # Staging Progressive Delivery + Automated Smoke Test
   # =========================================================================
   deploy-staging:
-    name: 5. Staging Deploy & Automated Smoke Test
+    name: Staging Deploy & Smoke Test
     runs-on: ubuntu-latest
     needs: [docker-hardening]
     environment:
@@ -201,10 +201,10 @@ jobs:
           echo "✓ API Contract /api/calculate verified!"
 
   # =========================================================================
-  # STAGE 6: Production Approval Gate & Zero-Downtime Deployment
+  # Production Approval Gate & Zero-Downtime Deployment
   # =========================================================================
   deploy-production:
-    name: 6. Production Gate & Rollback Protection
+    name: Production Gate & Rollout
     runs-on: ubuntu-latest
     needs: [deploy-staging]
     if: github.ref == 'refs/heads/main'
@@ -231,10 +231,10 @@ jobs:
           echo "⏮️ Rollback completed successfully."
 
   # =========================================================================
-  # STAGE 7: Executive Pipeline Summary
+  # Executive Pipeline Summary
   # =========================================================================
   pipeline-summary:
-    name: 7. Executive Quality Report
+    name: Executive Quality Report
     runs-on: ubuntu-latest
     needs: [deploy-staging, deploy-production]
     if: always()
