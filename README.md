@@ -59,35 +59,30 @@ Every push flows through these distinct stages, rendered live in GitHub Actions:
 ```mermaid
 flowchart LR
     %% Modern Palette & Pill/Card Styling
-    classDef trigger fill:#4f46e5,stroke:#6366f1,stroke-width:2px,color:#ffffff;
-    classDef security fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff;
-    classDef test fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff;
+    classDef dev fill:#312e81,stroke:#6366f1,stroke-width:2px,color:#ffffff;
     classDef build fill:#b45309,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
-    classDef deploy fill:#6d28d9,stroke:#8b5cf6,stroke-width:2px,color:#ffffff;
-    classDef prod fill:#15803d,stroke:#22c55e,stroke-width:3px,color:#ffffff;
+    classDef test fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff;
+    classDef issue fill:#881337,stroke:#f43f5e,stroke-width:2px,color:#ffffff;
+    classDef staging fill:#581c87,stroke:#a855f7,stroke-width:2px,color:#ffffff;
+    classDef prod fill:#14532d,stroke:#22c55e,stroke-width:2px,color:#ffffff;
+    classDef monitor fill:#1e293b,stroke:#94a3b8,stroke-width:2px,color:#ffffff;
 
-    Push(["💻 Git Push"]):::trigger
-    
-    %% Shift-Left Gates
-    Push --> SecretScan["🛡️ Secret Scan"]:::security
-    Push --> TypeCheck["🔍 TypeScript Strict"]:::security
+    %% 1. Code & Repository
+    Code["💻 Changes in Code"]:::dev --> Repo["🐙 Code Repository<br/>(Git Push / PR)"]:::dev
+    Repo --> Build["🔨 Build & Compile<br/>(Docker + TS)"]:::build
 
-    %% Parallel Matrix & SAST
-    SecretScan --> TestMatrix["🧪 Vitest Matrix<br/>(Node 20 & 22)"]:::test
-    TypeCheck --> TestMatrix
-    SecretScan --> TrivyScan["🔬 Trivy Security"]:::security
-    TypeCheck --> TrivyScan
+    %% 2. Pre-Deployment Testing & Issue Detection Loop
+    Build --> PreTest["🔬 Pre-Deployment Test<br/>(Security + Matrix Test)"]:::test
+    PreTest -.->|Issue Detected| FailReport["⚠️ Issue Detected<br/>(Block & Alert)"]:::issue
+    FailReport -.->|Feedback Loop| Code
 
-    %% Quality Verification
-    TestMatrix --> CoverageGate["📊 80% Coverage Gate"]:::test
+    %% 3. Staging Environment & Smoke Testing
+    PreTest -->|All Tests Passed| StgEnv["🖥️ Staging Environment"]:::staging
+    StgEnv --> StgTest["🧪 Staging Tests<br/>(Smoke & Healthz Probe)"]:::staging
 
-    %% Build & Hardening
-    CoverageGate --> DockerBuild["🐳 Docker Non-Root Build"]:::build
-    TrivyScan --> DockerBuild
-
-    %% Deployment Workflow
-    DockerBuild --> StagingSmoke["🧪 Staging Smoke Test"]:::deploy
-    StagingSmoke --> ProdDeploy["🚀 Production Rollout"]:::prod
+    %% 4. Production & Continuous Monitoring
+    StgTest -->|Verified 200 OK| Prod["🌐 Production<br/>(Zero-Downtime Rollout)"]:::prod
+    Prod --> Monitor["📋 Monitor & Logging<br/>(Health Metric / Rollback Guard)"]:::monitor
 ```
 
 ---
