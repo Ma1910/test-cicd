@@ -77,11 +77,11 @@
               Enterprise CI/CD Interactive Simulator
             </h1>
             <span class="text-[10px] font-bold bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-500/40">
-              Live DAG
+              Fullstack v2.0
             </span>
           </div>
           <p class="text-xs text-slate-400 mt-0.5">
-            Demonstrating real-world automated lifecycle for <a href="https://github.com/Ma1910/test-cicd" class="text-indigo-400 hover:underline font-semibold" target="_blank">Ma1910/test-cicd</a>
+            Demonstrating Auth RBAC • Products Catalog • Prometheus Telemetry • 21 Automated Tests on <a href="https://github.com/Ma1910/test-cicd" class="text-indigo-400 hover:underline font-semibold" target="_blank">Ma1910/test-cicd</a>
           </p>
         </div>
       </div>
@@ -97,12 +97,12 @@
         <div class="relative inline-flex items-center">
           <label for="scenario-select" class="text-xs text-slate-400 mr-2 font-medium">Scenario:</label>
           <select id="scenario-select" onchange="onScenarioChange()" class="bg-slate-900 border border-slate-700 text-xs px-3 py-2 rounded-xl text-slate-200 cursor-pointer hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
-            <option value="pass">🟢 Pass 100% (Green Production)</option>
-            <option value="secret">🔴 Fail: Leaked Secret Key (Trivy Block)</option>
-            <option value="typecheck">🔴 Fail: TypeScript Compilation Error</option>
-            <option value="unit_test">🔴 Fail: Vitest Unit Test Failure</option>
-            <option value="coverage">🟡 Fail: Coverage Drop &lt; 80% Gate</option>
-            <option value="sast_cve">🔴 Fail: Critical CVE Dependency (Trivy SAST)</option>
+            <option value="pass">🟢 Pass 100% (21/21 Tests &amp; Production Live)</option>
+            <option value="auth_leak">🔴 Fail: JWT Secret Leak in Git (Trivy Shield)</option>
+            <option value="typecheck">🔴 Fail: TypeScript Strict Model Error</option>
+            <option value="rbac_break">🔴 Fail: RBAC Auth Matrix Break (Vitest)</option>
+            <option value="coverage">🟡 Fail: Coverage Drop &lt; 80% Threshold</option>
+            <option value="sast_cve">🔴 Fail: Dependency Critical CVE (Trivy SAST)</option>
             <option value="docker_root">🔴 Fail: Docker Root User Violation (CIS)</option>
             <option value="smoke_fail">🔴 Fail: Staging 500 Smoke Test (Rollback)</option>
           </select>
@@ -137,7 +137,7 @@
         </div>
         <div class="flex flex-col items-end gap-1 flex-shrink-0 text-right">
           <span class="text-[10px] uppercase font-bold text-rose-400 tracking-wider">Automated Action</span>
-          <span class="text-xs font-bold text-slate-200 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-700">Aborted & Alert Sent</span>
+          <span class="text-xs font-bold text-slate-200 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-700">Aborted &amp; Alert Sent</span>
         </div>
       </div>
     </div>
@@ -151,49 +151,49 @@
         
         <!-- Step 1: Code & Repo Intake -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-code" onclick="showNodeDetails('Changes in Code', 'Developer commits and pushes source code changes or creates a pull request to GitHub repository.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-code" onclick="showNodeDetails('Changes in Code (Enterprise Core)', 'Developer commits updates to Auth RBAC, Products Catalog, or Telemetry Metrics. Triggers GitHub Actions workflow.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
               </svg>
             </div>
             <div class="text-xs font-bold text-slate-100">Changes in Code</div>
-            <div class="text-[10px] text-indigo-300 font-semibold mt-0.5">Git Push / PR</div>
+            <div class="text-[10px] text-indigo-300 font-semibold mt-0.5">Auth &amp; Products CRUD</div>
             <div id="status-code" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">READY</div>
           </div>
         </div>
 
         <!-- Step 2: Build & Strict Types -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-build" onclick="showNodeDetails('Build & Compile', 'Compiles TypeScript under strict settings (tsc --noEmit) and validates project dependencies.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-build" onclick="showNodeDetails('Build & Strict Typechecking', 'TypeScript Compiler (tsc --noEmit) validates static types across UserPayload, Product Models, and Metrics Collectors with zero error tolerance.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
               </svg>
             </div>
-            <div class="text-xs font-bold text-slate-100">Build & Types</div>
-            <div class="text-[10px] text-blue-400 font-semibold mt-0.5">Strict Compiler</div>
+            <div class="text-xs font-bold text-slate-100">Build &amp; Types</div>
+            <div class="text-[10px] text-blue-400 font-semibold mt-0.5">Strict ES2022</div>
             <div id="status-build" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
-        <!-- Step 3: Pre-Deployment Test -->
+        <!-- Step 3: Pre-Deployment Test (21 Test Suites) -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-pretest" onclick="showNodeDetails('Pre-Deployment Test', 'Executes multi-version test matrix (Node 20 & Node 22), shifts-left secret leak scanner, and audits 80% coverage threshold.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-pretest" onclick="showNodeDetails('Pre-Deployment Test Suite (21 Tests)', 'Executes 21 automated unit, integration, RBAC, and Prometheus tests on Node 20 & 22 matrix. Enforces 80% coverage gate (currently >94%).')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div class="text-xs font-bold text-slate-100">Pre-Deploy Test</div>
-            <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">Matrix + Coverage</div>
+            <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">21 Tests &bull; 94% Cov</div>
             <div id="status-pretest" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
         <!-- Step 4: Staging Environment -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-stg" onclick="showNodeDetails('Staging Environment', 'Packages non-root hardened Docker image, pushes to GHCR, and deploys to isolated staging environment.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-stg" onclick="showNodeDetails('Staging Progressive Deploy', 'Multi-stage Docker build under unprivileged node user (CIS Benchmark). Scanned by Trivy Container Security and published to GHCR.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
@@ -207,7 +207,7 @@
 
         <!-- Step 5: Staging Smoke Tests -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-smoketest" onclick="showNodeDetails('Staging Tests', 'Probes the deployed staging endpoint /healthz for HTTP 200 OK, latency under 20ms, and API calculate contract.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-smoketest" onclick="showNodeDetails('Staging Smoke Tests & Healthz', 'Probes the staging container: verifies /healthz uptime and memory RSS, audits /metrics Prometheus format, and validates Products API catalog.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
@@ -221,25 +221,25 @@
 
         <!-- Step 6: Production & Monitoring -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-prod" onclick="showNodeDetails('Production & Monitoring', 'Zero-downtime Blue/Green rollout with real-time logging, telemetry metrics, and automated rollback guard.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+          <div id="node-prod" onclick="showNodeDetails('Production & Observability', 'Zero-downtime Blue/Green rollout. Prometheus scraper connects to /metrics. Automated rollback handler standing by.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
             <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
             <div class="text-xs font-bold text-slate-100">Production</div>
-            <div class="text-[10px] text-green-400 font-semibold mt-0.5">Zero-Downtime</div>
+            <div class="text-[10px] text-green-400 font-semibold mt-0.5">Observability Live</div>
             <div id="status-prod" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
       </div>
 
-      <!-- Row 2: Visual Issue Detected Feedback Node (Demonstrated from diagram) -->
+      <!-- Row 2: Visual Issue Detected Feedback Node & Live Telemetry Overview -->
       <div class="relative mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4" style="z-index: 2;">
         
         <!-- Interactive Issue Detected Node Box -->
-        <div id="node-issue" onclick="showNodeDetails('Issue Detected & Feedback Loop', 'When tests, security scanners, or smoke tests detect bugs, this node triggers immediate abort, generates an issue report, and loops back to developer.')" class="glass-card border-slate-800 rounded-2xl p-3.5 flex items-center gap-3.5 max-w-md w-full cursor-pointer transition-all">
+        <div id="node-issue" onclick="showNodeDetails('Issue Detected & Feedback Loop', 'When tests, RBAC checks, security scanners, or smoke tests detect bugs, this node triggers immediate abort, generates an issue report, and loops back to developer.')" class="glass-card border-slate-800 rounded-2xl p-3.5 flex items-center gap-3.5 max-w-md w-full cursor-pointer transition-all">
           <div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 flex-shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -251,12 +251,12 @@
               <span id="status-issue" class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wide">IDLE (ZERO ISSUES)</span>
             </div>
             <p id="desc-issue" class="text-[11px] text-slate-400 mt-0.5 leading-snug">
-              Standing by. Triggers if any test or security barrier fails.
+              Standing by. Triggers if any test, RBAC rule, or security barrier fails.
             </p>
           </div>
         </div>
 
-        <!-- Success Certification Badge -->
+        <!-- Live Architecture Snapshot Mini-Pill -->
         <div id="node-certified" class="glass-card border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 max-w-sm w-full transition-all">
           <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -264,8 +264,8 @@
             </svg>
           </div>
           <div class="text-left">
-            <div id="status-certified" class="text-xs font-bold text-slate-200">All Tests Passed</div>
-            <p class="text-[11px] text-slate-400 mt-0.5">100% Gates & Smoke Verified</p>
+            <div id="status-certified" class="text-xs font-bold text-slate-200">21/21 Tests Passed</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Auth &bull; Products &bull; Metrics &bull; Healthz</p>
           </div>
         </div>
 
@@ -284,7 +284,7 @@
           <span id="execution-timer" class="text-xs font-mono text-slate-400 font-bold">0.0s</span>
         </div>
         <p id="terminal-text" class="font-mono text-xs text-indigo-300 leading-relaxed min-h-[52px] flex items-center">
-          Console idle. Select a scenario and click "Run Pipeline" to watch laser workflows in real time.
+          Console idle. Select an enterprise scenario and click "Run Pipeline" to simulate.
         </p>
       </div>
 
@@ -292,14 +292,14 @@
       <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
         <div>
           <div class="text-xs font-mono text-indigo-400 uppercase tracking-wider font-bold mb-1">Inspector (Click any node)</div>
-          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Live DAG Architecture</h3>
+          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Enterprise v2.0 Architecture</h3>
           <p id="inspector-desc" class="text-xs text-slate-400 mt-1 leading-relaxed">
-            Click on any pipeline node above to inspect its real-world implementation, security criteria, and command triggers.
+            Click on any pipeline node above to inspect its real-world implementation: Auth service, Products CRUD, Prometheus metrics, or Docker security.
           </p>
         </div>
         <div class="mt-3 pt-2 border-t border-slate-800/60 flex justify-between items-center text-[10px] text-slate-500">
           <span>Target: ghcr.io</span>
-          <span id="inspector-status-badge" class="text-indigo-400 font-semibold">Interactive Mode</span>
+          <span id="inspector-status-badge" class="text-indigo-400 font-semibold">21 Automated Tests</span>
         </div>
       </div>
     </div>
@@ -340,7 +340,7 @@
       issueNode.classList.remove('issue-active');
       document.getElementById('status-issue').textContent = 'IDLE (ZERO ISSUES)';
       document.getElementById('status-issue').className = 'text-[9px] font-extrabold text-slate-500 uppercase tracking-wide';
-      document.getElementById('desc-issue').textContent = 'Standing by. Triggers if any test or security barrier fails.';
+      document.getElementById('desc-issue').textContent = 'Standing by. Triggers if any test, RBAC rule, or security barrier fails.';
     }
 
     function showNodeDetails(title, desc) {
@@ -411,7 +411,6 @@
           ${makePath(smk.rX, smk.mY, prd.lX, prd.mY, level >= 5 && !errorBranch, false)}
         `;
 
-        // If error occurred, draw distinct red laser down to the "Issue Detected" box
         if (errorBranch) {
           const sourceNode = errorBranch === 'typecheck' ? b : (errorBranch === 'smoke_fail' ? smk : (errorBranch === 'docker_root' ? stg : t));
           paths += `<path d="M ${sourceNode.mX} ${sourceNode.bY} C ${sourceNode.mX} ${iss.mY}, ${iss.mX} ${sourceNode.bY}, ${iss.mX} ${iss.tY}" fill="none" stroke="#f43f5e" stroke-width="3" class="laser-error" />`;
@@ -444,70 +443,70 @@
 
       try {
         // Step 1: Code Intake
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">💻 [Changes in Code] Receiving commit event and initializing GitHub Actions runner...</span>';
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">💻 [Changes in Code] Ingesting commit: Auth RBAC, Products Catalog CRUD, and Telemetry metrics...</span>';
         updateNode('code', 'running', 'COMMITTED', 'text-indigo-400', '#6366f1');
         drawConnectors(1);
         await wait(700);
         updateNode('code', 'done', 'PUSHED ✓', 'text-emerald-400', '#10b981');
 
         // Step 2: Build & Types
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔨 [Build] Compiling TypeScript strict types and assembling dependencies...</span>';
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔨 [Build] Compiling TypeScript strictly with UserPayload and Product interfaces...</span>';
         updateNode('build', 'running', 'COMPILING', 'text-blue-400', '#3b82f6');
         drawConnectors(2);
         await wait(800);
 
         if (currentScenario === 'typecheck') {
-          updateNode('build', 'done', 'FAILED ✗ (TS2322)', 'text-rose-400', '#f43f5e');
+          updateNode('build', 'done', 'FAILED ✗ (TS2339)', 'text-rose-400', '#f43f5e');
           drawConnectors(2, 'typecheck');
-          showIssueAlert('Stage 2: Build & Strict Types', 'TypeScript Compilation Failure', 'TS2322: Type mismatch in status.controller.ts. Static verification failed.');
+          showIssueAlert('Stage 2: Build & Strict Types', 'TypeScript Model Mismatch', 'TS2339: Property "role" does not exist on type "AnonymousUser" in auth.service.ts.');
           terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] TypeScript compiler halted build. Reverting commit back to developer.</span>';
           return;
         }
 
         updateNode('build', 'done', 'STRICT CLEAN ✓', 'text-emerald-400', '#10b981');
 
-        // Step 3: Pre-Deployment Testing
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔬 [Pre-Deployment Test] Running Secret Leak Scan, Vitest Matrix (Node 20 & 22), and Coverage Gate...</span>';
-        updateNode('pretest', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
+        // Step 3: Pre-Deployment Test (21 Tests)
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔬 [Pre-Deployment Test] Executing 21 automated tests: Auth RBAC, CRUD Products, and Prometheus Metrics...</span>';
+        updateNode('pretest', 'running', 'TESTING 21 SUITES', 'text-indigo-400', '#6366f1');
         drawConnectors(3);
         await wait(900);
 
-        if (currentScenario === 'secret') {
-          updateNode('pretest', 'done', 'BLOCKED ✗ (LEAK)', 'text-rose-400', '#f43f5e');
-          drawConnectors(3, 'secret');
-          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy Secret Scanner Alert', 'Detected unencrypted API access key in commit diff. Immediate pipeline termination.');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Secret Leak detected! Credentials must be revoked and removed from Git.</span>';
+        if (currentScenario === 'auth_leak') {
+          updateNode('pretest', 'done', 'BLOCKED ✗ (JWT LEAK)', 'text-rose-400', '#f43f5e');
+          drawConnectors(3, 'auth_leak');
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy Secret Scanner Alert', 'Detected hardcoded JWT private key secret in auth.service.ts payload. Immediate abort.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Shift-Left Shield blocked commit: Exposed secrets must be revoked immediately!</span>';
           return;
         }
 
-        if (currentScenario === 'unit_test') {
-          updateNode('pretest', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
-          drawConnectors(3, 'unit_test');
-          showIssueAlert('Stage 3: Pre-Deployment Test', 'Vitest Unit Test Failure', 'AssertionError: expected 500 to equal 200 at tests/app.test.ts:34.');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] Unit test assertion failed on Node.js matrix! Deployment blocked.</span>';
+        if (currentScenario === 'rbac_break') {
+          updateNode('pretest', 'done', 'FAILED ✗ (403 ASSERT)', 'text-rose-400', '#f43f5e');
+          drawConnectors(3, 'rbac_break');
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'RBAC Security Regression Failure', 'AssertionError: Regular user was able to POST /api/v1/products! Expected 403 Forbidden.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] RBAC Privilege Escalation test failed! Deployment blocked.</span>';
           return;
         }
 
         if (currentScenario === 'coverage') {
-          updateNode('pretest', 'done', 'GATE FAIL ✗ (64%)', 'text-amber-400', '#f59e0b');
+          updateNode('pretest', 'done', 'GATE FAIL ✗ (68%)', 'text-amber-400', '#f59e0b');
           drawConnectors(3, 'coverage');
-          showIssueAlert('Stage 3: Pre-Deployment Test', 'Coverage Gate Rejection', 'Code coverage dropped to 64.2%, which is strictly below the mandatory 80% threshold.');
-          terminal.innerHTML = '<span class="text-amber-400 font-bold font-mono">⚠️ [ISSUE DETECTED] Coverage Gate: Pull Request rejected until more test cases are added.</span>';
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Coverage Gate Rejection', 'Code coverage dropped to 68.4%, strictly below mandatory 80% threshold.');
+          terminal.innerHTML = '<span class="text-amber-400 font-bold font-mono">⚠️ [ISSUE DETECTED] Coverage Gate: Pull Request rejected until more tests are added.</span>';
           return;
         }
 
         if (currentScenario === 'sast_cve') {
           updateNode('pretest', 'done', 'CVE DETECTED ✗', 'text-rose-400', '#f43f5e');
           drawConnectors(3, 'sast_cve');
-          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy SAST CVE Vulnerability', 'Critical vulnerability CVE-2026-2184 found in dependency tree. Packaging prohibited.');
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy SAST CVE Vulnerability', 'Critical vulnerability CVE-2026-2184 found in dependency tree.');
           terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Critical dependency vulnerability detected! Run npm audit fix.</span>';
           return;
         }
 
-        updateNode('pretest', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
+        updateNode('pretest', 'done', '21/21 PASS (94% COV) ✓', 'text-emerald-400', '#10b981');
 
         // Step 4: Staging Deployment
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🖥️ [Staging Environment] Hardening multi-stage Docker container & deploying to Staging...</span>';
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🖥️ [Staging Environment] Hardening multi-stage Docker container (Non-root user node) & pushing to GHCR...</span>';
         updateNode('stg', 'running', 'DEPLOYING', 'text-amber-400', '#f59e0b');
         drawConnectors(4);
         await wait(900);
@@ -523,7 +522,7 @@
         updateNode('stg', 'done', 'DEPLOYED ✓', 'text-emerald-400', '#10b981');
 
         // Step 5: Staging Smoke Tests
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🧪 [Staging Tests] Probing http://staging/healthz endpoint with automated smoke tests...</span>';
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🧪 [Staging Tests] Probing staging endpoints: /healthz (latency), /metrics (Prometheus), and /api/v1/products...</span>';
         updateNode('smoketest', 'running', 'SMOKE TESTING', 'text-teal-400', '#14b8a6');
         drawConnectors(5);
         await wait(900);
@@ -539,7 +538,7 @@
         updateNode('smoketest', 'done', '200 OK SMOKE ✓', 'text-emerald-400', '#10b981');
 
         // Step 6: Production
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🌐 [Production] All tests passed! Executing zero-downtime release with telemetry logging...</span>';
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🌐 [Production] All 21 tests passed! Promoting Zero-Downtime Blue/Green release with Prometheus scrape active...</span>';
         updateNode('prod', 'running', 'PROMOTING', 'text-green-400', '#22c55e');
         drawConnectors(6);
         await wait(1000);
@@ -547,7 +546,7 @@
 
         const cert = document.getElementById('node-certified');
         cert.style.borderColor = '#10b981';
-        terminal.innerHTML = '<span class="text-emerald-400 font-bold font-mono">🏆 [SUCCESS 100%] Pipeline completed successfully! Zero issues detected. Production is fully stable.</span>';
+        terminal.innerHTML = '<span class="text-emerald-400 font-bold font-mono">🏆 [SUCCESS 100%] Pipeline completed successfully! 21/21 tests passed, 0 CVEs, Zero Issues. Enterprise v2.0 is fully LIVE!</span>';
       } finally {
         clearInterval(clock);
         busy = false;
