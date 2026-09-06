@@ -8,31 +8,31 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
   <style>
     body {
-      background-color: #0b0f19;
-      background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
-      background-size: 20px 20px;
+      background-color: #070a13;
+      background-image: radial-gradient(rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
     .glass-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.9) 100%);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .glass-card:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-2px);
       border-color: rgba(99, 102, 241, 0.5);
-      box-shadow: 0 12px 30px -8px rgba(99, 102, 241, 0.35);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25);
     }
     .node-running {
-      animation: neonGlow 1.2s infinite ease-in-out;
+      animation: neonGlow 1.1s infinite ease-in-out;
     }
     @keyframes neonGlow {
       0%, 100% {
-        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), inset 0 0 10px rgba(99, 102, 241, 0.2);
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.6), inset 0 0 10px rgba(99, 102, 241, 0.3);
         border-color: #818cf8 !important;
       }
       50% {
-        box-shadow: 0 0 30px rgba(99, 102, 241, 0.9), inset 0 0 20px rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 28px rgba(99, 102, 241, 0.95), inset 0 0 18px rgba(99, 102, 241, 0.5);
         border-color: #c7d2fe !important;
       }
     }
@@ -40,8 +40,21 @@
       stroke-dasharray: 8 8;
       animation: flowLaser 0.8s linear infinite;
     }
+    .laser-error {
+      stroke-dasharray: 6 6;
+      animation: flowLaser 0.5s linear infinite;
+    }
     @keyframes flowLaser {
       to { stroke-dashoffset: -16; }
+    }
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
+      50% { transform: scale(1.02); box-shadow: 0 0 35px rgba(244, 63, 94, 0.8); }
+    }
+    .issue-active {
+      animation: pulseAlert 1.2s infinite ease-in-out;
+      border-color: #f43f5e !important;
+      background: linear-gradient(135deg, rgba(76, 5, 25, 0.9) 0%, rgba(30, 10, 20, 0.95) 100%) !important;
     }
   </style>
 </head>
@@ -49,9 +62,9 @@
   <div class="w-full max-w-6xl mx-auto">
     
     <!-- Top Header & Navigation -->
-    <header class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-800">
+    <header class="flex flex-wrap items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-800">
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 p-0.5 shadow-xl shadow-indigo-500/30">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 p-0.5 shadow-xl shadow-indigo-500/30">
           <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
             <svg class="w-6 h-6 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -60,23 +73,23 @@
         </div>
         <div>
           <div class="flex items-center gap-2.5">
-            <h1 class="text-xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
+            <h1 class="text-lg md:text-xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
               Enterprise CI/CD Interactive Simulator
             </h1>
-            <span class="text-xs font-bold bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-500/40">
-              Web Live
+            <span class="text-[10px] font-bold bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-500/40">
+              Live DAG
             </span>
           </div>
           <p class="text-xs text-slate-400 mt-0.5">
-            Official interactive playground for repository <a href="https://github.com/Ma1910/test-cicd" class="text-indigo-400 hover:underline font-semibold" target="_blank">Ma1910/test-cicd</a>
+            Demonstrating real-world automated lifecycle for <a href="https://github.com/Ma1910/test-cicd" class="text-indigo-400 hover:underline font-semibold" target="_blank">Ma1910/test-cicd</a>
           </p>
         </div>
       </div>
 
-      <!-- Action & Control Bar -->
+      <!-- Action & Scenario Selector -->
       <div class="flex flex-wrap items-center gap-2.5">
-        <button id="btn-run" onclick="triggerPipeline()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all flex items-center gap-2 cursor-pointer active:scale-95">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <button id="btn-run" onclick="triggerPipeline()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all flex items-center gap-1.5 cursor-pointer active:scale-95">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           Run Pipeline
         </button>
 
@@ -95,161 +108,183 @@
           </select>
         </div>
 
-        <a href="https://github.com/Ma1910/test-cicd" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 text-slate-300">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <a href="https://github.com/Ma1910/test-cicd" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 text-slate-300">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
       </div>
     </header>
 
-    <!-- Main Visual Canvas -->
-    <main class="relative rounded-2xl border border-slate-800 bg-slate-950/70 p-6 shadow-2xl overflow-hidden min-h-[380px]">
+    <!-- Prominent Issue Detected Alert Banner (Dynamic) -->
+    <div id="issue-alert-banner" class="hidden mb-4 p-4 rounded-2xl border border-rose-500/50 bg-rose-950/40 backdrop-blur-xl shadow-2xl transition-all">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center flex-shrink-0 text-rose-400">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black tracking-wider uppercase bg-rose-500/30 text-rose-300 px-2 py-0.5 rounded-md border border-rose-500/40">
+                🚨 Issue Detected
+              </span>
+              <span id="issue-stage-badge" class="text-xs font-mono text-slate-300">Stage Blocked</span>
+            </div>
+            <h4 id="issue-title" class="text-sm font-bold text-rose-200 mt-1">Pipeline Halt Condition</h4>
+            <p id="issue-desc" class="text-xs text-rose-300/90 mt-0.5 leading-relaxed font-mono"></p>
+          </div>
+        </div>
+        <div class="flex flex-col items-end gap-1 flex-shrink-0 text-right">
+          <span class="text-[10px] uppercase font-bold text-rose-400 tracking-wider">Automated Action</span>
+          <span class="text-xs font-bold text-slate-200 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-700">Aborted & Alert Sent</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Visual Canvas (Flowchart Lifecycle) -->
+    <main class="relative rounded-2xl border border-slate-800 bg-slate-950/70 p-5 shadow-2xl overflow-hidden min-h-[440px]">
       <svg id="connection-layer" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;"></svg>
 
-      <div class="relative grid grid-cols-2 md:grid-cols-6 gap-4 text-center" style="z-index: 2;">
+      <!-- Row 1: Main Pipeline Stages -->
+      <div class="relative grid grid-cols-2 md:grid-cols-6 gap-3.5 text-center" style="z-index: 2;">
         
-        <!-- Col 1: Shift-Left Security & Type Safety -->
-        <div class="flex flex-col justify-center gap-3.5 items-center">
-          <!-- Secret Scanner Node -->
-          <div id="node-sec-scan" onclick="showNodeDetails('Secret Leak Scanner', 'Trivy Secret Scanner scans Git history on every commit for exposed API keys, private credentials, and database passwords.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        <!-- Step 1: Code & Repo Intake -->
+        <div class="flex flex-col justify-center items-center">
+          <div id="node-code" onclick="showNodeDetails('Changes in Code', 'Developer commits and pushes source code changes or creates a pull request to GitHub repository.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
               </svg>
             </div>
-            <div class="text-xs font-bold text-slate-100">Secret Scanner</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">Trivy Shift-Left</div>
-            <div id="status-sec-scan" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">READY</div>
-          </div>
-
-          <!-- TypeScript Quality -->
-          <div id="node-tsc" onclick="showNodeDetails('TypeScript Strict Check', 'TypeScript Compiler (tsc --noEmit) validates static typing with zero error tolerance across the entire project.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#3178C6">
-                <path d="M1.5 0h21A1.5 1.5 0 0 1 24 1.5v21a1.5 1.5 0 0 1-1.5 1.5h-21A1.5 1.5 0 0 1 0 22.5v-21A1.5 1.5 0 0 1 1.5 0zm10.74 14.28c.45-.27.87-.66 1.25-1.16l1.83 1.13c-.63.92-1.39 1.6-2.28 2.05s-1.89.67-3 .67c-1.28 0-2.39-.32-3.32-.96s-1.63-1.51-2.11-2.6-.72-2.34-.72-3.76c0-1.46.25-2.75.76-3.86s1.25-1.99 2.22-2.62c.98-.63 2.11-.95 3.39-.95 1.09 0 2.08.23 2.97.68s1.61 1.12 2.16 2l-1.85 1.2c-.37-.58-.78-1.01-1.22-1.29-.44-.28-.97-.42-1.59-.42-.82 0-1.53.22-2.12.65s-1.04 1.05-1.34 1.85c-.3 1-.45 1.83-.45 2.76 0 1.01.15 1.95.46 2.82.31.86.77 1.53 1.39 1.99.62.47 1.37.7 2.25.7.67 0 1.24-.13 1.72-.4zm8.68-6.19h-3.41v10.37h-2.39V8.09h-3.41V6.16h9.21v1.93z"/>
-              </svg>
-            </div>
-            <div class="text-xs font-bold text-slate-100">TypeScript</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">Strict Typecheck</div>
-            <div id="status-tsc" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">READY</div>
+            <div class="text-xs font-bold text-slate-100">Changes in Code</div>
+            <div class="text-[10px] text-indigo-300 font-semibold mt-0.5">Git Push / PR</div>
+            <div id="status-code" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">READY</div>
           </div>
         </div>
 
-        <!-- Col 2: Parallel Testing -->
-        <div class="flex flex-col justify-center gap-3.5 items-center">
-          <!-- Node 20 LTS -->
-          <div id="node-node20" onclick="showNodeDetails('Node.js 20 LTS Test', 'Executes all unit tests simultaneously on Node.js 20 LTS to guarantee long-term enterprise runtime compatibility.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#5FA04E">
-                <path d="M12 2L2 7.77v11.55L12 25.1l10-5.78V7.77L12 2zm0 2.31l7.98 4.61v9.22L12 22.75 4.02 18.14V8.92L12 4.31z"/>
+        <!-- Step 2: Build & Strict Types -->
+        <div class="flex flex-col justify-center items-center">
+          <div id="node-build" onclick="showNodeDetails('Build & Compile', 'Compiles TypeScript under strict settings (tsc --noEmit) and validates project dependencies.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
               </svg>
             </div>
-            <div class="text-xs font-bold text-slate-100">Node.js 20</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">LTS Matrix Test</div>
-            <div id="status-node20" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
-          </div>
-
-          <!-- Node 22 Current -->
-          <div id="node-node22" onclick="showNodeDetails('Node.js 22 LTS Test', 'Executes test suites and coverage analysis on current Node.js 22, generating code-coverage artifacts.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#FCC72B">
-                <path d="M13.2 2L3 14h7v8l11-12h-7.8z"/>
-              </svg>
-            </div>
-            <div class="text-xs font-bold text-slate-100">Node.js 22</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">Current Matrix</div>
-            <div id="status-node22" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+            <div class="text-xs font-bold text-slate-100">Build & Types</div>
+            <div class="text-[10px] text-blue-400 font-semibold mt-0.5">Strict Compiler</div>
+            <div id="status-build" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
-        <!-- Col 3: Quality Gates -->
-        <div class="flex flex-col justify-center gap-3.5 items-center">
-          <!-- 80% Coverage Gate -->
-          <div id="node-cov" onclick="showNodeDetails('Coverage Gate (80% Minimum)', 'Rigorous Quality Gate: Vitest measures statement, branch, and function coverage. Fails if coverage drops below 80%. Currently 100%.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
+        <!-- Step 3: Pre-Deployment Test -->
+        <div class="flex flex-col justify-center items-center">
+          <div id="node-pretest" onclick="showNodeDetails('Pre-Deployment Test', 'Executes multi-version test matrix (Node 20 & Node 22), shifts-left secret leak scanner, and audits 80% coverage threshold.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
               <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div class="text-xs font-bold text-slate-100">Coverage Gate</div>
-            <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">Threshold &ge; 80%</div>
-            <div id="status-cov" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
-          </div>
-
-          <!-- SAST Vulnerability -->
-          <div id="node-sec" onclick="showNodeDetails('Trivy SAST & Audit', 'Static Application Security Testing & npm audit inspects all dependencies and filesystem packages for CVE vulnerabilities.')" class="glass-card w-full rounded-2xl p-3.5 shadow-lg cursor-pointer">
-            <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-              </svg>
-            </div>
-            <div class="text-xs font-bold text-slate-100">Trivy SAST</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">Dependency Scan</div>
-            <div id="status-sec" class="mt-1.5 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+            <div class="text-xs font-bold text-slate-100">Pre-Deploy Test</div>
+            <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">Matrix + Coverage</div>
+            <div id="status-pretest" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
-        <!-- Col 4: Docker Hardening -->
+        <!-- Step 4: Staging Environment -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-docker" onclick="showNodeDetails('Docker Image Hardening', 'Multi-stage Docker build running under unprivileged node user (CIS benchmark). Scanned by Trivy and published to GHCR container registry.')" class="glass-card w-full rounded-2xl p-4 shadow-xl cursor-pointer">
-            <div class="w-10 h-10 mx-auto mb-2.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="#2496ED">
-                <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.186.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.186.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.186.186.186m5.893 2.715h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.929 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.185-.186H8.1a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.185-.186H5.136a.186.186 0 00-.186.185v1.888c0 .102.084.186.186.185m-2.928 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.186-.186H2.208a.186.186 0 00-.186.186v1.888c0 .102.084.185.186.185M23.76 9.89c-.365-2.146-2.072-3.153-2.072-3.153s-.732 1.488-.13 2.887c-.642.062-1.724.32-2.316.924-.467.478-.655 1.137-.655 1.83 0 3.325 3.178 4.298 5.412 4.298 2.012 0 3.864-.81 3.99-3.957-.008-.415-.09-.806-.23-1.168"/>
-              </svg>
-            </div>
-            <div class="text-xs font-bold text-slate-100">Docker Image</div>
-            <div class="text-[10px] text-cyan-400 font-semibold mt-0.5">Non-Root Hardened</div>
-            <div class="text-[10px] text-slate-400">GHCR Published</div>
-            <div id="status-docker" class="mt-2 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
-          </div>
-        </div>
-
-        <!-- Col 5: Staging Deploy -->
-        <div class="flex flex-col justify-center items-center">
-          <div id="node-stg" onclick="showNodeDetails('Staging Progressive Deploy', 'Rolls out container to staging environment and initiates an automated smoke test probing /healthz for 200 OK and latency.')" class="glass-card w-full rounded-2xl p-4 shadow-xl cursor-pointer">
-            <div class="w-10 h-10 mx-auto mb-2.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center">
-              <svg class="w-6 h-6 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+          <div id="node-stg" onclick="showNodeDetails('Staging Environment', 'Packages non-root hardened Docker image, pushes to GHCR, and deploys to isolated staging environment.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
               </svg>
             </div>
             <div class="text-xs font-bold text-slate-100">Staging Deploy</div>
-            <div class="text-[10px] text-teal-400 font-semibold mt-0.5">Smoke Test 200 OK</div>
-            <div class="text-[10px] text-slate-400">Health Verified</div>
-            <div id="status-stg" class="mt-2 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+            <div class="text-[10px] text-amber-400 font-semibold mt-0.5">Docker Non-Root</div>
+            <div id="status-stg" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
           </div>
         </div>
 
-        <!-- Col 6: Production & Rollback -->
+        <!-- Step 5: Staging Smoke Tests -->
         <div class="flex flex-col justify-center items-center">
-          <div id="node-prod" onclick="showNodeDetails('Production Gate & Promotion', 'Production environment protection with required reviewer approval, zero-downtime traffic switch, and automated rollback fallback.')" class="glass-card w-full rounded-2xl p-4 shadow-xl cursor-pointer">
-            <div class="w-10 h-10 mx-auto mb-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-              <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7a2.5 2.5 0 11-3.536-3.536 2.5 2.5 0 013.536 3.536z"/>
+          <div id="node-smoketest" onclick="showNodeDetails('Staging Tests', 'Probes the deployed staging endpoint /healthz for HTTP 200 OK, latency under 20ms, and API calculate contract.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+              </svg>
+            </div>
+            <div class="text-xs font-bold text-slate-100">Staging Tests</div>
+            <div class="text-[10px] text-teal-400 font-semibold mt-0.5">Smoke 200 OK</div>
+            <div id="status-smoketest" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+          </div>
+        </div>
+
+        <!-- Step 6: Production & Monitoring -->
+        <div class="flex flex-col justify-center items-center">
+          <div id="node-prod" onclick="showNodeDetails('Production & Monitoring', 'Zero-downtime Blue/Green rollout with real-time logging, telemetry metrics, and automated rollback guard.')" class="glass-card w-full rounded-2xl p-3 shadow-lg cursor-pointer">
+            <div class="w-8 h-8 mx-auto mb-1.5 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
             <div class="text-xs font-bold text-slate-100">Production</div>
-            <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">Zero-Downtime</div>
-            <div class="text-[10px] text-slate-400">Rollback Guarded</div>
-            <div id="status-prod" class="mt-2 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+            <div class="text-[10px] text-green-400 font-semibold mt-0.5">Zero-Downtime</div>
+            <div id="status-prod" class="mt-1 text-[9px] font-extrabold text-slate-500 tracking-wider">IDLE</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 2: Visual Issue Detected Feedback Node (Demonstrated from diagram) -->
+      <div class="relative mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4" style="z-index: 2;">
+        
+        <!-- Interactive Issue Detected Node Box -->
+        <div id="node-issue" onclick="showNodeDetails('Issue Detected & Feedback Loop', 'When tests, security scanners, or smoke tests detect bugs, this node triggers immediate abort, generates an issue report, and loops back to developer.')" class="glass-card border-slate-800 rounded-2xl p-3.5 flex items-center gap-3.5 max-w-md w-full cursor-pointer transition-all">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 flex-shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="flex-grow text-left">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200">2. Issue Detected Node</span>
+              <span id="status-issue" class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wide">IDLE (ZERO ISSUES)</span>
+            </div>
+            <p id="desc-issue" class="text-[11px] text-slate-400 mt-0.5 leading-snug">
+              Standing by. Triggers if any test or security barrier fails.
+            </p>
+          </div>
+        </div>
+
+        <!-- Success Certification Badge -->
+        <div id="node-certified" class="glass-card border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 max-w-sm w-full transition-all">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <div id="status-certified" class="text-xs font-bold text-slate-200">All Tests Passed</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">100% Gates & Smoke Verified</p>
           </div>
         </div>
 
       </div>
     </main>
 
-    <!-- Interactive Terminal & Details Inspector -->
+    <!-- Terminal Output & Node Inspector -->
     <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Live Terminal Output -->
       <div class="md:col-span-2 bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl">
         <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider font-bold">Orchestrator Console</span>
+            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider font-bold">Orchestrator Terminal</span>
           </div>
           <span id="execution-timer" class="text-xs font-mono text-slate-400 font-bold">0.0s</span>
         </div>
-        <p id="terminal-text" class="font-mono text-xs text-indigo-300 leading-relaxed min-h-[56px] flex items-center">
-          Console idle. Select any failure scenario or run Pass 100% to simulate live pipeline execution.
+        <p id="terminal-text" class="font-mono text-xs text-indigo-300 leading-relaxed min-h-[52px] flex items-center">
+          Console idle. Select a scenario and click "Run Pipeline" to watch laser workflows in real time.
         </p>
       </div>
 
@@ -257,14 +292,14 @@
       <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
         <div>
           <div class="text-xs font-mono text-indigo-400 uppercase tracking-wider font-bold mb-1">Inspector (Click any node)</div>
-          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Failure Simulation Suite</h3>
+          <h3 id="inspector-title" class="text-sm font-bold text-slate-100">Live DAG Architecture</h3>
           <p id="inspector-desc" class="text-xs text-slate-400 mt-1 leading-relaxed">
-            Use the Scenario selector above to test 8 distinct production edge cases: Secret Leaks, Type Mismatches, Matrix Test Breaks, Coverage Drops, SAST CVEs, Docker root compliance, and Smoke Test rollbacks.
+            Click on any pipeline node above to inspect its real-world implementation, security criteria, and command triggers.
           </p>
         </div>
         <div class="mt-3 pt-2 border-t border-slate-800/60 flex justify-between items-center text-[10px] text-slate-500">
           <span>Target: ghcr.io</span>
-          <span id="inspector-status-badge" class="text-indigo-400 font-semibold">8 Scenarios Ready</span>
+          <span id="inspector-status-badge" class="text-indigo-400 font-semibold">Interactive Mode</span>
         </div>
       </div>
     </div>
@@ -278,20 +313,34 @@
     function onScenarioChange() {
       if (busy) return;
       currentScenario = document.getElementById('scenario-select').value;
-      const terminal = document.getElementById('terminal-text');
-      const hints = {
-        pass: '🟢 Ready to run: All checks, tests, coverage, security, and deployments will pass with 100% green status.',
-        secret: '🔴 Scenario configured: Will simulate an API key leak committed to git, blocking at Secret Scanner.',
-        typecheck: '🔴 Scenario configured: Will simulate a TypeScript strict syntax/type error (`tsc --noEmit`), aborting Stage 1.',
-        unit_test: '🔴 Scenario configured: Will simulate a business logic test assertion failing on Node.js matrix tests.',
-        coverage: '🟡 Scenario configured: Will simulate code coverage dropping to 64% (below mandatory 80% gate threshold).',
-        sast_cve: '🔴 Scenario configured: Will simulate a High/Critical CVE found in dependencies by Trivy SAST audit.',
-        docker_root: '🔴 Scenario configured: Will simulate Docker build failing CIS Benchmark (root user detected).',
-        smoke_fail: '🔴 Scenario configured: Will simulate Staging Smoke Test failing (HTTP 500 error), preventing Prod rollout.'
-      };
-      terminal.innerHTML = `<span class="text-slate-300 font-mono">${hints[currentScenario] || ''}</span>`;
+      hideIssueAlert();
       resetAll();
       drawConnectors(0);
+    }
+
+    function showIssueAlert(stageName, title, desc) {
+      const banner = document.getElementById('issue-alert-banner');
+      document.getElementById('issue-stage-badge').textContent = stageName;
+      document.getElementById('issue-title').textContent = title;
+      document.getElementById('issue-desc').textContent = desc;
+      banner.classList.remove('hidden');
+
+      // Light up the Issue Detected Node
+      const issueNode = document.getElementById('node-issue');
+      issueNode.classList.add('issue-active');
+      document.getElementById('status-issue').textContent = 'ACTIVE ALERT ⚠️';
+      document.getElementById('status-issue').className = 'text-[9px] font-extrabold text-rose-400 uppercase tracking-wide';
+      document.getElementById('desc-issue').textContent = title + ': ' + desc;
+    }
+
+    function hideIssueAlert() {
+      const banner = document.getElementById('issue-alert-banner');
+      banner.classList.add('hidden');
+      const issueNode = document.getElementById('node-issue');
+      issueNode.classList.remove('issue-active');
+      document.getElementById('status-issue').textContent = 'IDLE (ZERO ISSUES)';
+      document.getElementById('status-issue').className = 'text-[9px] font-extrabold text-slate-500 uppercase tracking-wide';
+      document.getElementById('desc-issue').textContent = 'Standing by. Triggers if any test or security barrier fails.';
     }
 
     function showNodeDetails(title, desc) {
@@ -304,7 +353,7 @@
       const st = document.getElementById(`status-${id}`);
       if (!el || !st) return;
       st.textContent = text;
-      st.className = `mt-1.5 text-[9px] font-extrabold uppercase tracking-wide ${color}`;
+      st.className = `mt-1 text-[9px] font-extrabold uppercase tracking-wide ${color}`;
       if (border) el.style.borderColor = border;
       else el.style.borderColor = '';
       if (state === 'running') el.classList.add('node-running');
@@ -312,10 +361,13 @@
     }
 
     function resetAll() {
-      ['sec-scan', 'tsc', 'node20', 'node22', 'cov', 'sec', 'docker', 'stg', 'prod'].forEach(id => {
+      ['code', 'build', 'pretest', 'stg', 'smoketest', 'prod'].forEach(id => {
         updateNode(id, 'idle', 'IDLE', 'text-slate-500', '');
       });
+      hideIssueAlert();
       document.getElementById('execution-timer').textContent = '0.0s';
+      const cert = document.getElementById('node-certified');
+      cert.style.borderColor = '';
     }
 
     function drawConnectors(level, errorBranch = null) {
@@ -327,44 +379,46 @@
         return {
           rX: r.right - p.left,
           lX: r.left - p.left,
-          mY: (r.top + r.bottom) / 2 - p.top
+          mY: (r.top + r.bottom) / 2 - p.top,
+          bY: r.bottom - p.top,
+          tY: r.top - p.top,
+          mX: (r.left + r.right) / 2 - p.left
         };
       };
 
       try {
-        const s = getCoord('sec-scan');
-        const t = getCoord('tsc');
-        const n20 = getCoord('node20');
-        const n22 = getCoord('node22');
-        const cov = getCoord('cov');
-        const sec = getCoord('sec');
-        const doc = getCoord('docker');
+        const c = getCoord('code');
+        const b = getCoord('build');
+        const t = getCoord('pretest');
         const stg = getCoord('stg');
+        const smk = getCoord('smoketest');
         const prd = getCoord('prod');
+        const iss = getCoord('node-issue');
 
         const makePath = (x1, y1, x2, y2, active, isErr) => {
           const mx = (x1 + x2) / 2;
-          const color = isErr ? '#f43f5e' : (active ? '#818cf8' : 'rgba(148, 163, 184, 0.15)');
+          const color = isErr ? '#f43f5e' : (active ? '#818cf8' : 'rgba(148, 163, 184, 0.18)');
           const width = active ? '2.5' : '1.5';
-          const anim = active && !isErr ? 'laser-line' : '';
+          const anim = isErr ? 'laser-error' : (active ? 'laser-line' : '');
           return `<path d="M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="${width}" class="${anim}" />`;
         };
 
-        svg.innerHTML = `
-          ${makePath(s.rX, s.mY, n20.lX, n20.mY, level >= 2, errorBranch === 'secret')}
-          ${makePath(t.rX, t.mY, n22.lX, n22.mY, level >= 2, errorBranch === 'typecheck')}
-          ${makePath(s.rX, s.mY, sec.lX, sec.mY, level >= 2, errorBranch === 'secret')}
-          ${makePath(t.rX, t.mY, sec.lX, sec.mY, level >= 2, errorBranch === 'typecheck')}
-          ${makePath(n20.rX, n20.mY, cov.lX, cov.mY, level >= 3, errorBranch === 'unit_test' || errorBranch === 'coverage')}
-          ${makePath(n22.rX, n22.mY, cov.lX, cov.mY, level >= 3, errorBranch === 'unit_test')}
-          ${makePath(cov.rX, cov.mY, doc.lX, doc.mY, level >= 4, errorBranch === 'coverage')}
-          ${makePath(sec.rX, sec.mY, doc.lX, doc.mY, level >= 4, errorBranch === 'sast_cve')}
-          ${makePath(doc.rX, doc.mY, stg.lX, stg.mY, level >= 5, errorBranch === 'docker_root')}
-          ${makePath(stg.rX, stg.mY, prd.lX, prd.mY, level >= 6, errorBranch === 'smoke_fail')}
+        let paths = `
+          ${makePath(c.rX, c.mY, b.lX, b.mY, level >= 1, false)}
+          ${makePath(b.rX, b.mY, t.lX, t.mY, level >= 2, false)}
+          ${makePath(t.rX, t.mY, stg.lX, stg.mY, level >= 3 && !errorBranch, false)}
+          ${makePath(stg.rX, stg.mY, smk.lX, smk.mY, level >= 4 && !errorBranch, false)}
+          ${makePath(smk.rX, smk.mY, prd.lX, prd.mY, level >= 5 && !errorBranch, false)}
         `;
-      } catch (e) {
-        // Safe fallback if coords not ready
-      }
+
+        // If error occurred, draw distinct red laser down to the "Issue Detected" box
+        if (errorBranch) {
+          const sourceNode = errorBranch === 'typecheck' ? b : (errorBranch === 'smoke_fail' ? smk : (errorBranch === 'docker_root' ? stg : t));
+          paths += `<path d="M ${sourceNode.mX} ${sourceNode.bY} C ${sourceNode.mX} ${iss.mY}, ${iss.mX} ${sourceNode.bY}, ${iss.mX} ${iss.tY}" fill="none" stroke="#f43f5e" stroke-width="3" class="laser-error" />`;
+        }
+
+        svg.innerHTML = paths;
+      } catch (e) {}
     }
 
     async function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -389,133 +443,111 @@
       }, 100);
 
       try {
-        // ==========================================
-        // STAGE 1: Shift-Left Security & Type Safety
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🛡️ [Stage 1] Executing Trivy Secret Scanner & TypeScript Strict Engine (tsc --noEmit)...</span>';
-        updateNode('sec-scan', 'running', 'SCANNING', 'text-indigo-400', '#6366f1');
-        updateNode('tsc', 'running', 'CHECKING', 'text-indigo-400', '#6366f1');
+        // Step 1: Code Intake
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">💻 [Changes in Code] Receiving commit event and initializing GitHub Actions runner...</span>';
+        updateNode('code', 'running', 'COMMITTED', 'text-indigo-400', '#6366f1');
         drawConnectors(1);
-        await wait(900);
+        await wait(700);
+        updateNode('code', 'done', 'PUSHED ✓', 'text-emerald-400', '#10b981');
 
-        // Failure Case 1: Secret Leak
-        if (currentScenario === 'secret') {
-          updateNode('sec-scan', 'done', 'FAILED ✗ (LEAK)', 'text-rose-400', '#f43f5e');
-          updateNode('tsc', 'done', 'CLEAN ✓', 'text-emerald-400', '#10b981');
-          drawConnectors(1, 'secret');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [SECURITY BLOCK] Trivy detected unencrypted API credentials in commit payload! Pipeline immediately aborted before runner execution.</span>';
-          return;
-        }
-
-        // Failure Case 2: TypeScript Error
-        if (currentScenario === 'typecheck') {
-          updateNode('sec-scan', 'done', 'ZERO LEAK ✓', 'text-emerald-400', '#10b981');
-          updateNode('tsc', 'done', 'FAILED ✗ (TS2322)', 'text-rose-400', '#f43f5e');
-          drawConnectors(1, 'typecheck');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [TYPE CHECK FAILURE] TS2322: Type \'string\' is not assignable to type \'number\' in src/controllers/status.controller.ts. Build halted.</span>';
-          return;
-        }
-
-        updateNode('sec-scan', 'done', 'ZERO LEAK ✓', 'text-emerald-400', '#10b981');
-        updateNode('tsc', 'done', 'STRICT CLEAN ✓', 'text-emerald-400', '#10b981');
-
-        // ==========================================
-        // STAGE 2: Parallel Matrix Testing
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">⚡ [Stage 2] Running Vitest Test Suites in parallel on Node.js 20 LTS and Node.js 22 LTS...</span>';
-        updateNode('node20', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
-        updateNode('node22', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
+        // Step 2: Build & Types
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔨 [Build] Compiling TypeScript strict types and assembling dependencies...</span>';
+        updateNode('build', 'running', 'COMPILING', 'text-blue-400', '#3b82f6');
         drawConnectors(2);
-        await wait(900);
+        await wait(800);
 
-        // Failure Case 3: Unit Test Failure
-        if (currentScenario === 'unit_test') {
-          updateNode('node20', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
-          updateNode('node22', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
-          drawConnectors(2, 'unit_test');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [TEST ASSERTION FAILED] AssertionError: expected 500 to equal 200 at tests/health.spec.ts:34. Pipeline blocked.</span>';
+        if (currentScenario === 'typecheck') {
+          updateNode('build', 'done', 'FAILED ✗ (TS2322)', 'text-rose-400', '#f43f5e');
+          drawConnectors(2, 'typecheck');
+          showIssueAlert('Stage 2: Build & Strict Types', 'TypeScript Compilation Failure', 'TS2322: Type mismatch in status.controller.ts. Static verification failed.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] TypeScript compiler halted build. Reverting commit back to developer.</span>';
           return;
         }
 
-        updateNode('node20', 'done', '10/10 PASS ✓', 'text-emerald-400', '#10b981');
-        updateNode('node22', 'done', '10/10 PASS ✓', 'text-emerald-400', '#10b981');
+        updateNode('build', 'done', 'STRICT CLEAN ✓', 'text-emerald-400', '#10b981');
 
-        // ==========================================
-        // STAGE 3: Quality & Security Gates
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">📊 [Stage 3] Calculating code coverage metrics & executing Trivy SAST Dependency Audit...</span>';
-        updateNode('cov', 'running', 'AUDITING', 'text-indigo-400', '#6366f1');
-        updateNode('sec', 'running', 'AUDITING', 'text-indigo-400', '#6366f1');
+        // Step 3: Pre-Deployment Testing
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🔬 [Pre-Deployment Test] Running Secret Leak Scan, Vitest Matrix (Node 20 & 22), and Coverage Gate...</span>';
+        updateNode('pretest', 'running', 'TESTING', 'text-indigo-400', '#6366f1');
         drawConnectors(3);
         await wait(900);
 
-        // Failure Case 4: Coverage Below 80% Gate
+        if (currentScenario === 'secret') {
+          updateNode('pretest', 'done', 'BLOCKED ✗ (LEAK)', 'text-rose-400', '#f43f5e');
+          drawConnectors(3, 'secret');
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy Secret Scanner Alert', 'Detected unencrypted API access key in commit diff. Immediate pipeline termination.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Secret Leak detected! Credentials must be revoked and removed from Git.</span>';
+          return;
+        }
+
+        if (currentScenario === 'unit_test') {
+          updateNode('pretest', 'done', 'FAILED ✗ (ASSERT)', 'text-rose-400', '#f43f5e');
+          drawConnectors(3, 'unit_test');
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Vitest Unit Test Failure', 'AssertionError: expected 500 to equal 200 at tests/app.test.ts:34.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] Unit test assertion failed on Node.js matrix! Deployment blocked.</span>';
+          return;
+        }
+
         if (currentScenario === 'coverage') {
-          updateNode('cov', 'done', 'FAILED ✗ (64%)', 'text-amber-400', '#f59e0b');
-          updateNode('sec', 'done', 'ZERO CVE ✓', 'text-emerald-400', '#10b981');
+          updateNode('pretest', 'done', 'GATE FAIL ✗ (64%)', 'text-amber-400', '#f59e0b');
           drawConnectors(3, 'coverage');
-          terminal.innerHTML = '<span class="text-amber-400 font-bold font-mono">⚠️ [QUALITY GATE BLOCKED] Code coverage evaluated at 64.2%, which is strictly below the enterprise threshold of 80.0%! Merge rejected.</span>';
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Coverage Gate Rejection', 'Code coverage dropped to 64.2%, which is strictly below the mandatory 80% threshold.');
+          terminal.innerHTML = '<span class="text-amber-400 font-bold font-mono">⚠️ [ISSUE DETECTED] Coverage Gate: Pull Request rejected until more test cases are added.</span>';
           return;
         }
 
-        // Failure Case 5: Trivy SAST CVE detected
         if (currentScenario === 'sast_cve') {
-          updateNode('cov', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
-          updateNode('sec', 'done', 'CRITICAL CVE ✗', 'text-rose-400', '#f43f5e');
+          updateNode('pretest', 'done', 'CVE DETECTED ✗', 'text-rose-400', '#f43f5e');
           drawConnectors(3, 'sast_cve');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [VULNERABILITY REJECTED] Trivy SAST detected CVE-2026-2184 (CVSS 9.8 Critical) in dependency package. Packaging prohibited.</span>';
+          showIssueAlert('Stage 3: Pre-Deployment Test', 'Trivy SAST CVE Vulnerability', 'Critical vulnerability CVE-2026-2184 found in dependency tree. Packaging prohibited.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Critical dependency vulnerability detected! Run npm audit fix.</span>';
           return;
         }
 
-        updateNode('cov', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
-        updateNode('sec', 'done', 'ZERO CVE ✓', 'text-emerald-400', '#10b981');
+        updateNode('pretest', 'done', '100% COVERAGE ✓', 'text-emerald-400', '#10b981');
 
-        // ==========================================
-        // STAGE 4: Container Hardening & Build
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🐳 [Stage 4] Compiling Multi-Stage Dockerfile & enforcing Non-Root CIS benchmark...</span>';
-        updateNode('docker', 'running', 'BUILDING', 'text-indigo-400', '#6366f1');
+        // Step 4: Staging Deployment
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🖥️ [Staging Environment] Hardening multi-stage Docker container & deploying to Staging...</span>';
+        updateNode('stg', 'running', 'DEPLOYING', 'text-amber-400', '#f59e0b');
         drawConnectors(4);
-        await wait(1000);
+        await wait(900);
 
-        // Failure Case 6: Docker Root User Violation
         if (currentScenario === 'docker_root') {
-          updateNode('docker', 'done', 'ROOT USER FAIL ✗', 'text-rose-400', '#f43f5e');
+          updateNode('stg', 'done', 'ROOT USER FAIL ✗', 'text-rose-400', '#f43f5e');
           drawConnectors(4, 'docker_root');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [CIS POLICY VIOLATION] Image inspect revealed container runs as UID 0 (root)! Mandatory policy requires non-root user (node:1000). Build discarded.</span>';
+          showIssueAlert('Stage 4: Staging Deploy', 'Docker CIS Benchmark Violation', 'Container image running as root (UID 0). Mandatory policy requires unprivileged user node.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">🚨 [ISSUE DETECTED] Image compliance rejected by Security Policy.</span>';
           return;
         }
 
-        updateNode('docker', 'done', 'HARDENED ✓', 'text-emerald-400', '#10b981');
+        updateNode('stg', 'done', 'DEPLOYED ✓', 'text-emerald-400', '#10b981');
 
-        // ==========================================
-        // STAGE 5: Staging Deploy & Smoke Test
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🧪 [Stage 5] Rolling out container to Staging environment and initiating automated smoke test probing /healthz...</span>';
-        updateNode('stg', 'running', 'SMOKE TESTING', 'text-indigo-400', '#6366f1');
+        // Step 5: Staging Smoke Tests
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🧪 [Staging Tests] Probing http://staging/healthz endpoint with automated smoke tests...</span>';
+        updateNode('smoketest', 'running', 'SMOKE TESTING', 'text-teal-400', '#14b8a6');
         drawConnectors(5);
-        await wait(1000);
+        await wait(900);
 
-        // Failure Case 7: Smoke Test Fail -> Rollback Guard
         if (currentScenario === 'smoke_fail') {
-          updateNode('stg', 'done', 'HTTP 500 FAIL ✗', 'text-rose-400', '#f43f5e');
+          updateNode('smoketest', 'done', 'HTTP 500 FAIL ✗', 'text-rose-400', '#f43f5e');
           drawConnectors(5, 'smoke_fail');
-          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [SMOKE TEST FAILURE] Probing http://staging/healthz returned HTTP 500 Internal Error! Auto-rollback initiated. Production promotion aborted.</span>';
+          showIssueAlert('Stage 5: Staging Tests', 'Automated Smoke Test Failure', 'Endpoint /healthz returned HTTP 500 Internal Error. Initiating auto-rollback.');
+          terminal.innerHTML = '<span class="text-rose-400 font-bold font-mono">❌ [ISSUE DETECTED] Staging smoke test failed. Automated Rollback Guard triggered!</span>';
           return;
         }
 
-        updateNode('stg', 'done', '200 OK SMOKE ✓', 'text-emerald-400', '#10b981');
+        updateNode('smoketest', 'done', '200 OK SMOKE ✓', 'text-emerald-400', '#10b981');
 
-        // ==========================================
-        // STAGE 6: Production Promotion
-        // ==========================================
-        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🚀 [Stage 6] Staging smoke test validated. Executing Zero-Downtime Blue/Green switch to Production...</span>';
-        updateNode('prod', 'running', 'PROMOTING', 'text-indigo-400', '#6366f1');
+        // Step 6: Production
+        terminal.innerHTML = '<span class="text-indigo-300 font-mono">🌐 [Production] All tests passed! Executing zero-downtime release with telemetry logging...</span>';
+        updateNode('prod', 'running', 'PROMOTING', 'text-green-400', '#22c55e');
         drawConnectors(6);
         await wait(1000);
         updateNode('prod', 'done', 'LIVE & STABLE ✓', 'text-emerald-400', '#10b981');
 
-        terminal.innerHTML = '<span class="text-emerald-400 font-bold font-mono">🏆 [SUCCESS 100%] All security gates, test matrices, coverage thresholds, container hardening, and staging smoke tests verified! Production is fully LIVE.</span>';
+        const cert = document.getElementById('node-certified');
+        cert.style.borderColor = '#10b981';
+        terminal.innerHTML = '<span class="text-emerald-400 font-bold font-mono">🏆 [SUCCESS 100%] Pipeline completed successfully! Zero issues detected. Production is fully stable.</span>';
       } finally {
         clearInterval(clock);
         busy = false;
