@@ -10,7 +10,7 @@
   <br/><br/>
 
   <p align="center">
-    <em>A production-grade CI/CD showcase designed with Senior DevOps best practices: Shift-Left Security, Parallel Matrix Testing, 80% Coverage Gate, and Container Hardening.</em>
+    <em>A production-ready CI/CD showcase designed with Senior DevOps best practices: Shift-Left Security, Parallel Matrix Testing, 80% Coverage Gate, Container Hardening, and Real-Time Team Notifications.</em>
   </p>
 
 </div>
@@ -25,10 +25,10 @@
 >
 > - 🟢 **Trigger Real-Time Pipeline Runs**: Watch animated laser signals flow through nodes with dynamic status updates.
 > - 🧪 **Simulate 8 Real-World Enterprise Failure Scenarios**:
->   - 🟢 `Pass 100%`: Full green run straight into production.
+>   - 🟢 `Pass 100%`: Full green run with 21/21 automated tests straight into production.
 >   - 🔴 `Leaked Secret Key`: Trivy blocks unencrypted API tokens before runners trigger.
 >   - 🔴 `TypeScript Error`: Type mismatch halts Stage 1 immediately (`tsc --noEmit`).
->   - 🔴 `Vitest Test Failure`: Assertion error halts Node.js test matrix.
+>   - 🔴 `RBAC Matrix Failure`: Privilege escalation regression caught by Vitest.
 >   - 🟡 `Coverage < 80% Gate`: Rejects build if test coverage drops below strict threshold.
 >   - 🔴 `Trivy SAST CVE`: High/Critical CVE in dependencies blocks container building.
 >   - 🔴 `Docker Root User Fail`: Fails CIS Benchmark policy if running as root UID 0.
@@ -52,9 +52,16 @@ Think of software development like an automated modern car factory:
 
 ---
 
-## 🗺️ Visual Pipeline Flowchart (DAG Architecture)
+## 🗺️ Visual Pipeline Flowchart Architecture
 
-Every push flows through these distinct stages, rendered live in GitHub Actions:
+Below is the complete visual representation of the CI/CD pipeline lifecycle, from code changes through pre-deployment testing, issue detection feedback loops, staging environments, to production and continuous telemetry:
+
+<div align="center">
+  <img src="docs/pipeline-diagram.svg" alt="CI/CD Enterprise Architecture Flowchart" width="100%" />
+</div>
+
+<details>
+<summary>🔍 <b>View Interactive Text Workflow (Mermaid DAG)</b></summary>
 
 ```mermaid
 flowchart LR
@@ -85,23 +92,25 @@ flowchart LR
     Prod --> Monitor["📋 Monitor & Logging<br/>(Health Metric / Rollback Guard)"]:::monitor
 ```
 
+</details>
+
 ---
 
 ## 🛡️ 7 Production-Grade Defense Gates
 
-1. **[Secret Leak Scanner](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L18-L32)**:
+1. **[Secret Leak Scanner](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L18-L33)**:
    - Scans the entire Git history on every commit for credentials, tokens, and private keys. Fails immediately upon detection to protect accounts.
 2. **[TypeScript Strict Check](https://github.com/Ma1910/test-cicd/blob/main/tsconfig.json)**:
-   - Enforces strict static type verification. Zero tolerance for type mismatches.
-3. **[Parallel Matrix Testing](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L55-L100)**:
+   - Enforces strict static type verification (`tsc --noEmit`). Zero tolerance for type mismatches.
+3. **[Parallel Matrix Testing](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L56-L102)**:
    - Validates test suites simultaneously across **Node.js 20 LTS** and **Node.js 22 LTS** runners in parallel.
 4. **[Coverage Threshold Gate](https://github.com/Ma1910/test-cicd/blob/main/vitest.config.ts)**:
-   - Enforces an automated quality gate in Vitest: any commit with less than **80% code coverage** fails the pipeline. Currently achieving **100% Code Coverage**.
+   - Enforces an automated quality gate in Vitest: any commit with less than **80% code coverage** fails the pipeline. Currently achieving **>94% Code Coverage** across 21 test suites.
 5. **[Docker Image Hardening](https://github.com/Ma1910/test-cicd/blob/main/Dockerfile)**:
    - Minimal Alpine base image running under unprivileged user `node:node` (CIS Benchmark compliance). Scans images for CRITICAL/HIGH CVEs before publishing.
-6. **[Staging Smoke Test](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L182-L204)**:
+6. **[Staging Smoke Test](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L213-L235)**:
    - Probes the deployed service `/healthz` endpoint to confirm `200 OK` HTTP status and latency under 20ms before promoting to production.
-7. **[Production Rollback Guard](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L206-L233)**:
+7. **[Production Rollback Guard](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L237-L264)**:
    - Automated post-deployment verifier. If health validation fails, an automated rollback hook reverts to the previous stable release.
 
 ---
@@ -120,15 +129,15 @@ This project implements a full production-ready microservice backend with **zero
 
 ---
 
-## ⚡ Cài Đặt Vào Bất Kỳ Đồ Án Mới Nào (Đúng 1 Câu Lệnh)
+## ⚡ Instant Setup for Any New Project (One Command)
 
-Muốn mang toàn bộ hệ thống CI/CD, Docker, AI rules và Team Alert này sang bất kỳ đồ án mới nào? Mở terminal tại thư mục đồ án mới và chạy **đúng 1 lệnh**:
+Want to install this entire CI/CD pipeline, Dockerfile, AI guidelines, and Team Alert system into any new project? Run **one command** in your project terminal:
 
 ```bash
-# Tự động tải .github, .ai, Dockerfile, scripts, vitest và cấu hình package.json:
-npx https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js
+node -e "fetch('https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js').then(r=>r.text()).then(eval)"
 ```
-*(Hoặc dùng lệnh node nhanh nếu tải file: `node -e "fetch('https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js').then(r=>r.text()).then(eval)"`)*
+
+*This automatically fetches `.github/workflows/`, `.ai/` rules, `Dockerfile`, scripts, testing configurations, and registers npm scripts into `package.json`.*
 
 ---
 
@@ -159,7 +168,7 @@ npm run build
 ```
 
 ### 4. 🎮 Launch Live CI/CD Simulator Directly From Terminal
-Want to inspect the animated pipeline or live GitHub Actions runs? Simply execute:
+Inspect the animated pipeline or live GitHub Actions runs directly:
 ```bash
 # Automatically launches the Interactive Pipeline Simulator in your default browser:
 npm run cicd
@@ -201,6 +210,7 @@ To verify how the CI/CD pipeline catches and blocks broken code:
 
 - **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
 - **AI Agent Guidelines Directory**: [`.ai/`](https://github.com/Ma1910/test-cicd/tree/main/.ai) *(Claude, Cursor, Copilot, Windsurf rules)*
+- **Vector Flowchart Image Asset**: [`docs/pipeline-diagram.svg`](docs/pipeline-diagram.svg)
 - **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
 - **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
 - **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)

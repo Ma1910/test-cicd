@@ -1,0 +1,254 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#050811" />
+    </radialGradient>
+    
+    <!-- Glow Filters -->
+    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Card Gradients -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95" />
+    </linearGradient>
+
+    <linearGradient id="alertGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4c0519" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#1e0a12" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- Markers for Arrows -->
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#6366f1" />
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f43f5e" />
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <style>
+    .title-text { font-family: system-ui, -apple-system, sans-serif; font-weight: 900; fill: #ffffff; }
+    .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #94a3b8; }
+    .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; fill: #f8fafc; }
+    .card-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .badge-text { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
+    .path-flow { stroke-dasharray: 8 6; animation: dash 1s linear infinite; }
+    .label-badge { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 700; }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)" rx="24" />
+  
+  <!-- Subtle Grid Pattern -->
+  <g stroke="rgba(99, 102, 241, 0.08)" stroke-width="1">
+    <line x1="0" y1="120" x2="1100" y2="120" />
+    <line x1="0" y1="360" x2="1100" y2="360" />
+    <line x1="0" y1="520" x2="1100" y2="520" />
+    <line x1="220" y1="0" x2="220" y2="680" />
+    <line x1="550" y1="0" x2="550" y2="680" />
+    <line x1="880" y1="0" x2="880" y2="680" />
+  </g>
+
+  <!-- Top Title Header -->
+  <g transform="translate(550, 55)" text-anchor="middle">
+    <text class="title-text" font-size="28" letter-spacing="0.5">CI/CD Enterprise Automation Architecture</text>
+    <text class="subtitle-text" y="28">End-to-End Visual Workflow: Code Intake • Pre-Deploy Gate • Staging Rollout • Production Defense</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- CONNECTING LASER PATHS                                                    -->
+  <!-- ========================================================================= -->
+  <g fill="none">
+    <!-- Main Sequential Flow: Changes -> Repo -> Build -->
+    <path d="M 190 190 L 260 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    <path d="M 430 190 L 500 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    
+    <!-- Build -> Pre-Deploy Test -->
+    <path d="M 670 190 L 740 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    
+    <!-- Pre-Deploy Test -> (Pass) -> Staging Environment -->
+    <path d="M 825 250 L 825 360" stroke="#10b981" stroke-width="3" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
+    
+    <!-- Staging Environment -> Staging Smoke Tests -->
+    <path d="M 740 420 L 670 420" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    
+    <!-- Staging Smoke Tests -> (Verified) -> Production & Monitoring -->
+    <path d="M 500 420 L 430 420" stroke="#10b981" stroke-width="3" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
+    
+    <!-- Production -> Monitor & Logging -->
+    <path d="M 260 420 L 190 420" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+
+    <!-- ISSUE DETECTED FEEDBACK LOOPS (RED LASERS) -->
+    <!-- Loop 1: Pre-Deploy Test -> Issue Detected -->
+    <path d="M 825 190 C 950 190, 950 580, 780 580" stroke="#f43f5e" stroke-width="3.5" marker-end="url(#arrowRed)" stroke-dasharray="8 4" filter="url(#glowRed)" />
+
+    <!-- Loop 2: Staging Smoke Test -> Issue Detected -->
+    <path d="M 585 480 C 585 540, 560 580, 510 580" stroke="#f43f5e" stroke-width="3" marker-end="url(#arrowRed)" stroke-dasharray="6 4" />
+
+    <!-- Loop 3: Issue Detected -> Changes in Code (Developer Re-work feedback) -->
+    <path d="M 240 580 C 105 580, 105 290, 105 250" stroke="#f43f5e" stroke-width="3" marker-end="url(#arrowRed)" stroke-dasharray="8 5" />
+  </g>
+
+  <!-- Flow Labels on Paths -->
+  <g text-anchor="middle">
+    <!-- Pass label -->
+    <rect x="785" y="295" width="80" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="825" y="311" fill="#a7f3d0" class="label-badge">Pass 100%</text>
+
+    <rect x="440" y="395" width="80" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="480" y="411" fill="#a7f3d0" class="label-badge">200 OK</text>
+
+    <!-- Issue Detected Loop label -->
+    <rect x="880" y="375" width="100" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
+    <text x="930" y="391" fill="#fecdd3" class="label-badge">Issue Detected</text>
+
+    <rect x="55" y="410" width="100" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
+    <text x="105" y="426" fill="#fecdd3" class="label-badge">Feedback Loop</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- CARDS & STAGES (ROW 1 - INTAKE & PRE-DEPLOYMENT)                          -->
+  <!-- ========================================================================= -->
+  
+  <!-- 1. Changes in Code -->
+  <g transform="translate(20, 130)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">💻</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Changes in Code</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">Git Push / PR Trigger</text>
+    <rect x="45" y="112" width="80" height="16" rx="8" fill="#4338ca" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">DEVELOPER</text>
+  </g>
+
+  <!-- 2. Code Repository -->
+  <g transform="translate(260, 130)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🐙</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Code Repository</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">GitHub Webhooks</text>
+    <rect x="45" y="112" width="80" height="16" rx="8" fill="#4338ca" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">GITHUB MAIN</text>
+  </g>
+
+  <!-- 3. Build & Compile -->
+  <g transform="translate(500, 130)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#d97706" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🔨</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Build &amp; Compile</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">tsc strict + Docker</text>
+    <rect x="45" y="112" width="80" height="16" rx="8" fill="#b45309" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">ZERO ERRORS</text>
+  </g>
+
+  <!-- 4. Pre-Deployment Test -->
+  <g transform="translate(740, 130)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2" filter="url(#glowBlue)" />
+    <circle cx="85" cy="42" r="22" fill="#059669" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🔬</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Pre-Deploy Test</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">21 Suites • Node 20 &amp; 22</text>
+    <rect x="35" y="112" width="100" height="16" rx="8" fill="#047857" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">COVERAGE &gt; 90%</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- CARDS & STAGES (ROW 2 - STAGING & PRODUCTION)                             -->
+  <!-- ========================================================================= -->
+
+  <!-- 5. Staging Environment -->
+  <g transform="translate(740, 360)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#7e22ce" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🖥️</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Staging Env</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">Docker Non-Root CIS</text>
+    <rect x="40" y="112" width="90" height="16" rx="8" fill="#6b21a8" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">GHCR REGISTRY</text>
+  </g>
+
+  <!-- 6. Staging Smoke Tests -->
+  <g transform="translate(500, 360)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#14b8a6" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#0d9488" fill-opacity="0.2" stroke="#14b8a6" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🧪</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Staging Tests</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">/healthz Smoke 200 OK</text>
+    <rect x="45" y="112" width="80" height="16" rx="8" fill="#0f766e" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">HEALTH PROBE</text>
+  </g>
+
+  <!-- 7. Production Deployment -->
+  <g transform="translate(260, 360)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#22c55e" stroke-width="2.5" filter="url(#glowGreen)" />
+    <circle cx="85" cy="42" r="22" fill="#15803d" fill-opacity="0.2" stroke="#22c55e" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">🌐</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Production</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">Zero-Downtime Rollout</text>
+    <rect x="45" y="112" width="80" height="16" rx="8" fill="#15803d" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">LIVE &amp; STABLE</text>
+  </g>
+
+  <!-- 8. Monitor & Logging -->
+  <g transform="translate(20, 360)">
+    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#94a3b8" stroke-width="2" />
+    <circle cx="85" cy="42" r="22" fill="#475569" fill-opacity="0.2" stroke="#94a3b8" stroke-width="1.5" />
+    <text x="85" y="48" font-size="20" text-anchor="middle">📋</text>
+    <text x="85" y="82" class="card-title" text-anchor="middle">Monitor &amp; Logs</text>
+    <text x="85" y="100" class="card-desc" text-anchor="middle">Prometheus /metrics</text>
+    <rect x="35" y="112" width="100" height="16" rx="8" fill="#334155" />
+    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">AUTO-ROLLBACK</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SPECIAL ROW 3 - ISSUE DETECTED DEFENSE NODE & CERTIFICATION               -->
+  <!-- ========================================================================= -->
+  
+  <!-- 9. Issue Detected (Emergency Guard Node) -->
+  <g transform="translate(240, 520)">
+    <rect width="270" height="115" rx="18" fill="url(#alertGrad)" stroke="#f43f5e" stroke-width="2.5" filter="url(#glowRed)" />
+    <circle cx="45" cy="58" r="24" fill="#881337" stroke="#f43f5e" stroke-width="2" />
+    <text x="45" y="65" font-size="24" text-anchor="middle">⚠️</text>
+    <g transform="translate(85, 45)">
+      <text class="card-title" font-size="16" fill="#fecdd3">2. Issue Detected</text>
+      <text class="card-desc" y="20" fill="#fda4af">Halt Pipeline &amp; Alert Team</text>
+      <text class="card-desc" y="38" fill="#cbd5e1" font-size="11">Feedback Loop sends bug to dev</text>
+    </g>
+    <rect x="85" y="92" width="130" height="18" rx="9" fill="#be123c" />
+    <text x="150" y="104" fill="#ffffff" class="badge-text" text-anchor="middle">BLOCK DEPLOYMENT</text>
+  </g>
+
+  <!-- 10. All Tests Passed Certificate Badge -->
+  <g transform="translate(540, 520)">
+    <rect width="240" height="115" rx="18" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2" />
+    <circle cx="45" cy="58" r="24" fill="#065f46" stroke="#10b981" stroke-width="2" />
+    <text x="45" y="65" font-size="24" text-anchor="middle">🎖️</text>
+    <g transform="translate(85, 45)">
+      <text class="card-title" font-size="16" fill="#a7f3d0">All Tests Passed</text>
+      <text class="card-desc" y="20" fill="#6ee7b7">21/21 Automated Suites</text>
+      <text class="card-desc" y="38" fill="#94a3b8" font-size="11">Zero CVEs &bull; Hardened Docker</text>
+    </g>
+    <rect x="85" y="92" width="110" height="18" rx="9" fill="#059669" />
+    <text x="140" y="104" fill="#ffffff" class="badge-text" text-anchor="middle">VERIFIED READY</text>
+  </g>
+
+</svg>
