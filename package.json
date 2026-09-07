@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "node scripts/check-updates.js && tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest run",
@@ -13,7 +13,9 @@
     "typecheck": "tsc --noEmit",
     "cicd": "node scripts/open-cicd.js",
     "cicd:actions": "node scripts/open-cicd.js actions",
-    "sync": "git pull origin main"
+    "sync": "git pull origin main",
+    "check:team": "node scripts/check-updates.js",
+    "watch:team": "node scripts/watch-team.js"
   },
   "dependencies": {
     "express": "^4.22.2"

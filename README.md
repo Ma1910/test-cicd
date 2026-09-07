@@ -156,6 +156,19 @@ npm run cicd
 npm run cicd:actions
 ```
 
+### 5. 👥 Real-Time Team Push Alerts (Terminal Notification)
+Never code on stale branches! When teammates push new commits to GitHub:
+```bash
+# Check immediately if any teammate pushed new code:
+npm run check:team
+
+# Keep a background watcher open that alerts you the instant new code arrives:
+npm run watch:team
+
+# Pull and sync teammates' changes cleanly:
+npm run sync
+```
+
 ---
 
 ## 🧪 Real-World Failure Simulation
