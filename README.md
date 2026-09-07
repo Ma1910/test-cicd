@@ -60,39 +60,6 @@ Below is the complete visual representation of the CI/CD pipeline lifecycle, fro
   <img src="docs/pipeline-diagram.png" alt="CI/CD Enterprise Architecture Flowchart" width="100%" />
 </p>
 
-<details>
-<summary>🔍 <b>View Interactive Text Workflow (Mermaid DAG)</b></summary>
-
-```mermaid
-flowchart LR
-    %% Modern Palette & Pill/Card Styling
-    classDef dev fill:#312e81,stroke:#6366f1,stroke-width:2px,color:#ffffff;
-    classDef build fill:#b45309,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
-    classDef test fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff;
-    classDef issue fill:#881337,stroke:#f43f5e,stroke-width:2px,color:#ffffff;
-    classDef staging fill:#581c87,stroke:#a855f7,stroke-width:2px,color:#ffffff;
-    classDef prod fill:#14532d,stroke:#22c55e,stroke-width:2px,color:#ffffff;
-    classDef monitor fill:#1e293b,stroke:#94a3b8,stroke-width:2px,color:#ffffff;
-
-    %% 1. Code & Repository
-    Code["💻 Changes in Code"]:::dev --> Repo["🐙 Code Repository<br/>(Git Push / PR)"]:::dev
-    Repo --> Build["🔨 Build & Compile<br/>(Docker + TS)"]:::build
-
-    %% 2. Pre-Deployment Testing & Issue Detection Loop
-    Build --> PreTest["🔬 Pre-Deployment Test<br/>(Security + Matrix Test)"]:::test
-    PreTest -.->|Issue Detected| FailReport["⚠️ Issue Detected<br/>(Block & Alert)"]:::issue
-    FailReport -.->|Feedback Loop| Code
-
-    %% 3. Staging Environment & Smoke Testing
-    PreTest -->|All Tests Passed| StgEnv["🖥️ Staging Environment"]:::staging
-    StgEnv --> StgTest["🧪 Staging Tests<br/>(Smoke & Healthz Probe)"]:::staging
-
-    %% 4. Production & Continuous Monitoring
-    StgTest -->|Verified 200 OK| Prod["🌐 Production<br/>(Zero-Downtime Rollout)"]:::prod
-    Prod --> Monitor["📋 Monitor & Logging<br/>(Health Metric / Rollback Guard)"]:::monitor
-```
-
-</details>
 
 ---
 
