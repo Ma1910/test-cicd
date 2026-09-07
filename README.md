@@ -56,9 +56,9 @@ Think of software development like an automated modern car factory:
 
 Below is the complete visual representation of the CI/CD pipeline lifecycle, from code changes through pre-deployment testing, issue detection feedback loops, staging environments, to production and continuous telemetry:
 
-<div align="center">
-  <img src="docs/pipeline-diagram.svg" alt="CI/CD Enterprise Architecture Flowchart" width="100%" />
-</div>
+<p align="center">
+  <img src="docs/pipeline-diagram.png" alt="CI/CD Enterprise Architecture Flowchart" width="100%" />
+</p>
 
 <details>
 <summary>🔍 <b>View Interactive Text Workflow (Mermaid DAG)</b></summary>
@@ -210,7 +210,7 @@ To verify how the CI/CD pipeline catches and blocks broken code:
 
 - **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
 - **AI Agent Guidelines Directory**: [`.ai/`](https://github.com/Ma1910/test-cicd/tree/main/.ai) *(Claude, Cursor, Copilot, Windsurf rules)*
-- **Vector Flowchart Image Asset**: [`docs/pipeline-diagram.svg`](docs/pipeline-diagram.svg)
+- **Visual Architecture Flowchart**: [High-Resolution PNG](docs/pipeline-diagram.png) • [Vector SVG](docs/pipeline-diagram.svg)
 - **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
 - **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
 - **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)
