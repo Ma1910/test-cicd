@@ -18,6 +18,7 @@ FILES=(
   ".github/copilot-instructions.md"
   ".ai/README.md"
   ".ai/CLAUDE.md"
+  ".ai/PONYTAIL.md"
   ".ai/.cursorrules"
   ".ai/.windsurfrules"
   ".ai/AGENTS.md"

@@ -9,7 +9,22 @@ npm run sync
 ```
 
 ## Engineering Philosophy (Ponytail / Extreme Minimalism)
-- **Zero-Bloat**: Do NOT add new third-party dependencies unless strictly approved. Prefer Node.js standard libraries (`node:crypto`, `node:child_process`, etc.).
+Follow the **Ponytail Decision Ladder** (details in `.ai/PONYTAIL.md`):
+1. Does this need to be built at all? (YAGNI)
+2. Does it already exist in this codebase? Reuse existing helpers/patterns.
+3. Does the standard library do it? Prefer `node:crypto`, `node:fs`, `node:child_process`.
+4. Does an installed dependency solve it? Use Express/Vitest. Zero new packages.
+5. Can this be one line? Make it one line.
+6. Only then: write the minimum working code. Deletion over addition.
+
+### Ponytail Plugin for Claude Code:
+To enable the interactive Ponytail plugin in Claude Code CLI:
+```bash
+/plugin marketplace add DietrichGebert/ponytail
+/plugin install ponytail@ponytail
+```
+Commands: `/ponytail`, `/ponytail-review`, `/ponytail-audit`.
+
 - **Security-First**: Never commit secrets, API credentials, or unencrypted tokens (Trivy scanner will block the pipeline).
 - **Strict Typing**: All TypeScript types must be explicitly declared and strict (`tsconfig.json` ES2022). No loose `any`.
 

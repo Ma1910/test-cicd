@@ -9,6 +9,7 @@ This directory contains configuration, quality control standards, and developmen
 | File | Applied AI Tool | Description |
 | :--- | :--- | :--- |
 | [`CLAUDE.md`](./CLAUDE.md) | **Claude Code CLI & Anthropic AI** | Mandatory workflow: `npm run sync`, `typecheck`, `test:coverage`, and Ponytail minimalism. |
+| [`PONYTAIL.md`](./PONYTAIL.md) | **Ponytail Plugin & Framework** | Official Ponytail "Lazy Senior Dev" decision ladder & command reference. |
 | [`.cursorrules`](./.cursorrules) | **Cursor IDE & VS Code** | Context injection rules for Cursor Agent. |
 | [`.windsurfrules`](./.windsurfrules) | **Windsurf Cascade** | Cascade Agent verification rules before task conclusion. |
 | [`AGENTS.md`](./AGENTS.md) | **Antigravity & General Agents** | Universal AI Agent guidelines. |
