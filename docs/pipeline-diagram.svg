@@ -1,240 +1,335 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="1100" height="680">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1520 920" width="1520" height="920">
   <defs>
-    <!-- Background Gradients -->
-    <radialGradient id="bgGrad" cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color="#0f172a" />
-      <stop offset="100%" stop-color="#050811" />
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#0b1329" />
+      <stop offset="50%" stop-color="#060a17" />
+      <stop offset="100%" stop-color="#02040a" />
     </radialGradient>
     
     <!-- Card Gradients -->
     <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
-      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95" />
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.98" />
+    </linearGradient>
+
+    <linearGradient id="cardGradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#022c22" stop-opacity="0.98" />
     </linearGradient>
 
     <linearGradient id="alertGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4c0519" stop-opacity="0.9" />
-      <stop offset="100%" stop-color="#1e0a12" stop-opacity="0.95" />
+      <stop offset="0%" stop-color="#4c0519" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#1e0a12" stop-opacity="0.98" />
     </linearGradient>
 
     <!-- Markers for Arrows -->
-    <marker id="arrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#6366f1" />
     </marker>
-    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#f43f5e" />
     </marker>
-    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#06b6d4" />
     </marker>
   </defs>
 
   <style>
     .title-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 900; fill: #ffffff; }
     .subtitle-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; fill: #94a3b8; }
-    .card-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #f8fafc; }
-    .card-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; fill: #94a3b8; }
-    .badge-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
-    .path-flow { stroke-dasharray: 8 6; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #cbd5e1; }
+    .card-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; fill: #f8fafc; }
+    .card-sub { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #94a3b8; }
+    .card-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; fill: #94a3b8; }
+    .badge-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.6px; }
     .label-badge { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; }
   </style>
 
   <!-- Background Base -->
-  <rect width="100%" height="100%" fill="url(#bgGrad)" rx="24" />
+  <rect width="1520" height="920" fill="url(#bgGrad)" rx="28" />
   
-  <!-- Subtle Grid Pattern -->
-  <g stroke="rgba(99, 102, 241, 0.08)" stroke-width="1">
-    <line x1="0" y1="120" x2="1100" y2="120" />
-    <line x1="0" y1="360" x2="1100" y2="360" />
-    <line x1="0" y1="520" x2="1100" y2="520" />
-    <line x1="220" y1="0" x2="220" y2="680" />
-    <line x1="550" y1="0" x2="550" y2="680" />
-    <line x1="880" y1="0" x2="880" y2="680" />
-  </g>
-
-  <!-- Top Title Header -->
-  <g transform="translate(550, 55)" text-anchor="middle">
-    <text class="title-text" font-size="28" letter-spacing="0.5">CI/CD Enterprise Automation Architecture</text>
-    <text class="subtitle-text" y="28">End-to-End Visual Workflow: Code Intake • Pre-Deploy Gate • Staging Rollout • Production Defense</text>
+  <!-- Architectural Subtle Grid -->
+  <g stroke="rgba(99, 102, 241, 0.04)" stroke-width="1">
+    <line x1="0" y1="100" x2="1520" y2="100" />
+    <line x1="0" y1="380" x2="1520" y2="380" />
+    <line x1="0" y1="650" x2="1520" y2="650" />
+    <line x1="130" y1="0" x2="130" y2="920" />
+    <line x1="480" y1="0" x2="480" y2="920" />
+    <line x1="830" y1="0" x2="830" y2="920" />
+    <line x1="1180" y1="0" x2="1180" y2="920" />
   </g>
 
   <!-- ========================================================================= -->
-  <!-- CONNECTING LASER PATHS                                                    -->
+  <!-- HEADER & LEGEND                                                           -->
   <!-- ========================================================================= -->
+  <g transform="translate(760, 50)" text-anchor="middle">
+    <text class="title-text" font-size="30" letter-spacing="0.5">🚀 CI/CD Enterprise Automation Architecture</text>
+    <text class="subtitle-text" y="28">End-to-End Delivery Pipeline: Code Intake &#8226; Automated Quality Gates &#8226; Staging &#8226; Production &#8226; Telemetry</text>
+  </g>
+
+  <!-- Top Legend Badges -->
+  <g transform="translate(130, 95)">
+    <rect x="0" y="0" width="18" height="5" rx="2.5" fill="#6366f1" />
+    <text x="26" y="6" class="legend-text">Standard Pipeline Flow</text>
+    
+    <rect x="200" y="0" width="18" height="5" rx="2.5" fill="#10b981" />
+    <text x="226" y="6" class="legend-text">Pass / Verified Path</text>
+
+    <rect x="385" y="0" width="18" height="5" rx="2.5" fill="#f43f5e" stroke-dasharray="3 2" />
+    <text x="411" y="6" class="legend-text">Issue Detected / Feedback Loop</text>
+
+    <rect x="655" y="0" width="18" height="5" rx="2.5" fill="#06b6d4" />
+    <text x="681" y="6" class="legend-text">Continuous Telemetry</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- CONNECTING PATHS & ARROWS (ZERO-INTERSECTION HIGHWAY)                     -->
+  <!-- ========================================================================= -->
+  
   <g fill="none">
-    <!-- Main Sequential Flow: Changes -> Repo -> Build -->
-    <path d="M 190 190 L 260 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
-    <path d="M 430 190 L 500 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    <!-- 1. Tier 1 Sequential: Node 1 -> Node 2 -->
+    <path d="M 390 207 L 480 207" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
     
-    <!-- Build -> Pre-Deploy Test -->
-    <path d="M 670 190 L 740 190" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    <!-- 2. Tier 1 Sequential: Node 2 -> Node 3 -->
+    <path d="M 740 207 L 830 207" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
     
-    <!-- Pre-Deploy Test -> (Pass) -> Staging Environment -->
-    <path d="M 825 250 L 825 360" stroke="#10b981" stroke-width="3" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
-    
-    <!-- Staging Environment -> Staging Smoke Tests -->
-    <path d="M 740 420 L 670 420" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
-    
-    <!-- Staging Smoke Tests -> (Verified) -> Production & Monitoring -->
-    <path d="M 500 420 L 430 420" stroke="#10b981" stroke-width="3" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
-    
-    <!-- Production -> Monitor & Logging -->
-    <path d="M 260 420 L 190 420" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
+    <!-- 3. Tier 1 Sequential: Node 3 -> Node 4 -->
+    <path d="M 1090 207 L 1180 207" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
 
-    <!-- ISSUE DETECTED FEEDBACK LOOPS (RED LASERS) -->
-    <!-- Loop 1: Pre-Deploy Test -> Issue Detected -->
-    <path d="M 825 190 C 950 190, 950 580, 780 580" stroke="#f43f5e" stroke-width="3.5" marker-end="url(#arrowRed)" stroke-dasharray="8 4" />
+    <!-- 4. Tier 1 -> Tier 2 (Pass 100%): Node 4 -> Node 5 (Straight Clean Vertical Drop) -->
+    <path d="M 1310 275 L 1310 410" stroke="#10b981" stroke-width="3.5" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
 
-    <!-- Loop 2: Staging Smoke Test -> Issue Detected -->
-    <path d="M 585 480 C 585 540, 560 580, 510 580" stroke="#f43f5e" stroke-width="3" marker-end="url(#arrowRed)" stroke-dasharray="6 4" />
+    <!-- 5. Tier 2 Sequential: Node 5 -> Node 6 -->
+    <path d="M 1180 477 L 1090 477" stroke="#6366f1" stroke-width="3" marker-end="url(#arrowBlue)" stroke-dasharray="6 4" />
 
-    <!-- Loop 3: Issue Detected -> Changes in Code (Developer Re-work feedback) -->
-    <path d="M 240 580 C 105 580, 105 290, 105 250" stroke="#f43f5e" stroke-width="3" marker-end="url(#arrowRed)" stroke-dasharray="8 5" />
-  </g>
+    <!-- 6. Tier 2 Sequential (Pass 200 OK): Node 6 -> Node 7 -->
+    <path d="M 830 477 L 740 477" stroke="#10b981" stroke-width="3.5" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
 
-  <!-- Flow Labels on Paths -->
-  <g text-anchor="middle">
-    <!-- Pass label -->
-    <rect x="785" y="295" width="80" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
-    <text x="825" y="311" fill="#a7f3d0" class="label-badge">Pass 100%</text>
+    <!-- 7. Tier 2 Sequential (Telemetry): Node 7 -> Node 8 -->
+    <path d="M 480 477 L 390 477" stroke="#06b6d4" stroke-width="3" marker-end="url(#arrowCyan)" stroke-dasharray="6 4" />
 
-    <rect x="440" y="395" width="80" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
-    <text x="480" y="411" fill="#a7f3d0" class="label-badge">200 OK</text>
+    <!-- 8. Production -> Quality Gate Certified (Node 7 -> Node 10) -->
+    <!-- Direct vertical drop from Node 7 center down into Node 10 top -->
+    <path d="M 520 545 L 520 680" stroke="#10b981" stroke-width="3.5" marker-end="url(#arrowGreen)" stroke-dasharray="6 4" />
 
-    <!-- Issue Detected Loop label -->
-    <rect x="880" y="375" width="100" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
-    <text x="930" y="391" fill="#fecdd3" class="label-badge">Issue Detected</text>
+    <!-- ===================================================================== -->
+    <!-- FAILURE DETECTION LANES (RED) - ZERO OVERLAPS                         -->
+    <!-- ===================================================================== -->
 
-    <rect x="55" y="410" width="100" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
-    <text x="105" y="426" fill="#fecdd3" class="label-badge">Feedback Loop</text>
+    <!-- Fail Lane A: From Pre-Deploy Gate (Node 4) -> Issue Detected (Node 9) -->
+    <!-- Drops along the dedicated right outer margin (x = 1475), curves into Node 9 right side -->
+    <path d="M 1440 240 L 1475 240 L 1475 752 L 1300 752" stroke="#f43f5e" stroke-width="3.5" marker-end="url(#arrowRed)" stroke-dasharray="8 5" />
+
+    <!-- Fail Lane B: From Staging Smoke Probe (Node 6) -> Issue Detected (Node 9) -->
+    <!-- Clean, direct vertical drop from bottom of Node 6 (960, 545) into top of Node 9 (960, 680) -->
+    <path d="M 960 545 L 960 680" stroke="#f43f5e" stroke-width="3.5" marker-end="url(#arrowRed)" stroke-dasharray="8 5" />
+
+    <!-- Fail Lane C: Feedback Loop from Node 9 back to Node 1 (Developer Workstation) -->
+    <!-- Drops from bottom of Node 9 (1065, 825) down to y = 875, runs along bottom gutter to x = 60, then straight UP to Node 1 (130, 207) -->
+    <path d="M 1065 825 L 1065 875 L 60 875 L 60 207 L 130 207" stroke="#f43f5e" stroke-width="3.5" marker-end="url(#arrowRed)" stroke-dasharray="8 5" />
   </g>
 
   <!-- ========================================================================= -->
-  <!-- CARDS & STAGES (ROW 1 - INTAKE & PRE-DEPLOYMENT)                          -->
+  <!-- EXPLANATORY LABELS & BADGES ON PATHS                                      -->
   <!-- ========================================================================= -->
   
-  <!-- 1. Changes in Code -->
-  <g transform="translate(20, 130)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">💻</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Changes in Code</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">Git Push / PR Trigger</text>
-    <rect x="45" y="112" width="80" height="16" rx="8" fill="#4338ca" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">DEVELOPER</text>
-  </g>
+  <g text-anchor="middle">
+    <!-- Path 1->2 Label -->
+    <rect x="400" y="195" width="70" height="24" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+    <text x="435" y="211" fill="#c7d2fe" class="label-badge">Push Event</text>
 
-  <!-- 2. Code Repository -->
-  <g transform="translate(260, 130)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🐙</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Code Repository</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">GitHub Webhooks</text>
-    <rect x="45" y="112" width="80" height="16" rx="8" fill="#4338ca" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">GITHUB MAIN</text>
-  </g>
+    <!-- Path 2->3 Label -->
+    <rect x="750" y="195" width="70" height="24" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+    <text x="785" y="211" fill="#c7d2fe" class="label-badge">Trigger CI</text>
 
-  <!-- 3. Build & Compile -->
-  <g transform="translate(500, 130)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#d97706" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🔨</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Build &amp; Compile</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">tsc strict + Docker</text>
-    <rect x="45" y="112" width="80" height="16" rx="8" fill="#b45309" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">ZERO ERRORS</text>
-  </g>
+    <!-- Path 3->4 Label -->
+    <rect x="1100" y="195" width="70" height="24" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+    <text x="1135" y="211" fill="#c7d2fe" class="label-badge">Build OK</text>
 
-  <!-- 4. Pre-Deployment Test -->
-  <g transform="translate(740, 130)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2.5" />
-    <circle cx="85" cy="42" r="22" fill="#059669" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🔬</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Pre-Deploy Test</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">21 Suites • Node 20 &amp; 22</text>
-    <rect x="35" y="112" width="100" height="16" rx="8" fill="#047857" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">COVERAGE &gt; 90%</text>
+    <!-- Path 4->5 Pass Label (Vertical Drop) -->
+    <rect x="1245" y="330" width="130" height="26" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="2" />
+    <text x="1310" y="347" fill="#a7f3d0" class="label-badge">&#10004; PASS 100% SUITES</text>
+
+    <!-- Path 5->6 Label -->
+    <rect x="1100" y="465" width="70" height="24" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+    <text x="1135" y="481" fill="#c7d2fe" class="label-badge">Run Smoke</text>
+
+    <!-- Path 6->7 Pass Label -->
+    <rect x="750" y="464" width="70" height="26" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="785" y="481" fill="#a7f3d0" class="label-badge">&#10004; 200 OK</text>
+
+    <!-- Path 7->8 Telemetry Label -->
+    <rect x="400" y="465" width="70" height="24" rx="6" fill="#083344" stroke="#06b6d4" stroke-width="1.5" />
+    <text x="435" y="481" fill="#a5f3fc" class="label-badge">Telemetry</text>
+
+    <!-- Path 7->10 Promotion to Certified Label -->
+    <rect x="455" y="598" width="130" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="520" y="614" fill="#a7f3d0" class="label-badge">&#10004; Production Ready</text>
+
+    <!-- Fail Label A (Right margin) -->
+    <g transform="translate(1475, 490) rotate(90)">
+      <rect x="-65" y="-12" width="130" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
+      <text x="0" y="4" fill="#fecdd3" class="label-badge">&#10008; Test/Security Fail</text>
+    </g>
+
+    <!-- Fail Label B (Middle vertical drop) -->
+    <rect x="895" y="600" width="130" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
+    <text x="960" y="616" fill="#fecdd3" class="label-badge">&#10008; HTTP != 200 Fail</text>
+
+    <!-- Feedback Loop Label (Outer Bottom & Left Margin) -->
+    <rect x="420" y="863" width="220" height="26" rx="8" fill="#881337" stroke="#f43f5e" stroke-width="2" />
+    <text x="530" y="880" fill="#fecdd3" class="label-badge">🔄 Feedback Loop: Auto-Notify Developer</text>
+
+    <g transform="translate(60, 480) rotate(-90)">
+      <rect x="-65" y="-12" width="130" height="24" rx="6" fill="#881337" stroke="#f43f5e" stroke-width="1.5" />
+      <text x="0" y="4" fill="#fecdd3" class="label-badge">Terminal Push Alert</text>
+    </g>
   </g>
 
   <!-- ========================================================================= -->
-  <!-- CARDS & STAGES (ROW 2 - STAGING & PRODUCTION)                             -->
+  <!-- TIER 1 CARDS: INTAKE & COMPILATION                                        -->
   <!-- ========================================================================= -->
 
-  <!-- 5. Staging Environment -->
-  <g transform="translate(740, 360)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#7e22ce" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🖥️</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Staging Env</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">Docker Non-Root CIS</text>
-    <rect x="40" y="112" width="90" height="16" rx="8" fill="#6b21a8" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">GHCR REGISTRY</text>
+  <!-- Card 1: Changes in Code -->
+  <g transform="translate(130, 140)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">💻</text>
+    <text x="80" y="40" class="card-title">1. Code Changes</text>
+    <text x="80" y="58" class="card-sub">Developer Workstation</text>
+    <text x="25" y="86" class="card-desc">Features, Bugfixes, PR submission</text>
+    <text x="25" y="102" class="card-desc">Triggers via git push origin main</text>
+    <rect x="25" y="112" width="90" height="16" rx="8" fill="#4338ca" />
+    <text x="70" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">DEVELOPER</text>
   </g>
 
-  <!-- 6. Staging Smoke Tests -->
-  <g transform="translate(500, 360)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#14b8a6" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#0d9488" fill-opacity="0.2" stroke="#14b8a6" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🧪</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Staging Tests</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">/healthz Smoke 200 OK</text>
-    <rect x="45" y="112" width="80" height="16" rx="8" fill="#0f766e" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">HEALTH PROBE</text>
+  <!-- Card 2: Code Repository -->
+  <g transform="translate(480, 140)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#4f46e5" fill-opacity="0.2" stroke="#6366f1" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🐙</text>
+    <text x="80" y="40" class="card-title">2. Repository</text>
+    <text x="80" y="58" class="card-sub">GitHub Actions Engine</text>
+    <text x="25" y="86" class="card-desc">Event webhook ingestion &amp; orchestration</text>
+    <text x="25" y="102" class="card-desc">Dispatches parallel Ubuntu runners</text>
+    <rect x="25" y="112" width="100" height="16" rx="8" fill="#4338ca" />
+    <text x="75" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">BRANCH: MAIN</text>
   </g>
 
-  <!-- 7. Production Deployment -->
-  <g transform="translate(260, 360)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#22c55e" stroke-width="2.5" />
-    <circle cx="85" cy="42" r="22" fill="#15803d" fill-opacity="0.2" stroke="#22c55e" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">🌐</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Production</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">Zero-Downtime Rollout</text>
-    <rect x="45" y="112" width="80" height="16" rx="8" fill="#15803d" />
-    <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">LIVE &amp; STABLE</text>
+  <!-- Card 3: Build & Compile -->
+  <g transform="translate(830, 140)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#d97706" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🔨</text>
+    <text x="80" y="40" class="card-title">3. Build &amp; Compile</text>
+    <text x="80" y="58" class="card-sub">TypeScript Strict Check</text>
+    <text x="25" y="86" class="card-desc">Zero type errors tolerance (tsc --noEmit)</text>
+    <text x="25" y="102" class="card-desc">Multi-stage Docker bundle creation</text>
+    <rect x="25" y="112" width="95" height="16" rx="8" fill="#b45309" />
+    <text x="72" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">ZERO ERRORS</text>
   </g>
 
-  <!-- 8. Monitor & Logging -->
-  <g transform="translate(20, 360)">
-    <rect width="170" height="120" rx="16" fill="url(#cardGrad)" stroke="#94a3b8" stroke-width="2" />
-    <circle cx="85" cy="42" r="22" fill="#475569" fill-opacity="0.2" stroke="#94a3b8" stroke-width="1.5" />
-    <text x="85" y="48" font-size="20" text-anchor="middle">📋</text>
-    <text x="85" y="82" class="card-title" text-anchor="middle">Monitor &amp; Logs</text>
-    <text x="85" y="100" class="card-desc" text-anchor="middle">Prometheus /metrics</text>
-    <rect x="35" y="112" width="100" height="16" rx="8" fill="#334155" />
+  <!-- Card 4: Pre-Deployment Tests -->
+  <g transform="translate(1180, 140)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2.5" />
+    <circle cx="45" cy="45" r="22" fill="#059669" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🔬</text>
+    <text x="80" y="40" class="card-title">4. Pre-Deploy Tests</text>
+    <text x="80" y="58" class="card-sub">Matrix &amp; Security Scan</text>
+    <text x="25" y="86" class="card-desc">Parallel Matrix: Node.js 20 &amp; 22 LTS</text>
+    <text x="25" y="102" class="card-desc">21 Suites &#8226; Trivy Secret &amp; Vulnerability</text>
+    <rect x="25" y="112" width="115" height="16" rx="8" fill="#047857" />
+    <text x="82" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">COVERAGE &gt; 80%</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- TIER 2 CARDS: STAGING TO PRODUCTION RELEASE                               -->
+  <!-- ========================================================================= -->
+
+  <!-- Card 5: Staging Environment -->
+  <g transform="translate(1180, 410)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#7e22ce" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🖥️</text>
+    <text x="80" y="40" class="card-title">5. Staging Env</text>
+    <text x="80" y="58" class="card-sub">Container Registry Sandbox</text>
+    <text x="25" y="86" class="card-desc">Published to GHCR Container Registry</text>
+    <text x="25" y="102" class="card-desc">Hardened Alpine &#8226; Non-root UID 1000</text>
+    <rect x="25" y="112" width="105" height="16" rx="8" fill="#6b21a8" />
+    <text x="77" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">GHCR REGISTRY</text>
+  </g>
+
+  <!-- Card 6: Staging Smoke Tests -->
+  <g transform="translate(830, 410)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#14b8a6" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#0d9488" fill-opacity="0.2" stroke="#14b8a6" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🧪</text>
+    <text x="80" y="40" class="card-title">6. Staging Smoke</text>
+    <text x="80" y="58" class="card-sub">Live Endpoint Probe</text>
+    <text x="25" y="86" class="card-desc">curl -f http://staging:3000/healthz</text>
+    <text x="25" y="102" class="card-desc">Guarantees HTTP 200 &amp; latency &lt; 20ms</text>
+    <rect x="25" y="112" width="100" height="16" rx="8" fill="#0f766e" />
+    <text x="75" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">HEALTH PROBE</text>
+  </g>
+
+  <!-- Card 7: Production Deployment -->
+  <g transform="translate(480, 410)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#22c55e" stroke-width="2.5" />
+    <circle cx="45" cy="45" r="22" fill="#15803d" fill-opacity="0.2" stroke="#22c55e" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">🌐</text>
+    <text x="80" y="40" class="card-title">7. Production</text>
+    <text x="80" y="58" class="card-sub">Zero-Downtime Rollout</text>
+    <text x="25" y="86" class="card-desc">Seamless traffic switch to live pods</text>
+    <text x="25" y="102" class="card-desc">Protected by automated rollback hooks</text>
+    <rect x="25" y="112" width="100" height="16" rx="8" fill="#15803d" />
+    <text x="75" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">LIVE &amp; STABLE</text>
+  </g>
+
+  <!-- Card 8: Monitor & Observability -->
+  <g transform="translate(130, 410)">
+    <rect width="260" height="135" rx="16" fill="url(#cardGrad)" stroke="#06b6d4" stroke-width="2" />
+    <circle cx="45" cy="45" r="22" fill="#0e7490" fill-opacity="0.2" stroke="#06b6d4" stroke-width="1.5" />
+    <text x="45" y="52" font-size="22" text-anchor="middle">📊</text>
+    <text x="80" y="40" class="card-title">8. Monitor &amp; Logs</text>
+    <text x="80" y="58" class="card-sub">Observability &amp; Guard</text>
+    <text x="25" y="86" class="card-desc">Prometheus /metrics telemetry</text>
+    <text x="25" y="102" class="card-desc">Real-time alerts &amp; regression detection</text>
+    <rect x="25" y="112" width="120" height="16" rx="8" fill="#0891b2" />
     <text x="85" y="123" fill="#ffffff" class="badge-text" text-anchor="middle">AUTO-ROLLBACK</text>
   </g>
 
   <!-- ========================================================================= -->
-  <!-- SPECIAL ROW 3 - ISSUE DETECTED DEFENSE NODE & CERTIFICATION               -->
+  <!-- TIER 3: QUALITY CERTIFICATION (LEFT) & DEFENSE GUARD (RIGHT)              -->
   <!-- ========================================================================= -->
-  
-  <!-- 9. Issue Detected (Emergency Guard Node) -->
-  <g transform="translate(240, 520)">
-    <rect width="270" height="115" rx="18" fill="url(#alertGrad)" stroke="#f43f5e" stroke-width="2.5" />
-    <circle cx="45" cy="58" r="24" fill="#881337" stroke="#f43f5e" stroke-width="2" />
-    <text x="45" y="65" font-size="24" text-anchor="middle">⚠️</text>
-    <g transform="translate(85, 45)">
-      <text class="card-title" font-size="16" fill="#fecdd3">2. Issue Detected</text>
-      <text class="card-desc" y="20" fill="#fda4af">Halt Pipeline &amp; Alert Team</text>
-      <text class="card-desc" y="38" fill="#cbd5e1" font-size="11">Feedback Loop sends bug to dev</text>
-    </g>
-    <rect x="85" y="92" width="130" height="18" rx="9" fill="#be123c" />
-    <text x="150" y="104" fill="#ffffff" class="badge-text" text-anchor="middle">BLOCK DEPLOYMENT</text>
+
+  <!-- Card 10: All Quality Checks Passed (Certification Node - Left) -->
+  <g transform="translate(130, 680)">
+    <rect width="470" height="145" rx="18" fill="url(#cardGradGreen)" stroke="#10b981" stroke-width="2.5" />
+    <circle cx="50" cy="50" r="26" fill="#065f46" stroke="#10b981" stroke-width="2" />
+    <text x="50" y="58" font-size="28" text-anchor="middle">🎖️</text>
+    <text x="95" y="45" class="card-title" fill="#a7f3d0" font-size="18">10. Quality Gate Certified</text>
+    <text x="95" y="65" class="card-sub" fill="#6ee7b7">Production-Grade Standards Achieved</text>
+    <text x="25" y="96" class="card-desc" fill="#d1fae5">&#8226; Verified: 21/21 Automated suites passed across Node 20 &amp; 22 runners</text>
+    <text x="25" y="115" class="card-desc" fill="#d1fae5">&#8226; Security: Zero High/Critical CVEs &#8226; &gt;94% Code coverage &#8226; Hardened container</text>
+    <rect x="25" y="125" width="135" height="15" rx="7.5" fill="#059669" />
+    <text x="92" y="136" fill="#ffffff" class="badge-text" text-anchor="middle">READY FOR LIVE</text>
   </g>
 
-  <!-- 10. All Tests Passed Certificate Badge -->
-  <g transform="translate(540, 520)">
-    <rect width="240" height="115" rx="18" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2.5" />
-    <circle cx="45" cy="58" r="24" fill="#065f46" stroke="#10b981" stroke-width="2" />
-    <text x="45" y="65" font-size="24" text-anchor="middle">🎖️</text>
-    <g transform="translate(85, 45)">
-      <text class="card-title" font-size="16" fill="#a7f3d0">All Tests Passed</text>
-      <text class="card-desc" y="20" fill="#6ee7b7">21/21 Automated Suites</text>
-      <text class="card-desc" y="38" fill="#94a3b8" font-size="11">Zero CVEs &#8226; Hardened Docker</text>
-    </g>
-    <rect x="85" y="92" width="110" height="18" rx="9" fill="#059669" />
-    <text x="140" y="104" fill="#ffffff" class="badge-text" text-anchor="middle">VERIFIED READY</text>
+  <!-- Card 9: Issue Detected & Block Deployment (Emergency Node - Right) -->
+  <g transform="translate(830, 680)">
+    <rect width="470" height="145" rx="18" fill="url(#alertGrad)" stroke="#f43f5e" stroke-width="2.5" />
+    <circle cx="50" cy="50" r="26" fill="#881337" stroke="#f43f5e" stroke-width="2" />
+    <text x="50" y="58" font-size="28" text-anchor="middle">🚨</text>
+    <text x="95" y="45" class="card-title" fill="#fecdd3" font-size="18">9. Issue Detected &amp; Blocked</text>
+    <text x="95" y="65" class="card-sub" fill="#fda4af">Pipeline Interrupted &#8226; Production Shielded</text>
+    <text x="25" y="96" class="card-desc" fill="#fecdd3">&#8226; Triggered by: Secret leak, TypeScript error, test failure, or smoke probe failure</text>
+    <text x="25" y="115" class="card-desc" fill="#fecdd3">&#8226; Action: Instantly fires terminal push alert &amp; opens feedback loop to developer</text>
+    <rect x="25" y="125" width="155" height="15" rx="7.5" fill="#be123c" />
+    <text x="102" y="136" fill="#ffffff" class="badge-text" text-anchor="middle">BLOCK DEPLOYMENT</text>
   </g>
 
 </svg>
