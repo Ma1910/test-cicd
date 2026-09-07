@@ -120,6 +120,18 @@ This project implements a full production-ready microservice backend with **zero
 
 ---
 
+## ⚡ Cài Đặt Vào Bất Kỳ Đồ Án Mới Nào (Đúng 1 Câu Lệnh)
+
+Muốn mang toàn bộ hệ thống CI/CD, Docker, AI rules và Team Alert này sang bất kỳ đồ án mới nào? Mở terminal tại thư mục đồ án mới và chạy **đúng 1 lệnh**:
+
+```bash
+# Tự động tải .github, .ai, Dockerfile, scripts, vitest và cấu hình package.json:
+npx https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js
+```
+*(Hoặc dùng lệnh node nhanh nếu tải file: `node -e "fetch('https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js').then(r=>r.text()).then(eval)"`)*
+
+---
+
 ## 💻 Local Quickstart (3 Steps)
 
 This repository contains real, production-ready code. You can verify it locally:
