@@ -96,21 +96,48 @@ This project implements a full production-ready microservice backend with **zero
 
 ---
 
-## ⚡ Instant Setup for Any New Project (One Command)
+## 📥 Download & Run Locally
 
-Want to install this entire CI/CD pipeline, Dockerfile, AI guidelines, and Team Alert system into any new project? Run **one command** in your project terminal:
+Get this complete CI/CD automation platform onto your computer in seconds:
 
+#### 🪟 Windows (PowerShell)
+```powershell
+git clone https://github.com/Ma1910/test-cicd.git; cd test-cicd; npm install; npm run dev
+```
+
+#### 🐧 Linux & 🍎 macOS (Bash / Zsh)
+```bash
+git clone https://github.com/Ma1910/test-cicd.git && cd test-cicd && npm install && npm run dev
+```
+
+---
+
+## ⚡ 1-Command Bootstrap for Any Existing Project
+
+Want to install this entire CI/CD pipeline, Dockerfile, AI agent guidelines, and Team Alert watcher into your own new or existing project? Run **one command** in your terminal:
+
+#### 🪟 Windows (PowerShell)
+```powershell
+irm https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.ps1 | iex
+```
+
+#### 🐧 Linux & 🍎 macOS (Bash / Curl)
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.sh | bash
+```
+
+#### 📦 Cross-Platform (Node.js)
 ```bash
 node -e "fetch('https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js').then(r=>r.text()).then(eval)"
 ```
 
-*This automatically fetches `.github/workflows/`, `.ai/` rules, `Dockerfile`, scripts, testing configurations, and registers npm scripts into `package.json`.*
+*This automatically downloads `.github/workflows/`, `.ai/` guidelines, `Dockerfile`, scripts, testing configurations, and registers npm scripts into `package.json`.*
 
 ---
 
-## 💻 Local Quickstart (3 Steps)
+## 💻 Local Quickstart (Verification)
 
-This repository contains real, production-ready code. You can verify it locally:
+Once cloned or installed, verify the platform with simple npm commands:
 
 ### 1. Start Development Server
 ```bash
@@ -176,6 +203,7 @@ To verify how the CI/CD pipeline catches and blocks broken code:
 ## 🔗 Live Artifacts & Quick Links
 
 - **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
+- **1-Command Bootstrap Scripts**: [PowerShell (Windows)](setup.ps1) • [Bash (Linux/macOS)](setup.sh) • [Node.js](setup.js)
 - **AI Agent Guidelines Directory**: [`.ai/`](https://github.com/Ma1910/test-cicd/tree/main/.ai) *(Claude, Cursor, Copilot, Windsurf rules)*
 - **Visual Architecture Flowchart**: [High-Resolution PNG](docs/pipeline-diagram.png) • [Vector SVG](docs/pipeline-diagram.svg)
 - **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
