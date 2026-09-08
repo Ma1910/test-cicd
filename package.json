@@ -5,19 +5,21 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/check-updates.js && tsx watch src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:smoke": "vitest run -t health",
-    "typecheck": "tsc --noEmit",
-    "lint": "tsc --noEmit",
-    "cicd": "node scripts/open-cicd.js",
-    "cicd:actions": "node scripts/open-cicd.js actions",
+    "docker:build": "docker build -t test-cicd .",
+    "docker:dev": "docker compose up -d",
+    "docker:prod": "docker compose -f docker-compose.prod.yml up -d",
+    "docker:down": "docker compose down",
     "sync": "git pull origin main",
     "check:team": "node scripts/check-updates.js",
-    "watch:team": "node scripts/watch-team.js"
+    "cicd:web": "node scripts/open-cicd.js"
   },
   "dependencies": {
     "express": "^4.22.2"

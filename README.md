@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  <!-- Interactive Live Simulator Launch Button for Visitors -->
+  <!-- Interactive Live Simulator Launch Button -->
   <a href="https://ma1910.github.io/test-cicd/" target="_blank">
     <img src="https://img.shields.io/badge/🎮_LAUNCH_LIVE_INTERACTIVE_SIMULATOR-ONLINE_PLAYGROUND-6366f1?style=for-the-badge&logo=rocket&logoColor=white" alt="Launch Interactive Simulator" />
   </a>
@@ -10,205 +10,167 @@
   <br/><br/>
 
   <p align="center">
-    <em>A production-ready CI/CD showcase designed with Senior DevOps best practices: Shift-Left Security, Parallel Matrix Testing, 80% Coverage Gate, Container Hardening, and Real-Time Team Notifications.</em>
+    <em>Nền tảng CI/CD Production chuẩn hóa theo triết lý Ponytail: Tối giản, an toàn cao, tự động kiểm thử toàn diện, đóng gói Docker hardened, triển khai qua SSH với cơ chế tự động Rollback khi gặp sự cố.</em>
   </p>
 
 </div>
 
 ---
 
-## 🎮 Interactive Pipeline Simulator (For Visitors)
+## 📚 Mục Lục & Tài Liệu Kỹ Thuật
 
-> **Try It Yourself Online!** Anyone visiting this repository can interact with the live animated pipeline directly in the browser:
->
-> 👉 **[Open Full-Screen Live Simulator](https://ma1910.github.io/test-cicd/)**
->
-> - 🟢 **Trigger Real-Time Pipeline Runs**: Watch animated laser signals flow through nodes with dynamic status updates.
-> - 🧪 **Simulate 8 Real-World Enterprise Failure Scenarios**:
->   - 🟢 `Pass 100%`: Full green run with 21/21 automated tests straight into production.
->   - 🔴 `Leaked Secret Key`: Trivy blocks unencrypted API tokens before runners trigger.
->   - 🔴 `TypeScript Error`: Type mismatch halts Stage 1 immediately (`tsc --noEmit`).
->   - 🔴 `RBAC Matrix Failure`: Privilege escalation regression caught by Vitest.
->   - 🟡 `Coverage < 80% Gate`: Rejects build if test coverage drops below strict threshold.
->   - 🔴 `Trivy SAST CVE`: High/Critical CVE in dependencies blocks container building.
->   - 🔴 `Docker Root User Fail`: Fails CIS Benchmark policy if running as root UID 0.
->   - 🔴 `Staging Smoke Test Fail`: HTTP 500 triggers auto-rollback, guarding Production.
-> - 🔍 **Click-to-Inspect Nodes**: Tap any technology card to view technical criteria and command implementation.
-
----
-
-## 💡 What is CI/CD? (Simplified)
-
-Think of software development like an automated modern car factory:
-
-| Traditional Manual Process | Automated CI/CD (This Platform) |
+| Tài liệu / Liên kết | Mô tả chi tiết |
 | :--- | :--- |
-| ❌ Manually running test commands on your local laptop. | ✅ **100% Automated**: Pushing code immediately triggers full end-to-end verification. |
-| ❌ Risk of committing leaked secrets, API keys, or tokens. | ✅ **Shift-Left Security Gate**: Trivy scans every commit to detect and block secret leaks immediately. |
-| ❌ "Works on my machine" bugs when deploying to servers. | ✅ **Multi-Environment Matrix**: Runs tests simultaneously on both **Node.js 20 LTS** and **Node.js 22 LTS**. |
-| ❌ High risk of deploying broken code to production. | ✅ **Strict Quality Gates**: Rejects builds if code coverage falls below 80% or any CVE is detected. |
-
-> **Bottom Line**: Developers simply write code and push (`git push origin main`). Quality, security, and packaging happen completely automatically.
+| 🎮 **[Live Interactive Simulator](https://ma1910.github.io/test-cicd/)** | Trình mô phỏng trực tuyến luồng pipeline và 8 kịch bản lỗi trên GitHub Pages. |
+| 📖 **[docs/CI-CD.md](docs/CI-CD.md)** | Tài liệu kiến trúc CI/CD, Git workflow, tiêu chuẩn bảo mật và chiến lược Rollback. |
+| 🚢 **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** | Hướng dẫn từng bước thiết lập máy chủ VPS, tường lửa, Docker, Nginx và SSH deploy. |
+| 🛡️ **[Workflows CI/CD](.github/workflows/ci.yml)** | Định nghĩa luồng kiểm thử tự động, build Docker và deploy production. |
 
 ---
 
-## 🗺️ Visual Pipeline Flowchart Architecture
+## 📁 Cấu Trúc Thư Mục Chuẩn Hóa (Clean Repository Structure)
 
-Below is the complete visual representation of the CI/CD pipeline lifecycle, from code changes through pre-deployment testing, issue detection feedback loops, staging environments, to production and continuous telemetry:
+Dự án đã được sắp xếp khoa học, tách biệt rõ ràng giữa mã nguồn, kiểm thử, cấu hình triển khai và tài liệu:
 
-<p align="center">
-  <img src="docs/pipeline-diagram.png" alt="CI/CD Enterprise Architecture Flowchart" width="100%" />
-</p>
-
-
----
-
-## 🛡️ 7 Production-Grade Defense Gates
-
-1. **[Secret Leak Scanner](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L18-L33)**:
-   - Scans the entire Git history on every commit for credentials, tokens, and private keys. Fails immediately upon detection to protect accounts.
-2. **[TypeScript Strict Check](https://github.com/Ma1910/test-cicd/blob/main/tsconfig.json)**:
-   - Enforces strict static type verification (`tsc --noEmit`). Zero tolerance for type mismatches.
-3. **[Parallel Matrix Testing](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L56-L102)**:
-   - Validates test suites simultaneously across **Node.js 20 LTS** and **Node.js 22 LTS** runners in parallel.
-4. **[Coverage Threshold Gate](https://github.com/Ma1910/test-cicd/blob/main/vitest.config.ts)**:
-   - Enforces an automated quality gate in Vitest: any commit with less than **80% code coverage** fails the pipeline. Currently achieving **>94% Code Coverage** across 21 test suites.
-5. **[Docker Image Hardening](https://github.com/Ma1910/test-cicd/blob/main/Dockerfile)**:
-   - Minimal Alpine base image running under unprivileged user `node:node` (CIS Benchmark compliance). Scans images for CRITICAL/HIGH CVEs before publishing.
-6. **[Staging Smoke Test](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L213-L235)**:
-   - Probes the deployed service `/healthz` endpoint to confirm `200 OK` HTTP status and latency under 20ms before promoting to production.
-7. **[Production Rollback Guard](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml#L237-L264)**:
-   - Automated post-deployment verifier. If health validation fails, an automated rollback hook reverts to the previous stable release.
-
----
-
-## 🏛️ Enterprise Architecture Overview
-
-This project implements a full production-ready microservice backend with **zero bloated third-party runtime dependencies** (pure Node.js & Express):
-
-| Module | Implementation | Security & Standards |
-| :--- | :--- | :--- |
-| **🔐 Authentication & RBAC** | `src/auth.service.ts` | SHA-256 secure tokens with TTL & Role-Based Access Control (`admin` vs `user`). |
-| **📦 Products Catalog CRUD** | `src/products.service.ts` | Search, category filtering, strict input sanitization, and data validation. |
-| **📊 Observability & Metrics** | `src/metrics.service.ts` | Prometheus `/metrics` exporter (requests, memory RSS, HTTP status breakdown). |
-| **🛡️ Application Shield** | `src/app.ts` | In-memory IP Rate Limiting, payload size caps (`100kb`), `x-powered-by` disabled. |
-| **🧪 Comprehensive Testing** | `tests/app.test.ts` | **21 automated unit & integration tests** exceeding mandatory 80% coverage threshold. |
-
----
-
-## 📥 Download & Run Locally
-
-Get this complete CI/CD automation platform onto your computer in seconds:
-
-#### 🪟 Windows (PowerShell)
-```powershell
-git clone https://github.com/Ma1910/test-cicd.git; cd test-cicd; npm install; npm run dev
+```text
+.
+├── .github/                  # Cấu hình GitHub Actions CI/CD và quy chuẩn Copilot
+│   ├── copilot-instructions.md
+│   └── workflows/
+│       ├── ci.yml            # Pipeline chính: Quality Gate ➔ Docker GHCR ➔ Deploy Production
+│       └── pages.yml         # Tự động xuất bản tài liệu & Simulator lên GitHub Pages
+├── docs/                     # Toàn bộ tài liệu kỹ thuật & sơ đồ kiến trúc
+│   ├── CI-CD.md              # Thiết kế chi tiết hệ thống CI/CD
+│   ├── DEPLOYMENT.md         # Hướng dẫn deploy máy chủ VPS thực tế
+│   ├── index.html            # Mã nguồn trang Interactive Simulator
+│   ├── pipeline-diagram.png  # Sơ đồ kiến trúc độ phân giải cao
+│   └── pipeline-diagram.svg  # Sơ đồ kiến trúc vector
+├── nginx/                    # Cấu hình Reverse Proxy Nginx cho production
+│   └── nginx.conf            # Gzip, SSL termination & Security headers
+├── scripts/                  # Toàn bộ script cài đặt và hỗ trợ vận hành
+│   ├── setup.ps1             # Cài đặt 1-click cho Windows PowerShell
+│   ├── setup.sh              # Cài đặt 1-click cho Linux / macOS
+│   ├── setup.js              # Cài đặt cross-platform Node.js
+│   ├── check-updates.js      # Kiểm tra cập nhật mới từ đồng đội
+│   ├── open-cicd.js          # Mở nhanh dashboard và simulator
+│   └── watch-team.js         # Lắng nghe thông báo push commit theo thời gian thực
+├── src/                      # Mã nguồn ứng dụng (Microservice TypeScript)
+│   ├── app.ts                # Khởi tạo Express API & Routing
+│   ├── auth.service.ts       # Xác thực JWT & phân quyền RBAC
+│   ├── dashboard.template.ts # Giao diện Web Dashboard tích hợp laser simulator
+│   ├── git.service.ts        # Quản lý và trích xuất commit thực tế
+│   ├── health.template.ts    # Giao diện giám sát sức khỏe (/healthz)
+│   ├── index.ts              # Entrypoint server & Graceful Shutdown
+│   ├── metrics.service.ts    # Prometheus telemetry exporter
+│   └── products.service.ts   # Quản lý tài nguyên sản phẩm
+├── tests/                    # Bộ kiểm thử tự động
+│   └── app.test.ts           # 26 bài test Unit & Integration (Vitest + Supertest)
+├── .dockerignore             # Loại trừ file rác khi build Docker
+├── .env.example              # Mẫu biến môi trường an toàn (không lộ secret)
+├── .gitignore                # Chặn rò rỉ secret và file biên dịch tạm
+├── docker-compose.yml        # Khởi chạy môi trường local / development
+├── docker-compose.prod.yml   # Khởi chạy production (giới hạn RAM/CPU, log rotation)
+├── Dockerfile                # Multi-stage build tối ưu node:22-alpine non-root
+├── package.json              # Quản lý dependencies và lệnh vận hành
+├── tsconfig.json             # Cấu hình TypeScript Strict Mode
+└── vitest.config.ts          # Cấu hình kiểm thử và ngưỡng Coverage Gate (>80%)
 ```
 
-#### 🐧 Linux & 🍎 macOS (Bash / Zsh)
+---
+
+## ⚡ Các Lệnh Thao Tác Nhanh (NPM Scripts)
+
+Mọi thao tác phát triển, kiểm thử và vận hành Docker đều được gom gọn gàng trong `package.json`:
+
+### 1. Phát Triển & Kiểm Thử Mã Nguồn
 ```bash
-git clone https://github.com/Ma1910/test-cicd.git && cd test-cicd && npm install && npm run dev
-```
-
----
-
-## ⚡ 1-Command Bootstrap for Any Existing Project
-
-Want to install this entire CI/CD pipeline, Dockerfile, AI agent guidelines, and Team Alert watcher into your own new or existing project? Run **one command** in your terminal:
-
-#### 🪟 Windows (PowerShell)
-```powershell
-irm https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.ps1 | iex
-```
-
-#### 🐧 Linux & 🍎 macOS (Bash / Curl)
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.sh | bash
-```
-
-#### 📦 Cross-Platform (Node.js)
-```bash
-node -e "fetch('https://raw.githubusercontent.com/Ma1910/test-cicd/main/setup.js').then(r=>r.text()).then(eval)"
-```
-
-*This automatically downloads `.github/workflows/`, `.ai/` guidelines, `Dockerfile`, scripts, testing configurations, and registers npm scripts into `package.json`.*
-
----
-
-## 💻 Local Quickstart (Verification)
-
-Once cloned or installed, verify the platform with simple npm commands:
-
-### 1. Start Development Server
-```bash
+# Khởi động môi trường phát triển (Hot-reload):
 npm run dev
-```
-- Open `http://localhost:3000/` for service greeting.
-- Open `http://localhost:3000/api/v1/meta` for API catalog & endpoints.
-- Open `http://localhost:3000/api/v1/products` for live product catalog.
-- Open `http://localhost:3000/metrics` for real-time Prometheus telemetry.
-- Open `http://localhost:3000/healthz` for Kubernetes liveness & memory metrics.
 
-### 2. Run Test Suite with Coverage
-```bash
-npm run test:coverage
-```
-*Vitest executes all 21 unit, integration, RBAC, and error boundary tests with automated coverage gates.*
-
-### 3. Verify TypeScript Build
-```bash
+# Kiểm tra cú pháp và kiểu dữ liệu (Strict Mode):
+npm run lint
 npm run typecheck
+
+# Chạy toàn bộ 26 bài test tự động:
+npm test
+
+# Chạy test và đo lường độ phủ mã nguồn (Coverage Gate > 80%):
+npm run test:coverage
+
+# Chạy kiểm tra nhanh endpoint sức khỏe (Smoke test):
+npm run test:smoke
+
+# Biên dịch mã nguồn ra thư mục dist/:
 npm run build
 ```
 
-### 4. 🎮 Launch Live CI/CD Simulator Directly From Terminal
-Inspect the animated pipeline or live GitHub Actions runs directly:
+### 2. Vận Hành Docker & Container
 ```bash
-# Automatically launches the Interactive Pipeline Simulator in your default browser:
-npm run cicd
+# Đóng gói Docker Image cục bộ:
+npm run docker:build
 
-# Or open the live GitHub Actions Runs & DAG directly:
-npm run cicd:actions
+# Khởi chạy container phát triển (cổng 3000):
+npm run docker:dev
+
+# Khởi chạy container Production kèm Nginx proxy:
+npm run docker:prod
+
+# Dừng toàn bộ container:
+npm run docker:down
 ```
 
-### 5. 👥 Real-Time Team Push Alerts (Terminal Notification)
-Never code on stale branches! When teammates push new commits to GitHub:
+### 3. Đồng Bộ Đội Ngũ (Teamwork)
 ```bash
-# Check immediately if any teammate pushed new code:
+# Kiểm tra xem đồng đội có push commit mới không:
 npm run check:team
 
-# Keep a background watcher open that alerts you the instant new code arrives:
-npm run watch:team
-
-# Pull and sync teammates' changes cleanly:
+# Kéo mã nguồn mới nhất về máy:
 npm run sync
+
+# Mở giao diện CI/CD Dashboard trên trình duyệt:
+npm run cicd:web
 ```
 
 ---
 
-## 🧪 Real-World Failure Simulation
+## 🛡️ Quy Trình CI/CD 3 Chặng Chuẩn Production
 
-To verify how the CI/CD pipeline catches and blocks broken code:
-1. Open [`tests/app.test.ts`](https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts).
-2. Change `const simulateFail = false;` to `const simulateFail = true;`.
-3. Commit and push:
-   ```bash
-   git commit -am "test: simulate test failure"
-   git push origin main
-   ```
-4. Check the **[Actions Tab](https://github.com/Ma1910/test-cicd/actions)**: GitHub Actions will flag **FAILED ❌** at the test stage and prevent deployment.
+1. **Chặng 1 — Quality & Security Gate (Khi Push hoặc mở Pull Request):**
+   * Tự động chạy `npm ci`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`.
+   * Quét bảo mật bằng Trivy: Nếu phát hiện rò rỉ API key hoặc Token bí mật, **lập tức đánh rớt và khóa nút Merge PR**.
+   * Xuất bảng báo cáo **CI Quality Gate Summary** trực tiếp trên giao diện GitHub Web.
+2. **Chặng 2 — Containerization & GHCR Push (Khi merge vào `main` hoặc `develop`):**
+   * Đóng gói Docker Multi-Stage (`node:22-alpine`, non-root user `node`, dung lượng siêu nhẹ ~61MB).
+   * Tận dụng GitHub Actions Layer Cache (`type=gha`) giúp thời gian build chỉ mất vài giây.
+   * Đẩy image lên GitHub Container Registry (`ghcr.io/ma1910/ci-cd-quicktest`) có gắn tag Commit SHA.
+3. **Chặng 3 — Triển Khai Production & Tự Động Rollback (Khi merge vào `main`):**
+   * Kết nối SSH an toàn vào máy chủ VPS.
+   * Sao lưu snapshot container hiện tại làm bản sao khôi phục (`rollback tag`).
+   * Cập nhật container qua Docker Compose.
+   * Thử nghiệm 10 lần liveness probe tại `http://localhost:3000/healthz`.
+   * **Nếu thất bại:** Tự động hoàn tác (*Rollback*) về bản cũ ngay lập tức để bảo vệ hệ thống không bị gián đoạn.
 
 ---
 
-## 🔗 Live Artifacts & Quick Links
+## 📥 Tải Về & Khởi Chạy Trên Máy Tính
 
-- **Online Interactive Simulator**: [Launch Playground on GitHub Pages](https://ma1910.github.io/test-cicd/)
-- **1-Command Bootstrap Scripts**: [PowerShell (Windows)](setup.ps1) • [Bash (Linux/macOS)](setup.sh) • [Node.js](setup.js)
-- **AI Agent Guidelines Directory**: [`.ai/`](https://github.com/Ma1910/test-cicd/tree/main/.ai) *(Claude, Cursor, Copilot, Windsurf rules)*
-- **Visual Architecture Flowchart**: [High-Resolution PNG](docs/pipeline-diagram.png) • [Vector SVG](docs/pipeline-diagram.svg)
-- **Live GitHub Actions Run**: [View Runs & DAG Flowchart](https://github.com/Ma1910/test-cicd/actions)
-- **Published Container Package**: [View Docker Images on GHCR](https://github.com/Ma1910?tab=packages&repo_name=test-cicd)
-- **Application Logic**: [`src/app.ts`](https://github.com/Ma1910/test-cicd/blob/main/src/app.ts)
-- **Automated Test Suite**: [`tests/app.test.ts`](https://github.com/Ma1910/test-cicd/blob/main/tests/app.test.ts)
-- **Multi-stage Dockerfile**: [`Dockerfile`](https://github.com/Ma1910/test-cicd/blob/main/Dockerfile)
-- **CI/CD Workflow Definition**: [`.github/workflows/ci.yml`](https://github.com/Ma1910/test-cicd/blob/main/.github/workflows/ci.yml)
+#### 🪟 Windows (PowerShell)
+```powershell
+git clone https://github.com/Ma1910/test-cicd.git
+cd test-cicd
+npm install
+npm run dev
+```
+
+#### 🐧 Linux & 🍎 macOS (Bash)
+```bash
+git clone https://github.com/Ma1910/test-cicd.git
+cd test-cicd
+npm install
+npm run dev
+```
+
+Sau khi chạy, truy cập trình duyệt tại:
+* 🌐 Dashboard trực quan: **`http://localhost:3000`**
+* 🩺 Giám sát sức khỏe: **`http://localhost:3000/healthz`**
+* 📊 Số liệu Prometheus: **`http://localhost:3000/metrics`**
