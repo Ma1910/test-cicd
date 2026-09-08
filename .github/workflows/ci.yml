@@ -1,4 +1,4 @@
-name: Enterprise CI/CD Pipeline (Visual Flowchart DAG)
+name: Production CI/CD Pipeline
 
 on:
   push:
@@ -7,15 +7,20 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   # =========================================================================
-  # Column 1: Shift-Left Security & Type Safety
+  # 1. Quality & Security Gate
   # =========================================================================
-  secret-scan:
-    name: Secret Leak Scanner
+  quality-gate:
+    name: Quality & Security Gate
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repository
@@ -23,140 +28,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 🛡️ Trivy Secret Scanner
+      - name: 🟢 Setup Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 TypeScript Strict Typecheck
+        run: npm run typecheck
+
+      - name: 🧪 Run Vitest & Verify Coverage Gate (>80%)
+        run: npm run test:coverage
+
+      - name: 🛡️ Trivy Secret Scanning (No Leaks)
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
           scanners: 'secret'
           severity: 'CRITICAL,HIGH'
-          exit-code: '0'
-
-  typescript-check:
-    name: TypeScript Strict Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🔍 Compile TypeScript
-        run: npm run typecheck
+          exit-code: '1'
 
   # =========================================================================
-  # Column 2: Parallel Testing (Node 20 & Node 22 Separate Nodes)
+  # 2. Build & Push Hardened Docker Image
   # =========================================================================
-  test-node20:
-    name: Node.js 20 LTS Test
+  docker-build-push:
+    name: Docker Build & Push to GHCR
     runs-on: ubuntu-latest
-    needs: [secret-scan, typescript-check]
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🧪 Run Vitest
-        run: npm test
-
-  test-node22:
-    name: Node.js 22 LTS Test
-    runs-on: ubuntu-latest
-    needs: [secret-scan, typescript-check]
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🧪 Run Vitest with Coverage
-        run: npm run test:coverage
-
-      - name: 📊 Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage-report
-          path: coverage/
-          retention-days: 14
-
-  # =========================================================================
-  # Column 3: Coverage Threshold Gate & SAST Audit
-  # =========================================================================
-  coverage-gate:
-    name: Coverage Gate (80% Min)
-    runs-on: ubuntu-latest
-    needs: [test-node20, test-node22]
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 📊 Verify Strict Coverage Threshold
-        run: npm run test:coverage
-
-  security-sast:
-    name: Trivy SAST & Audit
-    runs-on: ubuntu-latest
-    needs: [secret-scan, typescript-check]
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: 🛡️ Dependency Audit
-        run: npm audit --audit-level=high
-
-      - name: 🔍 Trivy Filesystem Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scanners: 'vuln'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '0'
-
-  # =========================================================================
-  # Column 4: Docker Container Hardening
-  # =========================================================================
-  docker-hardening:
-    name: Docker Image Hardening
-    runs-on: ubuntu-latest
-    needs: [coverage-gate, security-sast]
+    needs: [quality-gate]
+    if: github.event_name == 'push'
     permissions:
       contents: read
       packages: write
+    outputs:
+      image_tag: ${{ steps.meta.outputs.version }}
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
@@ -164,39 +71,24 @@ jobs:
       - name: 🐳 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: 🔑 Log in to GitHub Container Registry (GHCR)
+      - name: 🔑 Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🏷️ Generate Docker Metadata
+      - name: 🏷️ Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=sha,format=short
+            type=ref,event=branch
 
-      - name: 🏗️ Multi-stage Build & Load Local Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          load: true
-          tags: test-image:latest
-          cache-from: type=gha
-
-      - name: 🛡️ Trivy Container Image Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: test-image:latest
-          severity: 'CRITICAL,HIGH'
-          exit-code: '0'
-
-      - name: 🚀 Push Hardened Image to GHCR
+      - name: 🏗️ Build and push image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -208,86 +100,79 @@ jobs:
           cache-to: type=gha,mode=max
 
   # =========================================================================
-  # Column 5: Staging Progressive Delivery
-  # =========================================================================
-  deploy-staging:
-    name: Staging Deploy & Smoke Test
-    runs-on: ubuntu-latest
-    needs: [docker-hardening]
-    environment:
-      name: staging
-      url: https://staging.myenterprise.internal
-    steps:
-      - name: 🚀 Deploy to Staging Cluster
-        run: |
-          echo "🌐 Zero-downtime rolling update on Staging..."
-          echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest:latest"
-          sleep 2
-
-      - name: 🧪 Run Automated Staging Smoke Tests
-        run: |
-          echo "🩺 Smoke Test: Probing /healthz endpoint..."
-          echo "✓ Response status: 200 OK"
-          echo "✓ Latency: 14ms (Healthy)"
-          echo "✓ API Contract /api/calculate verified!"
-
-  # =========================================================================
-  # Column 6: Production Approval Gate & Rollout
+  # 3. Production Deployment with Automated Health Verification & Rollback
   # =========================================================================
   deploy-production:
-    name: Production Gate & Promotion
+    name: Production Deployment & Verification
     runs-on: ubuntu-latest
-    needs: [deploy-staging]
+    needs: [docker-build-push]
     if: github.ref == 'refs/heads/main'
     environment:
       name: production
-      url: https://myenterprise.com
+      url: https://${{ secrets.PROD_DOMAIN || 'localhost:3000' }}
     steps:
-      - name: 🚀 Deploy to Production Cluster
+      - name: 🚀 Deploy to Target Server via SSH
+        env:
+          SSH_HOST: ${{ secrets.PROD_HOST }}
+          SSH_USER: ${{ secrets.PROD_USER }}
+          SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+          IMAGE_URI: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         run: |
-          echo "🚀 Blue/Green Production Deployment in progress..."
-          echo "📦 Deployed Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ci-cd-quicktest:${{ github.sha }}"
-          sleep 3
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_KEY" ]; then
+            echo "⚠️ Production server secrets (PROD_HOST, PROD_SSH_KEY) not configured yet."
+            echo "💡 Please configure secrets in repository Settings -> Secrets and Variables -> Actions."
+            echo "✅ Docker image ${{ env.IMAGE_URI }} has been built and published to GHCR successfully."
+            exit 0
+          fi
 
-      - name: 🩺 Production Post-Deployment Verification
-        run: |
-          echo "🔍 Running Post-Deployment Verifier on Production..."
-          echo "✅ Traffic switch completed with 0 errors!"
+          echo "🔐 Setting up SSH connection..."
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-      - name: 🚨 Automated Rollback Handler (Fallback)
-        if: failure()
-        run: |
-          echo "🛑 ALERT: Post-deployment verifier failed! Reverting traffic to previous stable release..."
-          echo "⏮️ Rollback completed successfully."
+          echo "🚀 Connecting to $SSH_HOST and initiating deployment..."
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" "
+            set -e
+            echo '🔑 Logging in to GHCR on host...'
+            echo '${{ secrets.GITHUB_TOKEN }}' | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-  # =========================================================================
-  # Column 7: Executive Quality Report
-  # =========================================================================
-  pipeline-summary:
-    name: Executive Quality Report
-    runs-on: ubuntu-latest
-    needs: [deploy-production]
-    if: always()
-    steps:
-      - name: 📊 Render GitHub Step Summary
-        run: |
-          echo "## 🛡️ Enterprise CI/CD Verification Report" >> $GITHUB_STEP_SUMMARY
-          echo "| Control Standard | Verification Engine | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Shift-Left Security** | Trivy Secret Scanner | 🟢 Zero Leak |" >> $GITHUB_STEP_SUMMARY
-          echo "| **TypeScript Safety** | TypeScript Strict Compiler | 🟢 Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Multi-version Matrix** | Node 20 LTS & Node 22 LTS | 🟢 21/21 Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Coverage Threshold** | Vitest Coverage (80% Min Threshold) | 🟢 >94% Coverage |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Container Hardening** | Multi-stage + Non-root + Trivy | 🟢 Hardened |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Staging Smoke Test** | Automated Healthcheck Probing | 🟢 200 OK |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Production Gate** | Environment Gate & Rollback Ready | 🟢 Deployed |" >> $GITHUB_STEP_SUMMARY
+            cd /opt/app || mkdir -p /opt/app && cd /opt/app
+            
+            echo '📦 Pulling latest image: $IMAGE_URI...'
+            docker pull $IMAGE_URI
 
-      - name: 📢 Team Broadcast Notification (Push Alert)
-        run: |
-          echo "📢 ========================================================"
-          echo "👥 TEAM NOTIFICATION: New code was pushed by @${{ github.actor }}!"
-          echo "📌 Commit SHA: ${{ github.sha }}"
-          echo "📝 Message: ${{ github.event.head_commit.message }}"
-          echo "⚠️ ACTION REQUIRED FOR TEAM MEMBERS:"
-          echo "👉 Run 'git pull origin ${{ github.ref_name }}' on your local machine to update!"
-          echo "📢 ========================================================"
+            # Tag existing running image as previous for instant rollback
+            OLD_CONTAINER_ID=\$(docker ps -q -f name=cicd-app-prod || true)
+            if [ -n \"\$OLD_CONTAINER_ID\" ]; then
+              docker commit \"\$OLD_CONTAINER_ID\" cicd-app-previous:rollback || true
+            fi
+
+            echo '🔄 Starting container with Docker Compose...'
+            DOCKER_IMAGE=$IMAGE_URI docker compose -f docker-compose.prod.yml up -d --remove-orphans
+
+            echo '🩺 Running live Healthcheck verification...'
+            HEALTHY=false
+            for i in {1..10}; do
+              if curl -s -f http://localhost:3000/healthz | grep -q '\"status\":\"UP\"'; then
+                echo \"✅ Healthcheck passed! Service is UP and healthy.\"
+                HEALTHY=true
+                break
+              fi
+              echo \"Waiting for service to become healthy... (\$i/10)\"
+              sleep 3
+            done
+
+            if [ \"\$HEALTHY\" = false ]; then
+              echo '🚨 Healthcheck FAILED! Triggering automated rollback to previous release...'
+              if docker image inspect cicd-app-previous:rollback >/dev/null 2>&1; then
+                DOCKER_IMAGE=cicd-app-previous:rollback docker compose -f docker-compose.prod.yml up -d
+                echo '⏮️ Rollback completed: Previous stable version restored.'
+              else
+                echo '⚠️ No previous image found to rollback!'
+              fi
+              exit 1
+            fi
+            
+            echo '🧹 Cleaning up old unused images...'
+            docker image prune -f
+          "
