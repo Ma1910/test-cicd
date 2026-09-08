@@ -25,6 +25,24 @@ describe("Enterprise CI/CD Test Suite", () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("OPERATIONAL");
     expect(res.body.version).toBe("2.0.0");
+    expect(res.body.dashboard).toBe("/dashboard");
+  });
+
+  it("Integration: GET / with text/html should render Web Dashboard", async () => {
+    const res = await request(app)
+      .get("/")
+      .set("Accept", "text/html,application/xhtml+xml");
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toContain("text/html");
+    expect(res.text).toContain("CI/CD Automation Platform");
+    expect(res.text).toContain("LIVE OPERATIONAL");
+  });
+
+  it("Integration: GET /dashboard should return 200 OK and Web Dashboard HTML", async () => {
+    const res = await request(app).get("/dashboard");
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toContain("text/html");
+    expect(res.text).toContain("CI/CD Automation Platform");
   });
 
   it("Integration: GET /healthz should return 200 OK and memory metric", async () => {

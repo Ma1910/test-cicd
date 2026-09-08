@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import { generateToken, verifyToken, UserPayload } from "./auth.service.js";
 import { productRepo } from "./products.service.js";
 import { metrics } from "./metrics.service.js";
+import { renderDashboardHtml } from "./dashboard.template.js";
 
 export function calculateSum(a: number, b: number): number {
   return a + b;
@@ -67,14 +68,30 @@ export function createApp(): Express {
   // ==========================================
   // System Endpoints
   // ==========================================
-  app.get("/", (_req: Request, res: Response) => {
+  app.get("/", (req: Request, res: Response) => {
+    const isBrowserHtml =
+      Boolean(req.headers.accept && req.headers.accept.includes("text/html") && !req.headers.accept.includes("application/json")) ||
+      req.query.format === "html";
+
+    if (isBrowserHtml && req.query.format !== "json") {
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.send(renderDashboardHtml());
+      return;
+    }
+
     res.json({
       name: "Enterprise CI/CD Automation Platform API",
       version: "2.0.0",
       status: "OPERATIONAL",
       docs: "/api/v1/meta",
+      dashboard: "/dashboard",
       timestamp: new Date().toISOString(),
     });
+  });
+
+  app.get("/dashboard", (_req: Request, res: Response) => {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(renderDashboardHtml());
   });
 
   app.get("/healthz", (_req: Request, res: Response) => {
