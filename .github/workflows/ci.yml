@@ -37,19 +37,47 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
+      - name: 🔍 Linter & Syntax Check
+        id: lint
+        run: npm run lint
+
       - name: 🔍 TypeScript Strict Typecheck
+        id: typecheck
         run: npm run typecheck
 
       - name: 🧪 Run Vitest & Verify Coverage Gate (>80%)
+        id: test
         run: npm run test:coverage
 
       - name: 🛡️ Trivy Secret Scanning (No Leaks)
+        id: secret
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
           scanners: 'secret'
           severity: 'CRITICAL,HIGH'
           exit-code: '1'
+
+      - name: 📦 Upload Test & Coverage Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-and-coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: 📊 Render CI Quality Report to GitHub Web
+        if: always()
+        run: |
+          echo "## 🛡️ CI Quality Gate Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Check Name | Command | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Linter & Syntax** | \`npm run lint\` | ${{ steps.lint.outcome == 'success' && '✅ PASSED' || '❌ FAILED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Strict Typecheck** | \`npm run typecheck\` | ${{ steps.typecheck.outcome == 'success' && '✅ PASSED' || '❌ FAILED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Vitest Suite & Coverage** | \`npm run test:coverage\` | ${{ steps.test.outcome == 'success' && '✅ PASSED' || '❌ FAILED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Trivy Secret Scan** | \`trivy fs --scanners secret\` | ${{ steps.secret.outcome == 'success' && '✅ PASSED' || '❌ FAILED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\` by @${{ github.actor }} on \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
 
   # =========================================================================
   # 2. Build & Push Hardened Docker Image
@@ -120,59 +148,55 @@ jobs:
         run: |
           if [ -z "$SSH_HOST" ] || [ -z "$SSH_KEY" ]; then
             echo "⚠️ Production server secrets (PROD_HOST, PROD_SSH_KEY) not configured yet."
-            echo "💡 Please configure secrets in repository Settings -> Secrets and Variables -> Actions."
-            echo "✅ Docker image ${{ env.IMAGE_URI }} has been built and published to GHCR successfully."
+            echo "💡 Configure them in GitHub Settings -> Secrets -> Actions to enable remote push."
+            echo "✅ Docker image ${{ env.IMAGE_URI }} has been published successfully to GHCR."
             exit 0
           fi
 
-          echo "🔐 Setting up SSH connection..."
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          echo "🚀 Connecting to $SSH_HOST and initiating deployment..."
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" "
             set -e
-            echo '🔑 Logging in to GHCR on host...'
             echo '${{ secrets.GITHUB_TOKEN }}' | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
-
             cd /opt/app || mkdir -p /opt/app && cd /opt/app
-            
-            echo '📦 Pulling latest image: $IMAGE_URI...'
             docker pull $IMAGE_URI
 
-            # Tag existing running image as previous for instant rollback
-            OLD_CONTAINER_ID=\$(docker ps -q -f name=cicd-app-prod || true)
-            if [ -n \"\$OLD_CONTAINER_ID\" ]; then
-              docker commit \"\$OLD_CONTAINER_ID\" cicd-app-previous:rollback || true
+            OLD_CONTAINER=\$(docker ps -q -f name=cicd-app-prod || true)
+            if [ -n \"\$OLD_CONTAINER\" ]; then
+              docker commit \"\$OLD_CONTAINER\" cicd-app-previous:rollback || true
             fi
 
-            echo '🔄 Starting container with Docker Compose...'
             DOCKER_IMAGE=$IMAGE_URI docker compose -f docker-compose.prod.yml up -d --remove-orphans
 
-            echo '🩺 Running live Healthcheck verification...'
             HEALTHY=false
             for i in {1..10}; do
               if curl -s -f http://localhost:3000/healthz | grep -q '\"status\":\"UP\"'; then
-                echo \"✅ Healthcheck passed! Service is UP and healthy.\"
+                echo \"✅ Healthcheck passed! Service is UP.\"
                 HEALTHY=true
                 break
               fi
-              echo \"Waiting for service to become healthy... (\$i/10)\"
               sleep 3
             done
 
             if [ \"\$HEALTHY\" = false ]; then
-              echo '🚨 Healthcheck FAILED! Triggering automated rollback to previous release...'
+              echo '🚨 Healthcheck FAILED! Reverting to rollback image...'
               if docker image inspect cicd-app-previous:rollback >/dev/null 2>&1; then
                 DOCKER_IMAGE=cicd-app-previous:rollback docker compose -f docker-compose.prod.yml up -d
-                echo '⏮️ Rollback completed: Previous stable version restored.'
-              else
-                echo '⚠️ No previous image found to rollback!'
               fi
               exit 1
             fi
-            
-            echo '🧹 Cleaning up old unused images...'
             docker image prune -f
           "
+
+      - name: 📊 Render Deployment Summary to GitHub Web
+        if: always()
+        run: |
+          echo "## 🚢 Production Deployment Report" >> $GITHUB_STEP_SUMMARY
+          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | \`production\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Target Image** | \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit SHA** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Status** | ${{ job.status == 'success' && '✅ SUCCESSFUL' || '❌ FAILED / ROLLED BACK' }} |" >> $GITHUB_STEP_SUMMARY
