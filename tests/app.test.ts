@@ -34,8 +34,8 @@ describe("Enterprise CI/CD Test Suite", () => {
       .set("Accept", "text/html,application/xhtml+xml");
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toContain("text/html");
-    expect(res.text).toContain("CI/CD Automation Platform");
-    expect(res.text).toContain("LIVE OPERATIONAL");
+    expect(res.text).toContain("Enterprise CI/CD Automation Platform");
+    expect(res.text).toContain("Ma1910/test-cicd");
   });
 
   it("Integration: GET /dashboard should return 200 OK and Web Dashboard HTML", async () => {
@@ -79,6 +79,15 @@ describe("Enterprise CI/CD Test Suite", () => {
     const res = await request(app).get("/api/v1/meta");
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body.endpoints)).toBe(true);
+  });
+
+  it("Integration: GET /api/v1/git/commits should expose real repository commits", async () => {
+    const res = await request(app).get("/api/v1/git/commits");
+    expect(res.status).toBe(200);
+    expect(res.body.repository).toBe("Ma1910/test-cicd");
+    expect(Array.isArray(res.body.commits)).toBe(true);
+    expect(res.body.commits.length).toBeGreaterThan(0);
+    expect(res.body.commits[0].hash).toBeDefined();
   });
 
   // ==========================================

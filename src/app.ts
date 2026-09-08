@@ -4,6 +4,7 @@ import { productRepo } from "./products.service.js";
 import { metrics } from "./metrics.service.js";
 import { renderDashboardHtml } from "./dashboard.template.js";
 import { renderHealthHtml } from "./health.template.js";
+import { getRepositoryInfo } from "./git.service.js";
 
 export function calculateSum(a: number, b: number): number {
   return a + b;
@@ -119,6 +120,10 @@ export function createApp(): Express {
   app.get("/metrics", (_req: Request, res: Response) => {
     res.setHeader("Content-Type", "text/plain");
     res.send(metrics.toPrometheusFormat());
+  });
+
+  app.get("/api/v1/git/commits", (_req: Request, res: Response) => {
+    res.json(getRepositoryInfo());
   });
 
   app.get("/api/v1/meta", (_req: Request, res: Response) => {
