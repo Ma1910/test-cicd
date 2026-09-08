@@ -3,6 +3,7 @@ import { generateToken, verifyToken, UserPayload } from "./auth.service.js";
 import { productRepo } from "./products.service.js";
 import { metrics } from "./metrics.service.js";
 import { renderDashboardHtml } from "./dashboard.template.js";
+import { renderHealthHtml } from "./health.template.js";
 
 export function calculateSum(a: number, b: number): number {
   return a + b;
@@ -94,13 +95,26 @@ export function createApp(): Express {
     res.send(renderDashboardHtml());
   });
 
-  app.get("/healthz", (_req: Request, res: Response) => {
+  const handleHealthRequest = (req: Request, res: Response) => {
+    const isBrowserHtml =
+      Boolean(req.headers.accept && req.headers.accept.includes("text/html") && !req.headers.accept.includes("application/json")) ||
+      req.query.format === "html";
+
+    if (isBrowserHtml && req.query.format !== "json") {
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.send(renderHealthHtml());
+      return;
+    }
+
     res.status(200).json({
       status: "UP",
       uptime: process.uptime(),
       memoryUsage: process.memoryUsage().rss,
     });
-  });
+  };
+
+  app.get("/healthz", handleHealthRequest);
+  app.get("/health", handleHealthRequest);
 
   app.get("/metrics", (_req: Request, res: Response) => {
     res.setHeader("Content-Type", "text/plain");

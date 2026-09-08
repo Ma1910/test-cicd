@@ -52,6 +52,22 @@ describe("Enterprise CI/CD Test Suite", () => {
     expect(typeof res.body.memoryUsage).toBe("number");
   });
 
+  it("Integration: GET /healthz with text/html should render Health Web UI", async () => {
+    const res = await request(app)
+      .get("/healthz")
+      .set("Accept", "text/html,application/xhtml+xml");
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toContain("text/html");
+    expect(res.text).toContain("Trạng Thái Hoạt Động & Sức Khỏe Hệ Thống");
+    expect(res.text).toContain("HTTP 200 OK");
+  });
+
+  it("Integration: GET /health should support alias and return 200 OK", async () => {
+    const res = await request(app).get("/health");
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe("UP");
+  });
+
   it("Integration: GET /metrics should export Prometheus metrics format", async () => {
     const res = await request(app).get("/metrics");
     expect(res.status).toBe(200);
