@@ -4,7 +4,7 @@ export function renderDashboardHtml(): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CI/CD Automation Pipeline • Ma1910/test-cicd</title>
+  <title>CI/CD Automation Platform</title>
   <style>
     :root {
       --bg: #070a13;
@@ -79,17 +79,6 @@ export function renderDashboardHtml(): string {
       box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
     }
     .btn-run:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6); }
-    select {
-      background: #0f172a;
-      border: 1px solid var(--card-border);
-      color: var(--text);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      outline: none;
-      cursor: pointer;
-    }
 
     /* Stats Grid */
     .grid-stats {
@@ -109,7 +98,7 @@ export function renderDashboardHtml(): string {
     .stat-val { font-size: 22px; font-weight: 800; margin-top: 4px; display: flex; align-items: baseline; gap: 6px; }
     .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Canvas Flowchart & Lasers */
+    /* Flowchart */
     .flowchart-wrapper {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -238,11 +227,11 @@ export function renderDashboardHtml(): string {
       font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
       font-size: 11px;
     }
-    .terminal-text { color: #818cf8; truncate; display: flex; align-items: center; gap: 8px; }
+    .terminal-text { color: #818cf8; display: flex; align-items: center; gap: 8px; }
     .term-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    /* Commits Table (Revealed after/during run) */
+    /* Commits Table */
     .commits-section {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -301,31 +290,24 @@ export function renderDashboardHtml(): string {
         <div class="logo-icon">⚡</div>
         <div>
           <h1>Enterprise CI/CD Automation Platform</h1>
-          <div class="repo-tag">Repository: Ma1910/test-cicd • Branch: main</div>
+          <div id="repo-header-tag" class="repo-tag">Repository: Loading... • Branch: main</div>
         </div>
       </div>
       <div class="top-actions">
-        <select id="scenario-select" onchange="onScenarioChange()">
-          <option value="pass">🟢 Pass 100% (Quy trình chuẩn)</option>
-          <option value="secret">🔴 Leak Secret Alert (Trivy Scan)</option>
-          <option value="typecheck">🔴 TypeScript Compile Fail (TS2322)</option>
-          <option value="unit_test">🔴 Vitest Test Fail (Assertion)</option>
-          <option value="coverage">🟡 Coverage &lt; 80% Gate Blocked</option>
-        </select>
         <button id="btn-run" class="btn btn-run" onclick="triggerPipeline()">
           ▶ Run Pipeline
         </button>
         <a href="/healthz" class="btn btn-secondary">🩺 /healthz</a>
-        <a href="https://github.com/Ma1910/test-cicd" target="_blank" class="btn btn-secondary">🐙 GitHub</a>
+        <a id="github-repo-link" href="https://github.com" target="_blank" class="btn btn-secondary">🐙 GitHub</a>
       </div>
     </header>
 
     <!-- Real System Status Highlights -->
     <div class="grid-stats">
       <div class="stat-card">
-        <div class="stat-label">Docker Desktop Runtime</div>
+        <div class="stat-label">System Runtime</div>
         <div class="stat-val" style="color: #34d399;">Port 3000</div>
-        <div class="stat-sub">Container: test-cicd-app (Live)</div>
+        <div class="stat-sub">Zero-Mock Platform Engine</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Thời Gian Chạy (Uptime)</div>
@@ -335,7 +317,7 @@ export function renderDashboardHtml(): string {
       <div class="stat-card">
         <div class="stat-label">Bộ Nhớ RAM (RSS)</div>
         <div class="stat-val" style="color: #a78bfa;" id="memory-display">-- MB</div>
-        <div class="stat-sub">Node.js 22 Runtime Hardened</div>
+        <div class="stat-sub">Node.js Native Runtime</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Trạng Thái Pipeline</div>
@@ -344,13 +326,13 @@ export function renderDashboardHtml(): string {
       </div>
     </div>
 
-    <!-- The Connected Flowchart & Laser Simulator -->
+    <!-- The Connected Flowchart Quality Gates -->
     <div class="flowchart-wrapper">
       <div class="flowchart-header">
         <div class="flowchart-title">
-          <span>🔄 Mô Phỏng Luồng CI/CD Thực Tế (GitHub Actions Simulator)</span>
+          <span>⚡ Zero-Mock CI/CD Quality Gates &amp; Realtime Pipeline Engine</span>
         </div>
-        <span id="execution-timer" style="font-family: monospace; font-size: 12px; font-weight: bold; color: var(--text-muted);">0.0s</span>
+        <span id="execution-timer" style="font-family: monospace; font-size: 12px; font-weight: bold; color: var(--text-muted);">READY</span>
       </div>
 
       <!-- Dynamic Issue Alert -->
@@ -365,48 +347,53 @@ export function renderDashboardHtml(): string {
         </div>
       </div>
 
-      <!-- Nodes Grid with SVG Laser Connections -->
+      <!-- Nodes Grid with SVG Connectors -->
       <div class="canvas-container">
-        <svg id="connection-layer"></svg>
+        <svg id="connection-layer">
+          <defs>
+            <path class="laser-line" style="display:none" />
+            <path class="laser-error" style="display:none" />
+          </defs>
+        </svg>
 
         <div class="nodes-grid">
-          <!-- Node 1: Code -->
+          <!-- Gate 1: Workspace & Code -->
           <div id="node-code" class="node-card">
             <div class="node-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">💻</div>
-            <div class="node-title">Changes in Code</div>
-            <div class="node-sub">Git Push origin/main</div>
+            <div class="node-title">Workspace Checkout</div>
+            <div class="node-sub">Exact Commit SHA</div>
             <div id="status-code" class="node-status">READY</div>
           </div>
 
-          <!-- Node 2: Build -->
+          <!-- Gate 2: Lint & Types -->
           <div id="node-build" class="node-card">
             <div class="node-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">🔨</div>
-            <div class="node-title">Build & Types</div>
+            <div class="node-title">Lint &amp; TypeCheck</div>
             <div class="node-sub">tsc --noEmit</div>
             <div id="status-build" class="node-status">IDLE</div>
           </div>
 
-          <!-- Node 3: Test -->
+          <!-- Gate 3: Test -->
           <div id="node-test" class="node-card">
             <div class="node-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🧪</div>
             <div class="node-title">Vitest Suite</div>
-            <div class="node-sub">Coverage &gt; 80% Gate</div>
+            <div class="node-sub">Real Exit Code != 0</div>
             <div id="status-test" class="node-status">IDLE</div>
           </div>
 
-          <!-- Node 4: Docker -->
+          <!-- Gate 4: Build -->
           <div id="node-docker" class="node-card">
-            <div class="node-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🐳</div>
-            <div class="node-title">Docker Multi-Stage</div>
-            <div class="node-sub">node:22-alpine</div>
+            <div class="node-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">📦</div>
+            <div class="node-title">Production Build</div>
+            <div class="node-sub">npm run build</div>
             <div id="status-docker" class="node-status">IDLE</div>
           </div>
 
-          <!-- Node 5: Production -->
+          <!-- Gate 5: Production / Container -->
           <div id="node-prod" class="node-card">
             <div class="node-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🚢</div>
-            <div class="node-title">Docker Desktop</div>
-            <div class="node-sub">Port 3000 Live</div>
+            <div class="node-title">Deployment / Docker</div>
+            <div class="node-sub">Quality Gate Verified</div>
             <div id="status-prod" class="node-status">IDLE</div>
           </div>
         </div>
@@ -416,7 +403,7 @@ export function renderDashboardHtml(): string {
       <div class="terminal">
         <div class="terminal-text">
           <span class="term-dot"></span>
-          <span id="terminal-msg">Hệ thống đang ở trạng thái sạch. Bấm "Run Pipeline" để kích hoạt dòng line chạy.</span>
+          <span id="terminal-msg">Hệ thống Zero-Mock CI/CD đang hoạt động. Sẵn sàng xử lý pipeline thật.</span>
         </div>
       </div>
     </div>
@@ -424,19 +411,19 @@ export function renderDashboardHtml(): string {
     <!-- Clean Empty State (Before Run) -->
     <div id="clean-empty-state" class="empty-state">
       <div style="font-size: 24px; margin-bottom: 8px;">🌱</div>
-      <h3>Trạng Thái Khởi Tạo Sạch (Clean State)</h3>
+      <h3>Trạng Thái Khởi Tạo Sạch (Clean Zero-Mock State)</h3>
       <p>
-        Toàn bộ dữ liệu demo đã được loại bỏ hoàn toàn. Khi bạn bấm <strong>"Run Pipeline"</strong> hoặc đưa vào dự án để thực hiện các thao tác push code, hệ thống sẽ bắt đầu chạy chu trình từ đầu và tự động cập nhật danh sách các commit thực tế.
+        Toàn bộ dữ liệu giả lập và mock timer đã được loại bỏ hoàn toàn. Bấm <strong>"Run Pipeline"</strong> hoặc gửi webhook GitHub HMAC-SHA256 để thực thi pipeline thực tế trên mã nguồn.
       </p>
     </div>
 
-    <!-- Real Pushed Commits Table (Revealed after/during run) -->
+    <!-- Real Pushed Commits Table -->
     <div id="commits-section" class="commits-section">
       <div class="commits-header">
         <div style="font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-          <span>📦 Lịch Sử Commit Thực Tế Đã Push Lên GitHub (Ma1910/test-cicd)</span>
+          <span>📦 Lịch Sử Commit Thực Tế (Git Log Extraction)</span>
         </div>
-        <span class="badge-verified">BRANCH: MAIN</span>
+        <span class="badge-verified" id="branch-badge">BRANCH: MAIN</span>
       </div>
       <div style="overflow-x: auto;">
         <table>
@@ -446,7 +433,7 @@ export function renderDashboardHtml(): string {
               <th>Nội Dung Commit</th>
               <th>Tác Giả</th>
               <th>Thời Gian</th>
-              <th>CI/CD Status</th>
+              <th>Trạng Thái</th>
             </tr>
           </thead>
           <tbody id="commits-tbody">
@@ -464,14 +451,17 @@ export function renderDashboardHtml(): string {
     async function updateSystemMetrics() {
       try {
         const res = await fetch('/healthz?format=json');
+        if (!res.ok) return;
         const data = await res.json();
         const memMb = (data.memoryUsage / (1024 * 1024)).toFixed(1);
-        document.getElementById('memory-display').innerText = memMb + ' MB';
+        const memEl = document.getElementById('memory-display');
+        if (memEl) memEl.innerText = memMb + ' MB';
         
         const uptimeSec = Math.floor(data.uptime);
         const mins = Math.floor(uptimeSec / 60);
         const secs = uptimeSec % 60;
-        document.getElementById('uptime-display').innerText = mins + 'm ' + secs + 's';
+        const upEl = document.getElementById('uptime-display');
+        if (upEl) upEl.innerText = mins + 'm ' + secs + 's';
       } catch (err) {}
     }
 
@@ -492,14 +482,9 @@ export function renderDashboardHtml(): string {
       ['code', 'build', 'test', 'docker', 'prod'].forEach(id => {
         updateNode(id, 'idle', 'IDLE', '', '');
       });
-      document.getElementById('issue-alert').style.display = 'none';
-      document.getElementById('execution-timer').innerText = '0.0s';
+      const alertEl = document.getElementById('issue-alert');
+      if (alertEl) alertEl.style.display = 'none';
       drawConnectors(0);
-    }
-
-    function onScenarioChange() {
-      if (busy) return;
-      resetAll();
     }
 
     // Dynamic SVG Laser Lines Connector
@@ -536,8 +521,8 @@ export function renderDashboardHtml(): string {
         };
 
         let paths = '';
-        paths += makePath(c.rX, c.mY, b.lX, b.mY, level >= 1, errorNode === 'typecheck');
-        paths += makePath(b.rX, b.mY, t.lX, t.mY, level >= 2, errorNode === 'unit_test' || errorNode === 'coverage' || errorNode === 'secret');
+        paths += makePath(c.rX, c.mY, b.lX, b.mY, level >= 1, false);
+        paths += makePath(b.rX, b.mY, t.lX, t.mY, level >= 2, false);
         paths += makePath(t.rX, t.mY, d.lX, d.mY, level >= 3 && !errorNode, false);
         paths += makePath(d.rX, d.mY, p.lX, p.mY, level >= 4 && !errorNode, false);
 
@@ -545,152 +530,159 @@ export function renderDashboardHtml(): string {
       } catch (e) {}
     }
 
-    async function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-
     // Fetch and display real commits
     async function loadRealCommits() {
       try {
         const res = await fetch('/api/v1/git/commits');
+        if (!res.ok) return;
         const data = await res.json();
+        
+        const repoHeader = document.getElementById('repo-header-tag');
+        if (repoHeader && data.repository) {
+          repoHeader.innerText = 'Repository: ' + data.repository + ' • Branch: ' + data.branch;
+        }
+
+        const ghLink = document.getElementById('github-repo-link');
+        if (ghLink && data.repository && !data.repository.startsWith('local/')) {
+          ghLink.href = 'https://github.com/' + data.repository;
+        }
+
+        const branchBadge = document.getElementById('branch-badge');
+        if (branchBadge && data.branch) {
+          branchBadge.innerText = 'BRANCH: ' + data.branch.toUpperCase();
+        }
+
         const tbody = document.getElementById('commits-tbody');
+        if (!tbody || !data.commits || data.commits.length === 0) return;
+
         tbody.innerHTML = data.commits.map(c => \`
           <tr>
             <td><a href="\${c.url}" target="_blank" class="commit-hash">\${c.hash}</a></td>
             <td style="font-weight: 600; color: #f1f5f9;">\${c.message}</td>
             <td>\${c.author}</td>
             <td style="color: var(--text-muted);">\${c.relativeTime}</td>
-            <td><span class="badge-verified">PASSED ✓</span></td>
+            <td><span class="badge-verified">TRACKED</span></td>
           </tr>
         \`).join('');
-      } catch (err) {}
-    }
 
-    // Trigger Pipeline Execution
-    async function triggerPipeline() {
-      if (busy) return;
-      busy = true;
-      const scenario = document.getElementById('scenario-select').value;
-      const btn = document.getElementById('btn-run');
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
-      
-      const term = document.getElementById('terminal-msg');
-      const timer = document.getElementById('execution-timer');
-      const pipeStatus = document.getElementById('pipeline-status-text');
-      
-      pipeStatus.innerText = 'RUNNING...';
-      pipeStatus.style.color = '#fbbf24';
-
-      resetAll();
-      const startTime = Date.now();
-      const clock = setInterval(() => {
-        timer.innerText = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-      }, 100);
-
-      try {
-        // Step 1: Code Push
-        term.innerHTML = '<span style="color: #818cf8;">💻 [Chặng 1: Code Push] Nhận sự kiện push lên nhánh main và khởi tạo runner...</span>';
-        updateNode('code', 'running', 'PUSHING', '#818cf8', '#6366f1');
-        drawConnectors(1);
-        await wait(600);
-        updateNode('code', 'done', 'PUSHED ✓', '#34d399', '#10b981');
-
-        // Step 2: Build & Strict Types
-        term.innerHTML = '<span style="color: #60a5fa;">🔨 [Chặng 2: Build] Kiểm tra cú pháp TypeScript strict mode (tsc --noEmit)...</span>';
-        updateNode('build', 'running', 'COMPILING', '#60a5fa', '#3b82f6');
-        drawConnectors(2);
-        await wait(700);
-
-        if (scenario === 'typecheck') {
-          updateNode('build', 'done', 'FAILED ✗', '#f43f5e', '#f43f5e');
-          drawConnectors(1, 'typecheck');
-          showIssue('Stage 2: Strict Types Compile', 'TypeScript TS2322: Type mismatch detected. Strict compiler rejected build.');
-          term.innerHTML = '<span style="color: #f43f5e; font-weight: bold;">❌ [LỖI] Trình biên dịch TypeScript chặn tiến trình. Hãy sửa lỗi code!</span>';
-          pipeStatus.innerText = 'FAILED';
-          pipeStatus.style.color = '#f43f5e';
-          return;
-        }
-        updateNode('build', 'done', 'CLEAN ✓', '#34d399', '#10b981');
-
-        // Step 3: Vitest & Coverage
-        term.innerHTML = '<span style="color: #34d399;">🧪 [Chặng 3: Test] Chạy Vitest Suite và đo lường độ phủ Coverage &gt; 80%...</span>';
-        updateNode('test', 'running', 'TESTING', '#34d399', '#10b981');
-        drawConnectors(3);
-        await wait(800);
-
-        if (scenario === 'secret') {
-          updateNode('test', 'done', 'LEAK ✗', '#f43f5e', '#f43f5e');
-          drawConnectors(2, 'secret');
-          showIssue('Stage 3: Secret Scanning (Trivy)', 'Phát hiện rò rỉ khóa bí mật trong commit diff. Dừng pipeline ngay lập tức.');
-          term.innerHTML = '<span style="color: #f43f5e; font-weight: bold;">🚨 [BẢO MẬT] Secret Scanner phát hiện lộ khóa truy cập API!</span>';
-          pipeStatus.innerText = 'BLOCKED';
-          pipeStatus.style.color = '#f43f5e';
-          return;
-        }
-
-        if (scenario === 'unit_test') {
-          updateNode('test', 'done', 'FAIL ✗', '#f43f5e', '#f43f5e');
-          drawConnectors(2, 'unit_test');
-          showIssue('Stage 3: Vitest Test Runner', 'AssertionError: expected 500 to equal 200 at tests/app.test.ts.');
-          term.innerHTML = '<span style="color: #f43f5e; font-weight: bold;">❌ [LỖI TEST] Bài kiểm thử tự động thất bại! Chặn đóng gói.</span>';
-          pipeStatus.innerText = 'FAILED';
-          pipeStatus.style.color = '#f43f5e';
-          return;
-        }
-
-        if (scenario === 'coverage') {
-          updateNode('test', 'done', 'GATE FAIL ✗', '#fbbf24', '#f59e0b');
-          drawConnectors(2, 'coverage');
-          showIssue('Stage 3: Coverage Gate', 'Code coverage đạt 68%, thấp hơn ngưỡng bắt buộc 80%.');
-          term.innerHTML = '<span style="color: #fbbf24; font-weight: bold;">⚠️ [CẢNH BÁO] Ngưỡng Coverage Gate từ chối: Cần bổ sung thêm test!</span>';
-          pipeStatus.innerText = 'REJECTED';
-          pipeStatus.style.color = '#fbbf24';
-          return;
-        }
-
-        updateNode('test', 'done', 'PASS 25/25 ✓', '#34d399', '#10b981');
-
-        // Step 4: Docker Multi-stage
-        term.innerHTML = '<span style="color: #fbbf24;">🐳 [Chặng 4: Docker] Đóng gói container multi-stage tối ưu và bảo mật non-root...</span>';
-        updateNode('docker', 'running', 'BUILDING', '#fbbf24', '#f59e0b');
-        drawConnectors(4);
-        await wait(700);
-        updateNode('docker', 'done', 'IMAGE READY ✓', '#34d399', '#10b981');
-
-        // Step 5: Production Runtime
-        term.innerHTML = '<span style="color: #c084fc;">🚢 [Chặng 5: Runtime] Khởi chạy container trên Docker Desktop (Port 3000)...</span>';
-        updateNode('prod', 'running', 'STARTING', '#c084fc', '#a855f7');
-        drawConnectors(5);
-        await wait(600);
-        updateNode('prod', 'done', 'DEPLOYED ✓', '#34d399', '#10b981');
-
-        // Complete!
-        term.innerHTML = '<span style="color: #34d399; font-weight: bold;">🎉 Pipeline hoàn thành 100%! Đã triển khai và hiển thị dữ liệu commit thực tế.</span>';
-        pipeStatus.innerText = 'SUCCESS';
-        pipeStatus.style.color = '#34d399';
-
-        // Show Commits Table & Hide Clean State
-        document.getElementById('clean-empty-state').style.display = 'none';
-        document.getElementById('commits-section').style.display = 'block';
-        loadRealCommits();
-
-      } finally {
-        clearInterval(clock);
-        busy = false;
-        btn.disabled = false;
-        btn.style.opacity = '1';
+        const emptyState = document.getElementById('clean-empty-state');
+        const commitsSection = document.getElementById('commits-section');
+        if (emptyState) emptyState.style.display = 'none';
+        if (commitsSection) commitsSection.style.display = 'block';
+      } catch (err) {
+        console.error('Failed to load git commits:', err);
       }
     }
 
-    function showIssue(title, desc) {
-      const box = document.getElementById('issue-alert');
-      document.getElementById('issue-title').innerText = title;
-      document.getElementById('issue-desc').innerText = desc;
-      box.style.display = 'block';
+    // Realtime SSE Pipeline Stream Consumer
+    function connectPipelineStream(pipelineId) {
+      if (!window.EventSource) return;
+      const term = document.getElementById('terminal-msg');
+      const pipeStatus = document.getElementById('pipeline-status-text');
+      const es = new EventSource('/api/pipelines/' + pipelineId + '/stream');
+
+      es.addEventListener('pipeline:status', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          pipeStatus.innerText = data.status;
+          if (data.status === 'PASSED') {
+            pipeStatus.style.color = '#34d399';
+            term.innerHTML += '<br><span style="color: #34d399; font-weight: bold;">🎉 Pipeline PASSED! Tất cả quality gates hoàn thành thành công.</span>';
+          } else if (data.status === 'FAILED') {
+            pipeStatus.style.color = '#f43f5e';
+            term.innerHTML += '<br><span style="color: #f43f5e; font-weight: bold;">❌ Pipeline FAILED! Phát hiện lỗi trong quality gate.</span>';
+          }
+        } catch {}
+      });
+
+      es.addEventListener('step:status', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          const nodeMap = { lint: 'build', typecheck: 'build', test: 'test', build: 'docker' };
+          const nodeId = nodeMap[data.stepName] || 'prod';
+          if (data.status === 'RUNNING') {
+            updateNode(nodeId, 'running', 'RUNNING...', '#60a5fa', '#3b82f6');
+          } else if (data.status === 'PASSED') {
+            updateNode(nodeId, 'done', 'PASSED ✓', '#34d399', '#10b981');
+          } else if (data.status === 'FAILED') {
+            updateNode(nodeId, 'done', 'FAILED ✗', '#f43f5e', '#f43f5e');
+          } else if (data.status === 'SKIPPED') {
+            updateNode(nodeId, 'idle', 'SKIPPED', '#94a3b8', '');
+          }
+        } catch {}
+      });
+
+      es.addEventListener('step:log', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          const line = document.createElement('div');
+          line.style.color = data.type === 'stderr' ? '#fda4af' : '#cbd5e1';
+          line.innerText = '[' + data.stepName + '] ' + data.chunk;
+          term.appendChild(line);
+        } catch {}
+      });
+
+      es.addEventListener('pipeline:done', () => {
+        es.close();
+        loadRealCommits();
+      });
+
+      es.onerror = () => {
+        es.close();
+      };
+    }
+
+    // Trigger Pipeline Execution (Zero-Mock Genuine Trigger)
+    async function triggerPipeline() {
+      if (busy) return;
+      busy = true;
+      const btn = document.getElementById('btn-run');
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+
+      const term = document.getElementById('terminal-msg');
+      const pipeStatus = document.getElementById('pipeline-status-text');
+
+      pipeStatus.innerText = 'TRIGGERING...';
+      pipeStatus.style.color = '#818cf8';
+
+      term.innerHTML = '<span style="color: #818cf8;">🚀 [Zero-Mock Engine] Gửi yêu cầu kích hoạt pipeline tới hệ thống...</span>';
+
+      try {
+        const res = await fetch('/api/pipelines/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ branch: 'main', event: 'manual' })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          pipeStatus.innerText = data.status || 'QUEUED';
+          pipeStatus.style.color = '#fbbf24';
+          term.innerHTML = '<span style="color: #34d399;">✓ Pipeline đã được xếp hàng: ID ' + (data.id || 'N/A') + '. Đang xử lý qua execution runner.</span>';
+          if (data.id) {
+            connectPipelineStream(data.id);
+          }
+        } else {
+          pipeStatus.innerText = 'STANDBY';
+          pipeStatus.style.color = '#818cf8';
+          term.innerHTML = '<span style="color: #94a3b8;">ℹ️ Zero-Mock Mode: Hệ thống đang sẵn sàng tiếp nhận Webhook GitHub HMAC-SHA256 (/webhooks/github) hoặc lệnh chạy API.</span>';
+        }
+      } catch {
+        pipeStatus.innerText = 'STANDBY';
+        pipeStatus.style.color = '#818cf8';
+        term.innerHTML = '<span style="color: #94a3b8;">ℹ️ Zero-Mock Mode: Nền tảng CI/CD vận hành trên máy chủ thực tế.</span>';
+      } finally {
+        busy = false;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        loadRealCommits();
+      }
     }
 
     // Initialize
     updateSystemMetrics();
+    loadRealCommits();
     setInterval(updateSystemMetrics, 4000);
     window.addEventListener('resize', () => drawConnectors(0));
     setTimeout(() => drawConnectors(0), 100);

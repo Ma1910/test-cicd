@@ -1,10 +1,16 @@
 import express, { Express, Request, Response, NextFunction } from "express";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
 import { generateToken, verifyToken, UserPayload } from "./auth.service.js";
 import { productRepo } from "./products.service.js";
 import { metrics } from "./metrics.service.js";
 import { renderDashboardHtml } from "./dashboard.template.js";
 import { renderHealthHtml } from "./health.template.js";
 import { getRepositoryInfo } from "./git.service.js";
+import { webhookRouter } from "./webhook/webhook.router.js";
+import { pipelinesRouter } from "./api/pipelines.router.js";
+import { getDatabaseService } from "./db/database.service.js";
 
 export function calculateSum(a: number, b: number): number {
   return a + b;
@@ -56,7 +62,24 @@ export function createApp(): Express {
 
   // Security Hardening
   app.disable("x-powered-by");
-  app.use(express.json({ limit: "100kb" }));
+  app.use(
+    express.json({
+      limit: "10mb",
+      verify: (req: Request, _res: Response, buf: Buffer) => {
+        (req as any).rawBody = buf;
+      },
+    })
+  );
+
+  // Handle JSON parse errors
+  app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof SyntaxError && "status" in err && (err as any).status === 400) {
+      res.status(400).json({ error: "Bad Request: Malformed JSON payload" });
+      return;
+    }
+    next(err);
+  });
+
   app.use(rateLimiter);
 
   // Telemetry middleware
@@ -107,10 +130,34 @@ export function createApp(): Express {
       return;
     }
 
+    let dbStatus = "UP";
+    try {
+      getDatabaseService();
+    } catch {
+      dbStatus = "DOWN";
+    }
+
+    const workspacesDir = process.env.WORKSPACES_DIR || path.join(os.tmpdir(), "cicd-workspaces");
+    let workspaceWritable = true;
+    try {
+      if (!fs.existsSync(workspacesDir)) {
+        fs.mkdirSync(workspacesDir, { recursive: true });
+      }
+      const testFile = path.join(workspacesDir, `.health-probe-${Date.now()}`);
+      fs.writeFileSync(testFile, "probe");
+      fs.unlinkSync(testFile);
+    } catch {
+      workspaceWritable = false;
+    }
+
     res.status(200).json({
-      status: "UP",
+      status: dbStatus === "UP" && workspaceWritable ? "UP" : "DEGRADED",
       uptime: process.uptime(),
       memoryUsage: process.memoryUsage().rss,
+      checks: {
+        database: { status: dbStatus },
+        workspace: { status: workspaceWritable ? "UP" : "DOWN", writable: workspaceWritable },
+      },
     });
   };
 
@@ -227,6 +274,17 @@ export function createApp(): Express {
     const result = calculateSum(a, b);
     res.json({ a, b, result });
   });
+
+  // ==========================================
+  // Webhook Ingestion Endpoints (HMAC-SHA256 Authenticated)
+  // ==========================================
+  app.use("/webhooks", webhookRouter);
+  app.use("/api/v1/webhooks", webhookRouter);
+
+  // ==========================================
+  // Pipeline & Dashboard Endpoints
+  // ==========================================
+  app.use("/api/pipelines", pipelinesRouter);
 
   // 404 handler for undefined routes
   app.use((_req: Request, res: Response) => {
